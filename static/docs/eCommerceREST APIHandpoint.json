@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "b5e8d002-63f0-45c4-8ade-95272ddb2c8d",
+		"name": "eCommerce REST API Handpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get transactions (All merchants)",
+			"protocolProfileBehavior": {
+				"strictSSL": true,
+				"disableUrlEncoding": false,
+				"disabledSystemHeaders": {},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic "
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/transactions",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions (Specific merchant)",
+			"protocolProfileBehavior": {
+				"strictSSL": true,
+				"disableUrlEncoding": false,
+				"disabledSystemHeaders": {},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic"
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/merchants/merchant_number/transactions/",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"merchants",
+						"merchant_number",
+						"transactions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get trx (All merchant) Time filter",
+			"protocolProfileBehavior": {
+				"strictSSL": true,
+				"disableUrlEncoding": false,
+				"disabledSystemHeaders": {},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic "
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/transactions?_where=(createTime BETWEEN '2022-03-30 00:00:01' AND '2022-03-31 23:59:59')",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "_where",
+							"value": "(createTime BETWEEN '2022-03-30 00:00:01' AND '2022-03-31 23:59:59')"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get trx (Specific merchant) Time filter",
+			"protocolProfileBehavior": {
+				"strictSSL": true,
+				"disableUrlEncoding": false,
+				"disabledSystemHeaders": {},
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic"
+					},
+					{
+						"key": "Content-Type",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/merchants/merchant_number/transactions?_where=(createTime BETWEEN '2022-03-30 00:00:01' AND '2022-03-31 23:59:59')",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"merchants",
+						"merchant_number",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "_where",
+							"value": "(createTime BETWEEN '2022-03-30 00:00:01' AND '2022-03-31 23:59:59')"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions (All merchants) Pay button",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic"
+					}
+				],
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/transactions?_where=(translatorID%20=%2019)",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "_where",
+							"value": "(translatorID%20=%2019)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get trx (Specific merchant) Pay button",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic"
+					}
+				],
+				"url": {
+					"raw": "https://commerce-api.handpoint.com/rest/merchants/merchant_number/transactions?_where=(translatorID%20=%2019)",
+					"protocol": "https",
+					"host": [
+						"commerce-api",
+						"handpoint",
+						"com"
+					],
+					"path": [
+						"rest",
+						"merchants",
+						"merchant_number",
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "_where",
+							"value": "(translatorID%20=%2019)"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
