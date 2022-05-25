@@ -41,6 +41,17 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
+        id: 'directintegration',
+        path: 'directintegration',
+        routeBasePath:'directintegration',
+        sidebarPath: require.resolve('./sidebars5.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
         id: 'paybutton',
         path: 'paybutton',
         routeBasePath:'paybutton',
@@ -49,13 +60,35 @@ const config = {
         // ... other options
       },
     ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'shoppingcarts',
+        path: 'shoppingcarts',
+        routeBasePath:'shoppingcarts',
+        sidebarPath: require.resolve('./sidebars2.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'mobilesdks',
+        path: 'mobilesdks',
+        routeBasePath:'mobilesdks',
+        sidebarPath: require.resolve('./sidebars3.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
   ],
 
-  themeConfig:
+  themeConfig: 
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Handpoint eComm',
+        title: '',
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
@@ -64,15 +97,37 @@ const config = {
         },
         items: [
           {
+            to: 'cnpdocs',
+            label: 'Getting Started',
+          },
+          {
             type: 'doc',
             docId: 'gettingstarted',
             position: 'left',
-            label: 'Ecommerce Integrations',
+            label: 'Hosted Integration',
           },
+          {
+            to:'/directintegration/directintegration',
+            position: 'left',
+            label: 'Direct Integration',
+            
+           },
            {
             to:'/paybutton/paybutton',
             position: 'left',
-            label: 'Pay Button',
+            label: 'Pay By link',
+            
+           },
+           {
+            to:'/shoppingcarts/shoppingcarts',
+            position: 'left',
+            label: 'Shopping Carts',
+            
+           },
+           {
+            to:'/mobilesdks/mobilesdks',
+            position: 'left',
+            label: 'Mobile SDKs',
             
            },
         
