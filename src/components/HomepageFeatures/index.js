@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Ecommerce Integration',
+    title: 'Ecommerce Integrations',
     Svg: require('@site/static/img/integration.svg').default,
     description: (
       <>
@@ -14,17 +14,17 @@ const FeatureList = [
       </>
     ),
   },
-  {
-    title: 'REST API',
-    Svg: require('@site/static/img/cloud.svg').default,
-    description: (
-      <>
-        The Gateway’s REST Integration provides a method for application developers to access the Gateway’s 
-        data in order to build their own applications. Third-party applications would require in 
-        depth programming knowledge and must be PCI compliant.
-      </>
-    ),
-  },
+  // {
+  //   title: 'REST API',
+  //   Svg: require('@site/static/img/cloud.svg').default,
+  //   description: (
+  //     <>
+  //       The Gateway’s REST Integration provides a method for application developers to access the Gateway’s 
+  //       data in order to build their own applications. Third-party applications would require in 
+  //       depth programming knowledge and must be PCI compliant.
+  //     </>
+  //   ),
+  // },
   {
     title: 'Pay Button',
     Svg: require('@site/static/img/paylink.svg').default,
@@ -40,7 +40,7 @@ const FeatureList = [
 
 function Feature({Svg, title, description}) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx('col col--6')}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>

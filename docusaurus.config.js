@@ -23,7 +23,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          //editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: {
           showReadingTime: true,
@@ -41,10 +41,11 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
-        id: 'restapi',
-        path: 'restapi',
-        routeBasePath:'restapi',
-        sidebarPath: require.resolve('./sidebars.js'),
+        id: 'paybutton',
+        path: 'paybutton',
+        routeBasePath:'paybutton',
+        sidebarPath: require.resolve('./sidebars1.js'),
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -58,34 +59,31 @@ const config = {
         logo: {
           alt: 'My Site Logo',
           src: 'img/logo.svg',
+          srcDark: 'img/logo_dark.svg',
+          width: 170,
         },
         items: [
-          // {
-          //   type: 'doc',
-          //   docId: 'gettingstarted',
-          //   position: 'left',
-          //   label: 'Guide',
-          // },
-          // {
-          //   type: 'doc',
-          //   docId: 'restapiintroduction',
-          //   position: 'left',
-          //   docsPluginId: 'restapi',
-          //   label: 'REST API',
-          // },
-          // {
-          //   type: 'docsVersionDropdown',
-          //   docsPluginId: 'restapi',
-          //   position: 'left',
-          // },
+          {
+            type: 'doc',
+            docId: 'gettingstarted',
+            position: 'left',
+            label: 'Ecommerce Integrations',
+          },
+           {
+            to:'/paybutton/paybutton',
+            position: 'left',
+            label: 'Pay Button',
+            
+           },
+        
           
           // {
           //   to: '/blog', label: 'Blog', position: 'left'},
-          // {
-          //   href: 'https://github.com/handpoint',
-          //   label: 'GitHub',
-          //   position: 'right',
-          // },
+          {
+            href: 'https://github.com/handpoint',
+            label: 'GitHub',
+            position: 'right',
+          },
         ],
       },
       footer: {
@@ -95,8 +93,16 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Handpoint Card Present',
+                label: 'Card Present Docs',
                 href: 'https://handpoint.github.io/doc/',
+              },
+              {
+                label: 'Ecommerce Docs',
+                href: '/',
+              },
+              {
+                label: 'Legacy Docs',
+                href: 'https://www.handpoint.com/docs/device/Basics/',
               },
             ],
           },
@@ -118,12 +124,39 @@ const config = {
             ],
           },
           {
+            title: 'Get our Apps',
+            items: [
+              {
+                label: 'Get it on Google Play',
+                href: 'https://play.google.com/store/apps/details?id=com.handpoint.hipos&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
+              },
+  
+              {
+                label: 'Download on the App Store',
+                href: 'https://apps.apple.com/us/app/handpoint/id1450546788?itsct=apps_box_link&itscg=30200',
+              },
+  
+            ],
+          },
+          {
             title: 'More',
             items: [
               // {
               //   label: 'Blog',
               //   to: '/blog',
               // },
+              {
+                label: 'Handpoint Status Page',
+                href: 'https://status.handpoint.com',
+              },
+              {
+                label: 'FAQ',
+                href: 'https://handpoint.atlassian.net/wiki/spaces/PD/overview?homepageId=5898250',
+              },
+              {
+                label: 'Subscribe to the Handpoint Newsletter',
+                href: 'https://handpoint.us6.list-manage.com/subscribe?u=4d9dff9e7edb7e57a67a7b252&id=0a2179241e',
+              },
               {
                 label: 'GitHub',
                 href: 'https://github.com/handpoint',
