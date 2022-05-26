@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import IntegrationPaths from '@site/src/components/IntegrationPaths';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -34,7 +34,7 @@ export default function Home() {
       {/* <HomepageHeader /> */}
       <Header></Header>
       <main>
-        <HomepageFeatures />
+        <IntegrationPaths />
         <Integrations></Integrations>
         {/* <Restapi></Restapi> */}
         <Paybutton></Paybutton>

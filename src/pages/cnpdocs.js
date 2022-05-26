@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import IntegrationPaths from '@site/src/components/IntegrationPaths';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -29,15 +29,14 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
+      title={`Getting Started`}
       description="Description will go into a meta tag in <head />">
-      {/* <HomepageHeader /> */}
-      <Header></Header>
+      <Header />
       <main>
-        <HomepageFeatures />
-        <Integrations></Integrations>
-        {/* <Restapi></Restapi> */}
-        <Paybutton></Paybutton>
+        <SectionHeader />
+        <IntegrationPaths />
+        <Integrations />
+        <Paybutton />
       </main>
     </Layout>
   );
@@ -49,7 +48,7 @@ export default function Home() {
     return (
       <div
         style={{
-          backgroundColor: ' #34495e',
+          backgroundColor: ' #25365D',
           textAlign: 'center',
           display: 'block',
           height: '250px',
@@ -58,7 +57,7 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" />
+        <a href="/doc"><img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
         <br></br>
         <h2 style={{
           color: 'white'
@@ -67,6 +66,21 @@ export default function Home() {
     );
   }
 
+  function SectionHeader() {
+    return (
+        <div style={{
+          textAlign: 'center',
+          display: 'block',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+          width: '100%'
+        }}>
+        <br></br>
+        <h2>Integration Paths</h2>
+      </div>
+    );
+  }
 
 
   function Integrations() {

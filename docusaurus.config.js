@@ -6,14 +6,14 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Handpoint eComm',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  title: 'Handpoint',
+  url: 'https://www.handpoint.com',
+  baseUrl: '/doc/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'handpoint', // Usually your GitHub org/user name.
+  projectName: 'ecommdoc', // Usually your repo name.
 
   presets: [
     [
@@ -91,9 +91,9 @@ const config = {
         title: '',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/logo.svg',
-          srcDark: 'img/logo_dark.svg',
-          width: 170,
+          src: 'img/handpoint-logo-hvitt.svg',
+          width: 175,
+          href: 'https://dev.handpoint.com/doc',
         },
         items: [
           {
@@ -142,22 +142,18 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
+        style: 'light',
         links: [
           {
             title: 'Docs',
             items: [
               {
-                label: 'Card Present Docs',
-                href: 'https://handpoint.github.io/doc/',
+                label: 'In-Person Payments Docs',
+                href: 'https://dev.handpoint.com/doc/cpdocs',
               },
               {
-                label: 'Ecommerce Docs',
-                href: '/',
-              },
-              {
-                label: 'Legacy Docs',
-                href: 'https://www.handpoint.com/docs/device/Basics/',
+                label: 'Online Payments Docs',
+                href: 'https://dev.handpoint.com/doc/cnpdocs',
               },
             ],
           },
@@ -165,7 +161,7 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Handpoint',
+                label: 'Handpoint Website',
                 href: 'https://handpoint.com',
               },
               {

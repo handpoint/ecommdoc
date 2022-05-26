@@ -6,25 +6,45 @@
 
 /* You can override the default Infima variables here. */
 :root {
+  --ifm-font-size-base: 15px;
   --ifm-color-primary: #e97d29;
-  --ifm-color-primary-dark: #34495e;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #rgb(26, 46, 136);
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
-  --ifm-code-font-size: 90%;
-}
+  --ifm-color-primary-dark: #25365D;
+  --ifm-color-primary-darker: #25365D;
+  --ifm-color-primary-darkest: rgb(26, 46, 136);
+  --ifm-color-primary-light: rgb(202, 248, 239);
+  --ifm-color-primary-lighter: rgb(102, 212, 189);
+  --ifm-color-primary-lightest: rgb(146, 224, 208);
+  --ifm-navbar-search-input-icon-color:white;
+      
+  
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
-  --ifm-color-primary: #e97d29;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  /* Color for links*/ 
+  --ifm-link-color:#0074CC;
+  --ifm-code-font-size: 90%;
+
+  /* Navbar */
+  --ifm-navbar-background-color: #25365D;
+  --ifm-navbar-link-color: #fdfdfd;
+  --ifm-navbar-sidebar:30px;
+
+
+
+  /* Footer */
+  --ifm-footer-background-color: #25365D !important;
+  --ifm-footer-link-color : #fdfdfd;
+  --ifm-footer-title-color: #fdfdfd;
+  --ifm-navbar-search-input-background-color:#fdfdfd;
+  
+
+
+  /* Colors used in Sidebar and TOC */
+  --ifm-menu-color-active: #e97d29;
+  --brand: #e97d29;
+
+
+  /* Sidebar width */
+  --doc-sidebar-width: 225px !important;
+  
 }
 
 .docusaurus-highlight-code-line {
@@ -34,8 +54,85 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-[data-theme='dark'] .docusaurus-highlight-code-line {
-  background-color: rgba(0, 0, 0, 0.3);
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(245, 239, 239, 0.3);
+}
+
+.navbar--dark {
+  --ifm-navbar-background-color: #25365D;
+}
+
+html[data-theme='dark'] {
+  /* any other colors you wish to overwrite */
+  --ifm-color-primary: #e97d29;
+  --ifm-footer-background-color: #25365D !important;
+  --ifm-navbar-sidebar-width: 80vw;
+  --ifm-navbar-search-input-icon-color:white;
+ 
+  /* --ifm-color-primary-dark: #5a91ea; */
+
+  
+  
+}
+
+.navbar__search.button{
+color: white;
+}
+.navbar__search{
+  width:130px;
+}
+.navbar__search-input {
+  width: 125px;
+  
+  
+}
+/* Modifies the Sidebar (effect on the left side) */
+.theme-doc-sidebar-item-link .menu__link--active {
+  border-left-width: 4px;
+  border-left-style: solid;
+  border-left-color: var(--ifm-menu-color-active) !important;
+  font-weight: 700 !important;
+  color: var(--ifm-font-color-base);
+  padding-left: 8px;
+
+}
+
+/* Modifies the TOC (effect on the left side) */
+.table-of-contents__link--active {
+  font-weight: 500;
+  margin-left: -16px;
+  padding-left: 12px;
+  color: var(--ifm-font-color-base);
+  border-left: 4px solid var(--brand);
+}
+
+/* .menu__link {
+  color: #fdfdfd;
+} */
+.card-background{
+  background-color: rgba(146, 128, 223, 0.1);
+  ;
+}
+
+
+@media only screen and (min-width: 1650px) {
+  .navbar__item {
+    font-size: 12.5px;
+  }
+}
+
+
+
+.navbar-statuspage-icon:after {
+  transition: opacity 0.2s;
+  content: "";
+  width: 30px;
+  height: 35px;
+  
+  display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  
 }
 
 .padding--lg {
@@ -46,3 +143,26 @@
   height: auto;
   display: inline-block;
 }
+
+@media only screen and (max-width: 600px) {
+  .gettingStarted {
+    display: block;
+    justify-content: center;
+    font-size: 15px;
+    margin-top: 25px;
+    width: 80%;
+    margin-left:10px;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .navigationSlider.slidingNav ul {
+    background: none;
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0;
+    padding: 0;
+    width: auto;
+  }
+}
+
