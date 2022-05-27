@@ -102,7 +102,7 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'gettingstarted',
+            docId: 'overview',
             position: 'left',
             label: 'Hosted Integration',
           },

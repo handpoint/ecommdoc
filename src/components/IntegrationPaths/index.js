@@ -29,8 +29,8 @@ const FeatureListCol6 = [
     description: (
       <>
        The hosted integration method makes it easy to add secure payment processing to your online business, using the Handpoint hosted payment page or Handpoint payment fields.
-       You can use this method if you do not want to collect and store cardholder data and be kept <b>out of PCI scope</b>. The standard hosted payment page is designed to be shown
-       in a lightbox over your website. Hosted payment fields are hosted by the gateway while the remainder of the payment form is provided by your website.
+       You can use this method if you do not want to collect and store cardholder data and be kept <b>OUT of PCI scope</b>. The standard hosted payment page is designed to be shown
+       in a lightbox over your website. The hosted payment fields can be styled to match your website and fit seamlessly into your payment page. 
       </>
     ),
   },
@@ -40,8 +40,8 @@ const FeatureListCol6 = [
     description: (
       <>
        With direct integration, your merchant’s website (complete with secure certificate) captures the user’s personal and credit card details and then forwards these behind the scenes
-       to the secure Handpoint gateway. Direct integration is more complex than the hosted integration method and puts your software <b>in PCI scope</b> as you will be handling card data,
-       but it does mean that the entire shopping process can occur within your merchants’ websites, providing a seamless experience for their customers.
+       to the secure Handpoint gateway. Direct integration is more complex than the hosted integration method and puts your software <b>IN PCI scope</b> as you will be handling card data.
+       The benefit of this integration method is that the entire shopping process can occur within your merchants’ websites.
       </>
     ),
   },
@@ -53,9 +53,9 @@ const FeatureListCol4 = [
     Svg: require('@site/static/img/link.svg').default,
     description: (
       <>
-        This guide provides the information required to integrate with our Gateway 
-        and gives a very basic example of code for doing so. It is expected that you have 
-        some experience in server- side scripting with languages such as PHP or ASP.
+      The Handpoint pay by link solution allows a merchant to create a simple HTML link that can be integrated into a webpage or e-mail. When clicked, the user is taken to the hosted
+      payment form with pre-populated product information such as the amount, product description and order reference. We offer the pay by link solution as a QR Code, a simple link
+      or a button. 
       </>
     ),
   },
@@ -64,9 +64,7 @@ const FeatureListCol4 = [
     Svg: require('@site/static/img/shopping-cart.svg').default,
     description: (
       <>
-        The Pay Button allows a Merchant to create a simple HTML link that can be integrated into a webpage or e-mail. 
-        When clicked, the user is taken to the hosted payment form with pre-populated product information such as the amount, 
-        product description and order reference.
+       Handpoint integrates directly with all major shopping carts. From WooCommerce to Magento and Zencart, Handpoint offers modules plugging directly into your webstore. 
       </>
     ),
   },
@@ -75,9 +73,8 @@ const FeatureListCol4 = [
     Svg: require('@site/static/img/smartphone.svg').default,
     description: (
       <>
-        The Pay Button allows a Merchant to create a simple HTML link that can be integrated into a webpage or e-mail. 
-        When clicked, the user is taken to the hosted payment form with pre-populated product information such as the amount, 
-        product description and order reference.
+        Handpoint SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future
+         payments, creating a seamless payment journey. Integrate secure in-app payments with Handpoint's Android or iOS SDKs. 
       </>
     ),
   },
