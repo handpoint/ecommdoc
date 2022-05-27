@@ -77,7 +77,7 @@ export default function Home() {
           width: '100%'
         }}>
         <br></br>
-        <h2>Integration Paths</h2>
+        <h1>Integration Paths</h1>
       </div>
     );
   }
