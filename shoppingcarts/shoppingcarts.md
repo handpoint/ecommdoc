@@ -8,7 +8,6 @@ id: shoppingcarts
 
 ## eCommerce Modules
 
-Let's discover **Shopping carts**.
 
 Handpoint integrates directly with all major shopping carts. Unlock your market with our modules below:
 
@@ -22,13 +21,15 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   <h3>WooCommerce</h3>
                </div>
                <div class="card__body">
+               <a href="https://woocommerce.com">
                   <img style={{ height: '50px'}}
                   src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
                   alt="Image alt text"
                   title="WooCommerce" />
+                  </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -40,13 +41,15 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   <h3>WooCommerce Subscriptions</h3>
                </div>
                <div class="card__body">
+               <a href="https://woocommerce.com/products/woocommerce-subscriptions/">
                   <img style={{ height: '25px' }}
                   src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
                   alt="Image alt text"
                   title="WooCommerce" />
+                  </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -58,7 +61,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   <h3>ZenCart</h3>
                </div>
                <div class="card__body">
-                  <a href="https://www.ekm.com">
+                  <a href="https://www.zen-cart.com/">
                   <img style={{height: '50px'}}
                   src="https://www.zen-cart.com/images/styles/zencart/style/zen-cart-logo.png"
                   alt="Image alt text"
@@ -67,7 +70,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                   
                </div>
             </div>
@@ -88,7 +91,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -112,7 +115,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -132,7 +135,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -152,7 +155,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -172,7 +175,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -196,7 +199,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -217,7 +220,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -237,7 +240,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -257,7 +260,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -281,7 +284,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -301,7 +304,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -321,7 +324,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="www.github.com">Github Page</a>
+                  <a href="https://github.com/handpoint">Github Page</a>
                </div>
             </div>
          </div>
@@ -336,6 +339,10 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
 
 
 ## 3rd Party Modules
+
+These modules are not developed by Handpoint.
+
+For support, please contact the module developers directly.
 
 <div class="container">
 

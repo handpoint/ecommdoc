@@ -3,11 +3,11 @@ sidebar_position: 1
 id: mobilesdks
 ---
 
-# Getting Started
+# Mobile SDKs
 
 Let's discover **Mobile SDKs**.
 
-SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future payments, creating a seamless payment journey. Integrate secure in-app payments with our Android or iOS SDKs below.
+Handpoint Ecommerce SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future payments, creating a seamless payment journey. Integrate secure in-app payments with our Android or iOS SDKs below.
 
 
 <div class="container">
@@ -22,10 +22,10 @@ SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs 
       <img
         src="https://cardstream.com/wp-content/uploads/2019/01/android_ico-1.png"
         alt="Image alt text"
-        title="Logo Title Text 1" />
+        title="Android" />
      </div>
      <div class="card__footer">
-      <a href="www.github.com">Github Page</a>
+      <a href="https://github.com/handpoint">Github Page</a>
      </div>
      </div>
      </div>
@@ -40,10 +40,10 @@ SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs 
       <img
         src="https://cardstream.com/wp-content/uploads/2019/01/apple_ico-1.png"
         alt="Image alt text"
-        title="Logo Title Text 1" />
+        title="iOS" />
      </div>
      <div class="card__footer">
-      <a href="www.github.com">Github Page</a>
+      <a href="https://github.com/handpoint">Github Page</a>
      </div>
      </div>
      </div>

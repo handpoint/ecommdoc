@@ -20,7 +20,7 @@ The section below gives a step-by-step example of how to sign a transaction, com
 ### Example Signature Key: 
 
 ```php
-$key = 'DontTellAnyone
+$key = 'DontTellAnyone'
 ```
 
 ### Example Transaction 
