@@ -32,6 +32,7 @@ export default function Home() {
         <PayByLink />
         <MobileSdks/> 
         <ShoppingCarts/>
+        <TermsAndConditions/>
       </main>
     </Layout>
   );
@@ -701,6 +702,53 @@ export default function Home() {
         </div>
       </div>
     </div>
+
+    );
+  }
+
+
+  function TermsAndConditions() {
+    return (
+    <div  style={{
+      backgroundColor: ' #e9ecef',
+      textAlign: 'center',
+      display: 'block',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '20px',
+      width: '100%'
+    }}>
+      <div class="container">
+      <div class="row">
+        <div class="col col--12" >
+          <div class="card-demo card shadow--md" style={{ fontSize: '13px' }}>
+            <h3 class="card__header">
+              <b>Terms & Conditions</b>
+            </h3>
+            <p class="card__body">By using this documentation you agree to be bound by the following:
+              <br></br>
+              <br></br>
+              All information on this website including all documentation, code examples, pictures, drawings, graphs and any other information whatsoever
+              (jointly "the API Documentation“) was created by and is the intellectual property of Handpoint and as such subject to copyright.
+              The intented purpose of the API Documentation is to enable third party software companies to embed acceptance of card payments
+              with Handpoint into their applications and no warranties, neither expressed nor implied, are provided regarding the accuracy of
+              the documentation or the API service itself.
+              <br></br>
+              <br></br>
+              If you work for a 3rd party software company and have a need for embedded payments you are only allowed to use the information for
+              the intended purpose i.e. to embed Handpoint payment acceptance into your application. Specifically, you are not allowed to make copies of the API
+              Documentation and present as your own as that is a breach of copyright. You are also not allowed to wrap your own API around the Handpoint API and present
+              as your own unless you have a written agreement with Handpoint to do so.
+              <br></br>
+              <br></br>
+              Handpoint reserves the right to change these terms and conditions at any time without warning.</p>
+          </div>
+          <br></br>
+        </div>
+      </div>
+    </div>
+  </div>
 
     );
   }
