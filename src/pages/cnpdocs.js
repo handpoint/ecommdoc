@@ -22,8 +22,8 @@ export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Getting Started`}
-      description="Description will go into a meta tag in <head />">
+      title={` Online Docs`}
+      description="documentation for online payments">
       <Header />
       <main>
         <SectionHeader />
@@ -32,6 +32,7 @@ export default function Home() {
         <PayByLink />
         <MobileSdks/> 
         <ShoppingCarts/>
+        <TechnicalIntegrationLifecycle/>
         <TermsAndConditions/>
       </main>
     </Layout>
@@ -91,6 +92,9 @@ export default function Home() {
         padding: '20px',
         width: '100%'
       }}>
+     <div class='container'>
+      <div class="row">
+      <div class="col col--12">
         <br></br>
         <h2 style={{
 
@@ -103,7 +107,9 @@ export default function Home() {
         <div>
           <a class="button button--primary" href="docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
         </div>
-
+        </div>
+        </div>
+        </div>
       </div>
 
     );
@@ -122,6 +128,9 @@ export default function Home() {
         padding: '20px',
         width: '100%'
       }}>
+      <div class='container'>
+      <div class="row">
+      <div class="col col--12">
         <br></br>
         <h2 style={{
 
@@ -136,14 +145,16 @@ export default function Home() {
           <a class="button button--primary" href="docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Guide</a>
         </div>
       </div>
+      </div>
+      </div> 
+      </div>
 
     );
   }
 
   function MobileSdks() {
     return (
-      <div
-      style={{
+      <div style={{
         backgroundColor: ' #e9ecef',
         textAlign: 'center',
         display: 'block',
@@ -153,6 +164,9 @@ export default function Home() {
         padding: '20px',
         width: '100%'
       }}>
+      <div class='container'>
+      <div class="row">
+      <div class="col col--12">
         <br></br>
         <h2 style={{
 
@@ -202,6 +216,9 @@ export default function Home() {
       </div>
     </div>
   </div>
+  </div>
+  </div>
+  </div>
 
     );
   }
@@ -209,7 +226,10 @@ export default function Home() {
 
   function ShoppingCarts() {
     return (
-      <div
+
+      <div class="container">
+      <div class="row">
+      <div class="col col--12"
         style={{
           textAlign: 'center',
           display: 'block',
@@ -702,14 +722,16 @@ export default function Home() {
         </div>
       </div>
     </div>
+  </div>
+</div>
 
     );
   }
 
 
-  function TermsAndConditions() {
-    return (
-    <div  style={{
+  function TechnicalIntegrationLifecycle() {
+  return (
+<div style={{
       backgroundColor: ' #e9ecef',
       textAlign: 'center',
       display: 'block',
@@ -719,14 +741,36 @@ export default function Home() {
       padding: '20px',
       width: '100%'
     }}>
+  <div class="container">
+    <div class="row">
+      <div class="col col--12" >
+        <div>
+          <h2>Technical Integration Lifecycle</h2>
+          <p>Please contact <a target="_blank" href="mailto:sales@handpoint.com">sales@handpoint.com</a> to kickstart an integration process.
+            Once the integration starts you will get a dedicated slack channel with the Handpoint developers to address any issues that might arise.
+            Once the integration is ready, the Handpoint team will certify the solution by running a set of standard tests to make sure the integration is robust and ready for Go Live.
+            The Handpoint team will then closely follow the first pilot merchants to make sure the solution is ready to scale.</p>
+          <div align="center">
+            <img style={{ width:'65%', height:'auto'}} src="img/ecomm-technical-integration-lifecycle.png" alt="Technical integration lifecycle"></img>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  );
+}
+
+  function TermsAndConditions() {
+    return (
+    <div  style={{ padding: '20px'}}>
       <div class="container">
       <div class="row">
         <div class="col col--12" >
-          <div class="card-demo card shadow--md" style={{ fontSize: '13px' }}>
-            <h3 class="card__header">
-              <b>Terms & Conditions</b>
-            </h3>
-            <p class="card__body">By using this documentation you agree to be bound by the following:
+          <div>
+            <h2>Terms & Conditions</h2>
+            <p>By using this documentation you agree to be bound by the following:
               <br></br>
               <br></br>
               All information on this website including all documentation, code examples, pictures, drawings, graphs and any other information whatsoever

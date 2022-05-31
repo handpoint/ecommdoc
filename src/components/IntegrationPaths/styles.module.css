@@ -9,3 +9,11 @@
   height: 100px;
   width: 100px;
 }
+
+.card-image-larger{
+
+  max-width:65%;
+  max-height:auto;
+
+}
+

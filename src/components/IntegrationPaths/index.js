@@ -88,7 +88,7 @@ function FeatureCol6({Svg, title, description}) {
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
-      <div className="text--center padding-horiz--md">
+      <div className="text--center">
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
@@ -102,7 +102,7 @@ function FeatureCol4({Svg, title, description}) {
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
-      <div className="text--center padding-horiz--md">
+      <div className="text--center">
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
