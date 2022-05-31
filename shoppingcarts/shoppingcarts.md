@@ -71,7 +71,6 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                </div>
                <div class="card__footer">
                   <a href="https://github.com/handpoint">Github Page</a>
-                  
                </div>
             </div>
          </div>
@@ -209,8 +208,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
             <div class="card" >
                <div class="card__header">
                   <h3>Oscommerce</h3>
-               </div>
-              
+               </div>           
                <div class="card__body">
                 <a href="https://www.oscommerce.com">
                   <img style={{ height: '50px' }}
@@ -345,7 +343,6 @@ These modules are not developed by Handpoint.
 For support, please contact the module developers directly.
 
 <div class="container">
-
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
@@ -495,5 +492,4 @@ For support, please contact the module developers directly.
          </div>
       </div>
    </div>
-   
-   </div>
+</div>

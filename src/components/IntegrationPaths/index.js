@@ -28,7 +28,7 @@ const FeatureListCol6 = [
     Svg: require('@site/static/img/iframe.svg').default,
     description: (
       <>
-       The hosted integration method makes it easy to add secure payment processing to your online business, using the Handpoint hosted payment page or Handpoint payment fields.
+       The hosted integration method makes it easy to add secure payment processing to your online business, using the <b>Handpoint hosted payment</b> page or <b>Handpoint payment fields</b>.
        You can use this method if you do not want to collect and store cardholder data and be kept <b>OUT of PCI scope</b>. The standard hosted payment page is designed to be shown
        in a lightbox over your website. The hosted payment fields can be styled to match your website and fit seamlessly into your payment page. 
       </>
@@ -39,9 +39,9 @@ const FeatureListCol6 = [
     Svg: require('@site/static/img/api.svg').default,
     description: (
       <>
-       With direct integration, your merchant’s website (complete with secure certificate) captures the user’s personal and credit card details and then forwards these behind the scenes
-       to the secure Handpoint gateway. Direct integration is more complex than the hosted integration method and puts your software <b>IN PCI scope</b> as you will be handling card data.
-       The benefit of this integration method is that the entire shopping process can occur within your merchants’ websites.
+       With direct integration, your merchant’s website captures the user’s personal and credit card details and then forwards these behind the scenes
+       to the secure Handpoint gateway. Direct integration is more complex than the hosted integration method and puts your software <b>IN PCI scope</b> as
+       you will be handling card data. The benefit of this integration method is that the entire shopping process can occur within your merchants’ websites.
       </>
     ),
   },
@@ -64,7 +64,8 @@ const FeatureListCol4 = [
     Svg: require('@site/static/img/shopping-cart.svg').default,
     description: (
       <>
-       Handpoint integrates directly with all major shopping carts. From WooCommerce to Magento and Zencart, Handpoint offers modules plugging directly into your webstore. 
+       Handpoint integrates directly with all major shopping carts providers. From WooCommerce to Magento and Zencart, Handpoint offers modules plugging directly into each and every webstore
+       provider. This is the right solution if you want to provide online payments to merchants already using a shopping cart solution. 
       </>
     ),
   },
@@ -73,7 +74,7 @@ const FeatureListCol4 = [
     Svg: require('@site/static/img/smartphone.svg').default,
     description: (
       <>
-        Handpoint SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future
+        Handpoint SDKs allow merchants to accept secure payments in a native mobile application. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future
          payments, creating a seamless payment journey. Integrate secure in-app payments with Handpoint's Android or iOS SDKs. 
       </>
     ),

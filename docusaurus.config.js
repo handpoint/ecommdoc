@@ -87,6 +87,11 @@ const config = {
   themeConfig: 
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      colorMode: {
+        defaultMode: 'light',
+        disableSwitch: true,
+        respectPrefersColorScheme: false,
+      },
       navbar: {
         title: '',
         logo: {
@@ -98,38 +103,38 @@ const config = {
         items: [
           {
             to: 'cnpdocs',
-            label: 'Getting Started',
+            label: 'Documentation',
           },
-          {
-            type: 'doc',
-            docId: 'overview',
-            position: 'left',
-            label: 'Hosted Integration',
-          },
-          {
-            to:'/directintegration/directintegration',
-            position: 'left',
-            label: 'Direct Integration',
+          // {
+          //   type: 'doc',
+          //   docId: 'overview',
+          //   position: 'left',
+          //   label: 'Hosted Integration',
+          // },
+          // {
+          //   to:'/directintegration/directintegration',
+          //   position: 'left',
+          //   label: 'Direct Integration',
             
-           },
-           {
-            to:'/paybutton/paybutton',
-            position: 'left',
-            label: 'Pay By link',
+          //  },
+          //  {
+          //   to:'/paybutton/paybutton',
+          //   position: 'left',
+          //   label: 'Pay By link',
             
-           },
-           {
-            to:'/shoppingcarts/shoppingcarts',
-            position: 'left',
-            label: 'Shopping Carts',
+          //  },
+          //  {
+          //   to:'/shoppingcarts/shoppingcarts',
+          //   position: 'left',
+          //   label: 'Shopping Carts',
             
-           },
-           {
-            to:'/mobilesdks/mobilesdks',
-            position: 'left',
-            label: 'Mobile SDKs',
+          //  },
+          //  {
+          //   to:'/mobilesdks/mobilesdks',
+          //   position: 'left',
+          //   label: 'Mobile SDKs',
             
-           },
+          //  },
         
           
           // {
