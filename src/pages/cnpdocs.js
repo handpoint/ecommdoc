@@ -106,7 +106,7 @@ export default function Home() {
           It is expected that you have some experience in server- side scripting with languages such as PHP or ASP.</p>
 
         <div>
-          <a class="button button--primary" href="docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
+          <a class="button button--primary" href="/docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
         </div>
         </div>
         </div>
@@ -143,7 +143,7 @@ export default function Home() {
         fields outlined in the above Gateway Integration Guide.
         </p>
         <div class="card__footer">
-          <a class="button button--primary" href="docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Guide</a>
+          <a class="button button--primary" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Guide</a>
         </div>
       </div>
       </div>

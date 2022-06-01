@@ -128,7 +128,7 @@ export default function Home() {
             </div>
           </div>
           <br></br>
-          <a class="button button--primary" href="docs/integrationguide.pdf" download="IntegrationGuideHandpoint">Get the latest Gateway Integration Guide!</a>
+          <a class="button button--primary" href="/docs/integrationguide.pdf" download="IntegrationGuideHandpoint">Get the latest Gateway Integration Guide!</a>
 
         </div>
 
@@ -166,17 +166,17 @@ export default function Home() {
         }} >Download our Postman collection and start testing our REST API now!</p>
 
         <div>
-          <a class="button button--primary" href="docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >Get the latest REST API Integration Guide!</a>
+          <a class="button button--primary" href="/docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >Get the latest REST API Integration Guide!</a>
           <div class="space"></div>
-          <a class="button button--primary" href="docs/eCommerceRESTAPIHandpoint.json" download="eCommerceRESTAPIHandpoint.json" >Download Postman Collection!</a>
+          <a class="button button--primary" href="/docs/eCommerceRESTAPIHandpoint.json" download="eCommerceRESTAPIHandpoint.json" >Download Postman Collection!</a>
 
         </div>
 
 
 
         {/* <div class="card__footer">
-            <a class="button button--primary" margin="5px" href="docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >Get the latest REST API Integration Guide!</a>
-           <a class="button button--primary" margin="5px" href="docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >API Integration Guide!</a>
+            <a class="button button--primary" margin="5px" href="/docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >Get the latest REST API Integration Guide!</a>
+           <a class="button button--primary" margin="5px" href="/docs/integrationguide.pdf" download="RestApiIntegrationHandpoint" >API Integration Guide!</a>
          </div> */}
 
       </div>
@@ -210,7 +210,7 @@ export default function Home() {
           product description and order reference.
         </p>
         <div class="card__footer">
-          <a class="button button--primary" href="docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Get the latest Pay Button Guide!</a>
+          <a class="button button--primary" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Get the latest Pay Button Guide!</a>
         </div>
       </div>
 
