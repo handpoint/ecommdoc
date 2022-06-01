@@ -58,7 +58,7 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" />
+        <img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" />
         <br></br>
         <h2 style={{
           color: 'white'
@@ -82,7 +82,7 @@ export default function Home() {
           padding: '20px',
           width: '100%'
         }}>
-        {/* <img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
+        {/* <img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
         <br></br>
         <h2 style={{
 
@@ -151,7 +151,7 @@ export default function Home() {
           padding: '20px',
           width: '100%'
         }}>
-        {/* <img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
+        {/* <img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
         <br></br>
         <h2 style={{
           color: 'white'
@@ -198,7 +198,7 @@ export default function Home() {
           padding: '20px',
           width: '100%'
         }}>
-        {/* <img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
+        {/* <img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px" /> */}
         <br></br>
         <h2 style={{
 

@@ -55,7 +55,7 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <a href="/doc"><img src="img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
+        <a href="/doc"><img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
         <br></br>
         <h2 style={{
           color: 'white'
@@ -928,7 +928,7 @@ export default function Home() {
             Once the integration is ready, the Handpoint team will certify the solution by running a set of standard tests to make sure the integration is robust and ready for Go Live.
             The Handpoint team will then closely follow the first pilot merchants to make sure the solution is ready to scale.</p>
           <div align="center">
-            <img style={{ width:'65%', height:'auto'}} src="img/ecomm-technical-integration-lifecycle.png" alt="Technical integration lifecycle"></img>
+            <img style={{ width:'65%', height:'auto'}} src="/img/ecomm-technical-integration-lifecycle.png" alt="Technical integration lifecycle"></img>
           </div>
         </div>
       </div>

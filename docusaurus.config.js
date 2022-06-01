@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Handpoint',
-  url: 'https://www.handpoint.com',
-  baseUrl: '/doc/',
+  url: 'https://developer-ecomm.handpoint.io',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
@@ -96,9 +96,9 @@ const config = {
         title: '',
         logo: {
           alt: 'My Site Logo',
-          src: 'img/handpoint-logo-hvitt.svg',
+          src: '/img/handpoint-logo-hvitt.svg',
           width: 175,
-          href: 'https://dev.handpoint.com/doc',
+          href: 'https://developer.handpoint.io/',
         },
         items: [
           {
@@ -154,12 +154,12 @@ const config = {
             items: [
               {
                 label: 'In-Person Payments Docs',
-                href: 'https://dev.handpoint.com/doc/cpdocs',
+                to: 'https://developer.handpoint.io/cpdocs/index.html',
               },
               {
                 label: 'Online Payments Docs',
-                href: 'https://dev.handpoint.com/doc/cnpdocs',
-              },
+                href: '/cnpdocs/index.html',
+              }
             ],
           },
           {
@@ -167,7 +167,7 @@ const config = {
             items: [
               {
                 label: 'Handpoint Website',
-                href: 'https://handpoint.com',
+                href: 'https://handpoint.io',
               },
               {
                 label: 'LinkedIn',
@@ -203,7 +203,7 @@ const config = {
               // },
               {
                 label: 'Handpoint Status Page',
-                href: 'https://status.handpoint.com',
+                href: 'https://status.handpoint.io',
               },
               {
                 label: 'FAQ',
@@ -223,7 +223,7 @@ const config = {
         logo: {
           alt: 'Handpoint Logo',
           src: 'https://handpoint.imgix.net/handpoint-logo-w.png?w=150',
-          href: 'https://www.handpoint.com'
+          href: 'https://www.handpoint.io'
         },
         copyright: `Copyright © ${new Date().getFullYear()} Handpoint`,
       },
