@@ -30,10 +30,10 @@ export default function Home() {
         <IntegrationPaths />
         <GatewayIntegrationGuide />
         <PayByLink />
+        <SampleCode/>
         <MobileSdks/> 
         <ShoppingCarts/>
         <TechnicalIntegrationLifecycle/>
-        <SampleCode/>
         <TermsAndConditions/>
       </main>
     </Layout>
@@ -102,8 +102,8 @@ export default function Home() {
         }} >Direct & Hosted Integration Documentation</h2>
         <p style={{
 
-        }} >This guide provides the information required to integrate with our Gateway and gives a very basic example of code for doing so.
-          It is expected that you have some experience in server- side scripting with languages such as PHP or ASP.</p>
+        }} >This guide provides the information required to integrate with our Gateway and gives basic examples of code for doing so.
+          It is expected that you have some experience in server-side scripting with languages such as PHP or ASP.</p>
 
         <div>
           <a class="button button--primary" href="/docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
@@ -135,15 +135,15 @@ export default function Home() {
         <br></br>
         <h2 style={{
 
-        }} >Pay By Link</h2>
+        }} >Pay By Link Documentation</h2>
         <p style={{
 
         }} >
-        The Pay By Link advanced integration allows you to have full control over what information is passed to the Handpoint gateway via the Pay Button and use the full list of hosted integration
-        fields outlined in the above Gateway Integration Guide.
+        The Pay By Link integration allows you to have full control over what information is passed to the Handpoint gateway via the Pay Button functionality.
+        It uses the full list of hosted integration fields outlined in the above Gateway Integration Guide.
         </p>
         <div class="card__footer">
-          <a class="button button--primary" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Guide</a>
+          <a class="button button--primary" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Integration Guide</a>
         </div>
       </div>
       </div>
@@ -156,7 +156,6 @@ export default function Home() {
   function MobileSdks() {
     return (
       <div style={{
-        backgroundColor: ' #e9ecef',
         textAlign: 'center',
         display: 'block',
         height: '100%',
@@ -180,7 +179,7 @@ export default function Home() {
         <div class="row">
           <div class="col col--6">
             <div class="card-demo">
-              <div class="card" style={{ height: '180px',}}>
+              <div class="card" style={{ height: '180px',backgroundColor: ' #e9ecef'}}>
                 <div class="card__header">
                   <h3>Android</h3>
                 </div>
@@ -198,7 +197,7 @@ export default function Home() {
           </div>
           <div class="col col--6">
             <div class="card-demo" >
-            <div class="card" style={{ height: '180px'}}>
+            <div class="card" style={{ height: '180px', backgroundColor: ' #e9ecef'}}>
                 <div class="card__header">
                   <h3>iOS</h3>
                 </div>
@@ -227,32 +226,28 @@ export default function Home() {
 
   function ShoppingCarts() {
     return (
-
+      <div  style={{
+        backgroundColor: ' #e9ecef',
+        textAlign: 'center',
+        display: 'block',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+        width: '100%'
+      }}>
       <div class="container">
       <div class="row">
-      <div class="col col--12"
-        style={{
-          textAlign: 'center',
-          display: 'block',
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '20px',
-          width: '100%'
-        }}>
+      <div class="col col--12">
         <br></br>
-        <h2 style={{
-
-        }} >Shopping Carts</h2>
-        <p style={{
-
-        }} >eCommerce Modules, Handpoint integrates directly with all major shopping carts.</p>
+        <h2>Shopping Carts</h2>
+        <p>eCommerce Modules, Handpoint integrates directly with all major shopping carts.</p>
 
       <div class="container">
         <div class="row">
           <div class="col col--3">
               <div class="card-demo">
-               <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>WooCommerce</h3>
                     </div>
@@ -272,7 +267,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>WooCommerce Subscriptions</h3>
                     </div>
@@ -292,7 +287,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>ZenCart</h3>
                     </div>
@@ -313,7 +308,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                       <h3>CubeCart</h3>
                     </div>
@@ -337,7 +332,7 @@ export default function Home() {
         <div class="row">
           <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>opencart</h3>
                     </div>
@@ -357,7 +352,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>Magento</h3>
                     </div>
@@ -377,7 +372,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                       <h3>PrestaShop</h3>
                     </div>
@@ -397,7 +392,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>CS Cart</h3>
                     </div>
@@ -421,7 +416,7 @@ export default function Home() {
         <div class="row">
           <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>XCart</h3>
                     </div>
@@ -441,7 +436,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                       <h3>Oscommerce</h3>
                     </div>           
@@ -461,7 +456,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>Übercart</h3>
                     </div>
@@ -481,7 +476,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>Drupal</h3>
                     </div>
@@ -505,7 +500,7 @@ export default function Home() {
         <div class="row">
           <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>HikaShop</h3>
                     </div>
@@ -525,7 +520,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>carthrob</h3>
                     </div>
@@ -545,7 +540,7 @@ export default function Home() {
           </div>
           <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                       <h3>shopware</h3>
                     </div>
@@ -575,7 +570,7 @@ export default function Home() {
         <div class="row">
             <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                         <h3>ekm</h3>
                     </div>
@@ -593,7 +588,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                         <h3>Clickartpro</h3>
                     </div>
@@ -611,7 +606,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>nopCommerce</h3>
                     </div>
@@ -629,7 +624,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>admitOne</h3>
                     </div>
@@ -650,7 +645,7 @@ export default function Home() {
         <div class="row">
             <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Spreedly</h3>
                     </div>
@@ -668,7 +663,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Foxy.io</h3>
                     </div>
@@ -686,7 +681,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card"  style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card"  style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>eautomate</h3>
                     </div>
@@ -704,7 +699,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
                         <h3>TAPN.TO</h3>
                     </div>
@@ -724,6 +719,7 @@ export default function Home() {
       </div>
     </div>
   </div>
+  </div>
 </div>
 
     );
@@ -732,6 +728,7 @@ export default function Home() {
   function SampleCode() {
     return (
       <div style={{
+        backgroundColor: ' #e9ecef',
         textAlign: 'center',
         display: 'block',
         height: '100%',
@@ -751,7 +748,7 @@ export default function Home() {
         <div class="row">
             <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>PHP</h3>
                     </div>
@@ -769,7 +766,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>C#</h3>
                     </div>
@@ -787,7 +784,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Java</h3>
                     </div>
@@ -805,7 +802,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Perl</h3>
                     </div>
@@ -826,7 +823,7 @@ export default function Home() {
         <div class="row">
             <div class="col col--3">
               <div class="card-demo">
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Python</h3>
                     </div>
@@ -844,12 +841,12 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef'}}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>NodeJS</h3>
                     </div>
                     <div class="card__body">
-                        <img style={{ height: '50px' , backgroundColor: '#e9ecef' }}
+                        <img style={{ height: '50px'}}
                         src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
                         alt="Image alt text"
                         title="NodeJS" />
@@ -862,7 +859,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Ruby</h3>
                     </div>
@@ -880,7 +877,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef'}}>
+              <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>Swift</h3>
                     </div>
@@ -909,7 +906,6 @@ export default function Home() {
   function TechnicalIntegrationLifecycle() {
   return (
 <div style={{
-      backgroundColor: ' #e9ecef',
       textAlign: 'center',
       display: 'block',
       height: '100%',
