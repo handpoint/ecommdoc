@@ -33,6 +33,7 @@ export default function Home() {
         <MobileSdks/> 
         <ShoppingCarts/>
         <TechnicalIntegrationLifecycle/>
+        <SampleCode/>
         <TermsAndConditions/>
       </main>
     </Layout>
@@ -319,7 +320,7 @@ export default function Home() {
                     <div class="card__body">
                     <a href="https://www.cubecart.com/" target='_blank'>
                       <img style={{height: '50px'}}
-                      src="https://www.cubecart.com/img/logo.cc.jpg"
+                      src="https://s3.ap-southeast-1.amazonaws.com/easyparcel-static/Public/source/general/img/integrations/2018-06/cubecart.png"
                       alt="Image alt text"
                       title="CubeCart" />
                       </a>
@@ -403,9 +404,9 @@ export default function Home() {
                     <div class="card__body">
                     <a href="https://www.cs-cart.com" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://www.cs-cart.com/blog/wp-content/uploads/for_blog_logo.png"
+                      src="https://paylike.es/img/cscart.png"
                       alt="Image alt text"
-                      title="Logo Title Text 1" />
+                      title="CS Cart" />
                       </a>
                     </div>
                     <div class="card__footer">
@@ -582,7 +583,7 @@ export default function Home() {
                         <img style={{ height: '50px'}}
                         src="https://www.ekm.com/images/images-new/logo/ekm-logo-blue.svg"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="ekm" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.ekm.com" target='_blank'>Website</a>
@@ -600,7 +601,7 @@ export default function Home() {
                         <img style={{ height: '50px' }}
                         src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="Clickartpro" />
                     </div>
                     <div class="card__footer">
                         <a href="http://www.clickcartpro.co.uk" target='_blank'>Website</a>
@@ -618,7 +619,7 @@ export default function Home() {
                         <img style={{height: '50px'}}
                         src="https://www.nopcommerce.com/Themes/OfficialSite/Content/images/logo.svg"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="nopCommerce" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.nopcommerce.com/en" target='_blank'>Website</a>
@@ -636,7 +637,7 @@ export default function Home() {
                         <img style={{height: '50px'}}
                         src="https://www.admit-one.eu/images/admit-one_logo_red_rgb.svg"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="admitOne" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.admit-one.eu" target='_blank'>Website</a>
@@ -657,7 +658,7 @@ export default function Home() {
                         <img style={{ height: '50px'}}
                         src="https://support.pingidentity.com/servlet/servlet.FileDownload?file=00P1W00001Jyz4rUAB"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="Spreedly" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.spreedly.com/" target='_blank'>Website</a>
@@ -675,7 +676,7 @@ export default function Home() {
                         <img style={{ height: '50px' }}
                         src="https://www.foxy.io/user/themes/default/assets/foxy_logo_preview.png"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="Foxy.io" />
                     </div>
                     <div class="card__footer">
                         <a href="https://foxy.io/" target='_blank'>Website</a>
@@ -685,7 +686,7 @@ export default function Home() {
             </div>
             <div class="col col--3">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+              <div class="card"  style={{ height: '180px', backgroundColor: '#e9ecef' }}>
                     <div class="card__header">
                         <h3>eautomate</h3>
                     </div>
@@ -693,7 +694,7 @@ export default function Home() {
                         <img style={{height: '50px'}}
                         src="https://www.eautomate.com/Media/Images/Platforms%20and%20Services/automate-head.png"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="eautomate" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.eautomate.com/platform" target='_blank'>Website</a>
@@ -711,7 +712,7 @@ export default function Home() {
                         <img style={{height: '50px'}}
                         src="https://www.tapnto.co.uk/bl-themes/tapnto/img/TNTlogo_Purple_Black.svg"
                         alt="Image alt text"
-                        title="Logo Title Text 1" />
+                        title="TAPN.TO" />
                     </div>
                     <div class="card__footer">
                         <a href="https://www.tapnto.co.uk" target='_blank'>Website</a>
@@ -728,6 +729,182 @@ export default function Home() {
     );
   }
 
+  function SampleCode() {
+    return (
+      <div style={{
+        textAlign: 'center',
+        display: 'block',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '20px',
+        width: '100%'
+      }}>
+      <div class='container'>
+      <div class="row">
+      <div class="col col--12">
+        <br></br>
+        <h2>Sample Code</h2>
+        <p>Integration guides are great, but there’s nothing like a bit of sample code to make the whole process easier! Download your code below:</p>
+
+        <div class="container">
+        <div class="row">
+            <div class="col col--3">
+              <div class="card-demo">
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>PHP</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{ height: '50px'}}
+                        src="https://www.php.net/images/logos/new-php-logo.svg"
+                        alt="Image alt text"
+                        title="PHP" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.ekm.com" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>C#</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{ height: '50px' }}
+                        src="https://docs.microsoft.com/cs-cz/windows/images/csharp-logo.png"
+                        alt="Image alt text"
+                        title="C#" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="http://www.clickcartpro.co.uk" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>Java</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{height: '50px'}}
+                        src="https://seeklogo.com/images/J/java-logo-41D4155FC3-seeklogo.com.png"
+                        alt="Image alt text"
+                        title="Java" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.nopcommerce.com/en" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>Perl</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{height: '50px'}}
+                        src="https://svgarchive.com/wp-content/uploads/perl-programming-language.svg"
+                        alt="Image alt text"
+                        title="Perl" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.admit-one.eu" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col col--3">
+              <div class="card-demo">
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>Python</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{ height: '50px'}}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png"
+                        alt="Image alt text"
+                        title="Python" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.spreedly.com/" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef'}}>
+                    <div class="card__header">
+                        <h3>NodeJS</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{ height: '50px' , backgroundColor: '#e9ecef' }}
+                        src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
+                        alt="Image alt text"
+                        title="NodeJS" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://foxy.io/" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef' }}>
+                    <div class="card__header">
+                        <h3>Ruby</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{height: '50px'}}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ruby_logo.svg/198px-Ruby_logo.svg.png?20101129171534"
+                        alt="Image alt text"
+                        title="Ruby" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.eautomate.com/platform" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col col--3">
+              <div class="card-demo" >
+              <div class="card" style={{ height: '180px', backgroundColor: '#e9ecef'}}>
+                    <div class="card__header">
+                        <h3>Swift</h3>
+                    </div>
+                    <div class="card__body">
+                        <img style={{height: '50px'}}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Swift_logo.svg/191px-Swift_logo.svg.png?20210606004230"
+                        alt="Image alt text"
+                        title="Swift" />
+                    </div>
+                    <div class="card__footer">
+                        <a href="https://www.tapnto.co.uk" target='_blank'>Sample Code</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+    );
+  }
 
   function TechnicalIntegrationLifecycle() {
   return (
@@ -764,7 +941,8 @@ export default function Home() {
 
   function TermsAndConditions() {
     return (
-    <div  style={{ padding: '20px'}}>
+    <div  style={{ padding: '20px',
+    backgroundColor: ' #e9ecef',}}>
       <div class="container">
       <div class="row">
         <div class="col col--12" >
