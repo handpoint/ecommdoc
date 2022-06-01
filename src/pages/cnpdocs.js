@@ -191,7 +191,7 @@ export default function Home() {
                     title="Android" />
                 </div>
                 <div class="card__footer">
-                  <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-SDK-Android" target='_blank'>Github Page</a>
                 </div>
               </div>
             </div>
@@ -209,7 +209,7 @@ export default function Home() {
                     title="iOS" />
                 </div>
                 <div class="card__footer">
-                  <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-SDK-iOS" target='_blank'>Github Page</a>
               </div>
             </div>
           </div>
@@ -265,7 +265,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-WooCommerce" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -285,7 +285,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-WooCommerce" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-ZenCart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -326,7 +326,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-CubeCart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -350,7 +350,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-OpenCart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -370,7 +370,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-Magento" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -390,7 +390,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-PrestaShop" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -410,7 +410,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-CS-Cart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -434,7 +434,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-X-Cart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -474,7 +474,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-Ubercart" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -538,7 +538,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-CartThrob" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -558,7 +558,7 @@ export default function Home() {
                       </a>
                     </div>
                     <div class="card__footer">
-                      <a href="https://github.com/handpoint" target='_blank'>Github Page</a>
+                      <a href="https://github.com/handpoint/online-payments-Shopware" target='_blank'>Github Page</a>
                     </div>
                 </div>
               </div>
@@ -762,7 +762,7 @@ export default function Home() {
                         title="PHP" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.ekm.com" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-PHP" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -780,7 +780,7 @@ export default function Home() {
                         title="C#" />
                     </div>
                     <div class="card__footer">
-                        <a href="http://www.clickcartpro.co.uk" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-CSharp" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -798,7 +798,7 @@ export default function Home() {
                         title="Java" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.nopcommerce.com/en" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-Android" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -816,7 +816,7 @@ export default function Home() {
                         title="Perl" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.admit-one.eu" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -837,7 +837,7 @@ export default function Home() {
                         title="Python" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.spreedly.com/" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -855,7 +855,7 @@ export default function Home() {
                         title="NodeJS" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://foxy.io/" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-NodeJS" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -873,7 +873,7 @@ export default function Home() {
                         title="Ruby" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.eautomate.com/platform" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-Ruby" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
@@ -891,7 +891,7 @@ export default function Home() {
                         title="Swift" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://www.tapnto.co.uk" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-SDK-iOS" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>
