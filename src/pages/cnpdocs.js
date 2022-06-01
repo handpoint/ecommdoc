@@ -55,7 +55,7 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <a href="/doc"><img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
+        <a href="/"><img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
         <br></br>
         <h2 style={{
           color: 'white'
