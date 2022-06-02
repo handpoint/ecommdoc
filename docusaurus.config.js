@@ -154,11 +154,11 @@ const config = {
             items: [
               {
                 label: 'In-Person Payments Docs',
-                to: 'https://developer.handpoint.io/cpdocs/index.html',
+                href: 'https://developer.handpoint.io/cpdocs/index.html',
               },
               {
                 label: 'Online Payments Docs',
-                href: '/cnpdocs/index.html',
+                to: '/cnpdocs/index.html',
               }
             ],
           },
