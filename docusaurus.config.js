@@ -109,36 +109,36 @@ const config = {
             to: 'cnpdocs',
             label: 'Online Payments Docs',
           },
-          // {
-          //   type: 'doc',
-          //   docId: 'overview',
-          //   position: 'left',
-          //   label: 'Hosted Integration',
-          // },
-          // {
-          //   to:'/directintegration/directintegration',
-          //   position: 'left',
-          //   label: 'Direct Integration',
+          {
+            type: 'doc',
+            docId: 'overview',
+            position: 'left',
+            label: 'Hosted Integration',
+          },
+          {
+            to:'/directintegration/directintegration',
+            position: 'left',
+            label: 'Direct Integration',
             
-          //  },
-          //  {
-          //   to:'/paybutton/paybutton',
-          //   position: 'left',
-          //   label: 'Pay By link',
+           },
+           {
+            to:'/paybutton/paybutton',
+            position: 'left',
+            label: 'Pay By Link',
             
-          //  },
-          //  {
-          //   to:'/shoppingcarts/shoppingcarts',
-          //   position: 'left',
-          //   label: 'Shopping Carts',
+           },
+           {
+            to:'/shoppingcarts/shoppingcarts',
+            position: 'left',
+            label: 'Shopping Carts',
             
-          //  },
-          //  {
-          //   to:'/mobilesdks/mobilesdks',
-          //   position: 'left',
-          //   label: 'Mobile SDKs',
+           },
+           {
+            to:'/mobilesdks/mobilesdks',
+            position: 'left',
+            label: 'Mobile SDKs',
             
-          //  },
+           },
         
           
           // {
@@ -232,6 +232,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Handpoint`,
       },
       prism: {
+        additionalLanguages: ['php'],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
