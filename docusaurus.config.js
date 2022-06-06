@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Handpoint',
-  url: 'https://developer-ecomm.handpoint.io',
+  url: 'https://developer-ecomm.handpoint.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -17,9 +17,9 @@ const config = {
 
   presets: [
     [
-      'classic',
+      '@docusaurus/preset-classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
@@ -38,7 +38,7 @@ const config = {
           trackingID: 'G-RNDFP191TE',
           anonymizeIP: true,
         },
-      }),
+      },
     ],
   ],
   plugins: [
@@ -102,7 +102,7 @@ const config = {
           alt: 'My Site Logo',
           src: '/img/handpoint-logo-hvitt.svg',
           width: 175,
-          href: 'https://developer.handpoint.io/',
+          href: 'https://developer.handpoint.com/',
         },
         items: [
           {
@@ -158,7 +158,7 @@ const config = {
             items: [
               {
                 label: 'In-Person Payments Docs',
-                href: 'https://developer.handpoint.io/cpdocs/index.html',
+                href: 'https://developer.handpoint.com/cpdocs/index.html',
               },
               {
                 label: 'Online Payments Docs',
@@ -171,7 +171,7 @@ const config = {
             items: [
               {
                 label: 'Handpoint Website',
-                href: 'https://handpoint.io',
+                href: 'https://handpoint.com',
               },
               {
                 label: 'LinkedIn',
@@ -207,7 +207,7 @@ const config = {
               // },
               {
                 label: 'Handpoint Status Page',
-                href: 'https://status.handpoint.io',
+                href: 'https://status.handpoint.com',
               },
               {
                 label: 'FAQ',
@@ -227,7 +227,7 @@ const config = {
         logo: {
           alt: 'Handpoint Logo',
           src: 'https://handpoint.imgix.net/handpoint-logo-w.png?w=150',
-          href: 'https://www.handpoint.io'
+          href: 'https://www.handpoint.com'
         },
         copyright: `Copyright © ${new Date().getFullYear()} Handpoint`,
       },
