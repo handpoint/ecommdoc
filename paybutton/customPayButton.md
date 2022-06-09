@@ -1,12 +1,18 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
+id: paybutton
 
 ---
 
-# Custom Pay Button
+# Creating a Pay Button
 
 The advanced integration method requires knowledge of server-side scripting languages, such as PHP, ASP, Java, etc.
 It will allow you to have full control over what information is passed to our gateway via the Pay Button and use the full list of [hosted integration](/docs/overview) fields.
+
+## Overview
+
+Creating a [Custom Pay Button](customPayButton.md), it will allow you to have full control over what information is passed to our gateway and use the full list of hosted integration fields outlined in our Hosted Guide. Check our [Sample Code](customPayButton#sample-code-request)!
+
 
 ## Pre-Requisites
 
@@ -14,7 +20,7 @@ It will allow you to have full control over what information is passed to our ga
 | ----------- | ----------- |
 | Merchant Account ID | Your unique Merchant Account ID. You should have received these details when your account was set up. |
 | Hosted Integration URL | Your unique URL to use the Hosted Integration. |
-| Signature | Provided with account setup details. NB: This is not necessary if you’re using the “TEST” merchant. |
+| Signature | Provided with account setup details. |
 
 ## Gateway Request
 
@@ -42,43 +48,55 @@ This string is then appended to the gateway URL via a GET parameter called field
 
 ## Sample Code (Request)
 
-The following is an example test request built in PHP using the TEST merchant.
+The following is an example test request built in PHP.
 
 ```php
 <?php
+
+//Gateway URL
+$url = 'https://commerce-api.handpoint.com/button/';
+
+//Merchant signature key. It will be provided by the Handpoint support team
+$sigKey = 'm3rch4nts1gn4tur3k3y';
+
+//Request information
+$req = array(
+    'merchantID' => '000111', //merchantID will be provided by the Handpoint support team
+    'amount' => 1099, //Either major currency units includes a single decimal point such as ’10.99'. 
+                      //Minor currency units contains no decimal points such as ‘1099
+    'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
+    'type' => 1, //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) 
+    'redirectURL' => 'https://www.handpoint.com', //Hosted form will redirect the Customer’s browser after the transaction has been completed.
+    'countryCode' => 826, //ISO 3-letter currency code. 826 -> GBP
+    'currencyCode' => 826 //ISO 3-letter country code. 826 -> United Kingdom
+);
+
+$req['signature'] = createSignature($req, $sigKey);
+$poststring       = http_build_query($req, '', '&');
+$base64request    = base64_encode($poststring);
+
+echo "<form action=\"{$url}?fields={$base64request}\" method=\"post\" id=\"custom\">";
+
+//Button to start the payment
+echo '<input type="submit" value="Pay Now">
+</form>';
+
+//Function that generates the signature using the request information and the merchant signature key
 function createSignature(array $data, $key){
     
     // Sort by field name
     ksort($data);
-        // Create the URL encoded signature string
-        $ret = http_build_query($data, '', '&');
-        // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A) 
-        $ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
-
+    // Create the URL encoded signature string
+    $ret = http_build_query($data, '', '&');
+    // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A) 
+    $ret = str_replace(array(
+        '%0D%0A',
+        '%0A%0D',
+        '%0D'
+    ), '%0A', $ret);
+    
     // Hash the signature string and the key together
     return hash('SHA512', $ret . $key);
 }
-$url = '«Gateway_URL»button/';
-$sigKey = '«Sig_Key»';
-$url = '«Gateway_URL»button/';
-
-$req = array(
-    'merchantID' => 'TEST',
-    'amount' => 1099,
-    'action' => 'SALE',
-    'type' => 1,
-    'redirectURL' => 'https://www.example.co.uk/payment-result',
-    'countryCode' => 826,
-    'currencyCode' => 826,
-);
-
-$req['signature'] = createSignature($req, $sigKey);
-$poststring = http_build_query($req, '', '&');
-$base64request = base64_encode($poststring);
-
-echo "<form action=\"{$url}?fields={$base64request}\" method=\"post\" id=\"custom\">";
-echo '<input type="submit" value="Pay">
-</form>';
 ?>
-
 ```

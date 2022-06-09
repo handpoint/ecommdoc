@@ -233,7 +233,7 @@ const config = {
       },
       prism: {
         additionalLanguages: ['php'],
-        theme: lightCodeTheme,
+        theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
       },
     }),
