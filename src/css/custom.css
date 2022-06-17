@@ -166,3 +166,37 @@ color: white;
   }
 }
 
+@media screen and (max-width: 996px) {
+  .indexButtons {
+    font-size: 10px;
+    width: 100%;
+    
+  }
+}
+
+@media screen and (max-width: 996px) {
+  br {
+    display: none; /* hide the BR tag for wider screens (i.e. disable the line break) */
+  }
+}
+
+@media screen and (max-width: 996px) {
+  .integrationOptions {
+    margin: 5px;
+  }
+}
+
+
+.imagesSize {
+  max-width: 65%;
+  height: auto;
+}
+
+
+@media screen and (max-width: 996px) {
+  .imagesSize {
+    max-width: 100%;
+    height: auto;
+  }
+}
+

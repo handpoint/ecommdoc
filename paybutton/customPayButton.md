@@ -11,7 +11,7 @@ It will allow you to have full control over what information is passed to our ga
 
 ## Overview
 
-Creating a [Custom Pay Button](customPayButton.md), it will allow you to have full control over what information is passed to our gateway and use the full list of hosted integration fields outlined in our Hosted Guide. Check our [Sample Code](customPayButton#sample-code-request)!
+Creating a [Custom Pay Button](customPayButton.md), it will allow you to have full control over what information is passed to our gateway and use the full list of hosted integration fields outlined in our Hosted Guide. Check our [Sample Code](#sample-code-request)!
 
 
 ## Pre-Requisites
