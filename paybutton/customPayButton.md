@@ -67,8 +67,8 @@ $req = array(
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
     'type' => 1, //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) 
     'redirectURL' => 'https://www.handpoint.com', //Hosted form will redirect the Customer’s browser after the transaction has been completed.
-    'countryCode' => 826, //ISO 3-letter currency code. 826 -> GBP
-    'currencyCode' => 826 //ISO 3-letter country code. 826 -> United Kingdom
+    'countryCode' => 826, //ISO 3-letter country code. 826 -> United Kingdom
+    'currencyCode' => 826 //ISO 3-letter currency code. 826 -> GBP
 );
 
 $req['signature'] = createSignature($req, $sigKey);

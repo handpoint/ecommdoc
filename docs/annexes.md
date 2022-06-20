@@ -17,7 +17,7 @@ Care must be taken to ensure that fields are sorted before signing into ascendin
 Also, when signing requests with fields formatted as per the [format guide](overview#fieldFormats), only the root integration field is included in any sorting as the sub-fields are part of the value and should not have their order changed. The sub-fields must then be sent in the same order as they were hashed if added as hidden fields in HTML forms etc.
 The section below gives a step-by-step example of how to sign a transaction, complete with coding examples using the PHP language.
 
-### Example Signature Key: 
+### Example Signature Key 
 
 ```php
 $key = 'DontTellAnyone'
@@ -27,16 +27,17 @@ $key = 'DontTellAnyone'
 
 ```php
 $tran = array ( 
-    'merchantID' => '100001', 
-    'action' => 'SALE', 
-    'type' => '1', 
-    'currencyCode' => '826', 
-    'countryCode' => '826', 
-    'amount' => '2691', 
-    'transactionUnique' => '55f025addd3c2', 
-    'orderRef' => 'Signature Test', 
-    'cardNumber' => '4929 4212 3460 0821',
-    'cardExpiryDate' => '1213', )
+    'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+    'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
+    'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
+    'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP
+    'countryCode' => '826', //ISO 3-letter country code. 826 -> United Kingdom
+    'amount' => '2691', //Either major currency units includes a single decimal point such as ’10.99'. 
+                      //Minor currency units contains no decimal points such as ‘1099
+    'transactionUnique' => '55f025addd3c2', //Unique identifier for this transaction. This is an added security feature to combat transaction spoofing
+    'orderRef' => 'Signature Test',  //Free format text field to store order details, reference numbers, etc. for the Merchant’s records.
+    'cardNumber' => '4929 4212 3460 0821', //Card Number
+    'cardExpiryDate' => '1213', ) //Card expiry date
 ```
 :::tip
 The transaction used for signature calculation must not include any 'signature' field as this will be added after signing when its value is known.
@@ -99,6 +100,51 @@ The signature should be sent as part of the transaction in a field called 'signa
 or
 $tran['signature'] = $signature;
 ```
+
+
+### Sample Code PHP
+
+Example of calculating the signature in PHP:
+
+```php
+
+<?PHP 
+
+//Merchant signature key
+$key = 'm3rch4nts1gn4tur3k3y';
+
+
+//Request Information
+$tran = array (
+'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+    'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
+    'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
+    'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP
+    'countryCode' => '826', //ISO 3-letter country code. 826 -> United Kingdom
+    'amount' => '2691', //Either major currency units includes a single decimal point such as ’10.99'. 
+                      //Minor currency units contains no decimal points such as ‘1099
+    'transactionUnique' => '55f025addd3c2', //Unique identifier for this transaction. This is an added security feature to combat transaction spoofing
+    'orderRef' => 'Signature Test',  //Free format text field to store order details, reference numbers, etc. for the Merchant’s records.
+    'cardNumber' => '4929 4212 3460 0821', //Card Number
+    'cardExpiryDate' => '1213',
+);
+ 
+
+ ksort($tran);
+
+ $str = http_build_query($tran, '', '&');
+
+ $str = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $str);
+
+ $str .= '3obzOxdqw6e1u';
+
+ $signature = hash('SHA512', $str);
+
+ //Prints the signature
+ printf("Signature %s", $signature);
+ ?>
+
+ ```
 
 ## Capture Delay {#captureDelay}
 
