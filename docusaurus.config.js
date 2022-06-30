@@ -47,7 +47,7 @@ const config = {
       {
         id: 'directintegration',
         path: 'directintegration',
-        routeBasePath:'directintegration',
+        routeBasePath: 'directintegration',
         sidebarPath: require.resolve('./sidebars5.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -58,7 +58,7 @@ const config = {
       {
         id: 'paybutton',
         path: 'paybutton',
-        routeBasePath:'paybutton',
+        routeBasePath: 'paybutton',
         sidebarPath: require.resolve('./sidebars1.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -69,7 +69,7 @@ const config = {
       {
         id: 'shoppingcarts',
         path: 'shoppingcarts',
-        routeBasePath:'shoppingcarts',
+        routeBasePath: 'shoppingcarts',
         sidebarPath: require.resolve('./sidebars2.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -80,7 +80,7 @@ const config = {
       {
         id: 'mobilesdks',
         path: 'mobilesdks',
-        routeBasePath:'mobilesdks',
+        routeBasePath: 'mobilesdks',
         sidebarPath: require.resolve('./sidebars3.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -88,7 +88,7 @@ const config = {
     ],
   ],
 
-  themeConfig: 
+  themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       colorMode: {
@@ -116,31 +116,31 @@ const config = {
             label: 'Hosted Integration',
           },
           {
-            to:'/directintegration/directintegration',
+            to: '/directintegration/directintegration',
             position: 'left',
             label: 'Direct Integration',
-            
-           },
-           {
-            to:'/paybutton/paybutton',
+
+          },
+          {
+            to: '/paybutton/paybutton',
             position: 'left',
             label: 'Pay By Link',
-            
-           },
-           {
-            to:'/shoppingcarts/shoppingcarts',
+
+          },
+          {
+            to: '/shoppingcarts/shoppingcarts',
             position: 'left',
             label: 'Shopping Carts',
-            
-           },
-           {
-            to:'/mobilesdks/mobilesdks',
+
+          },
+          {
+            to: '/mobilesdks/mobilesdks',
             position: 'left',
             label: 'Mobile SDKs',
-            
-           },
-        
-          
+
+          },
+
+
           // {
           //   to: '/blog', label: 'Blog', position: 'left'},
           {
@@ -190,12 +190,12 @@ const config = {
                 label: 'Get it on Google Play',
                 href: 'https://play.google.com/store/apps/details?id=com.handpoint.hipos&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
               },
-  
+
               {
                 label: 'Download on the App Store',
                 href: 'https://apps.apple.com/us/app/handpoint/id1450546788?itsct=apps_box_link&itscg=30200',
               },
-  
+
             ],
           },
           {
@@ -237,6 +237,7 @@ const config = {
         darkTheme: darkCodeTheme,
       },
     }),
+  
 };
 
 module.exports = config;
