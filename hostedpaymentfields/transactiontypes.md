@@ -86,7 +86,32 @@ This will query an existing transaction, identified using the `xref` request fie
 
 ## Transaction Response 
 
-| Name      | Description |
-| ----------- | ----------- |
-| Merchant Account ID | Your unique Merchant Account ID. |
-| Hosted Integration URL | Your unique URL to use the Hosted Integration. |
+The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| responseCode | Always | A numeric code providing the specific outcome. Common values are:<br></br>  0 - Successful / authorised transaction. <br></br> 1 - Card referred – Refer to card issuer.<br></br>  2 - Card referred – Special condition. <br></br> 4 - Card declined – Keep card. <br></br> 5 - Card declined.<br></br>  Check `responseMessage` for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for details. |
+| responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
+| responseMessage | Always | Message received from the Acquiring bank, or any error message. |
+| transactionID | Always | A unique ID assigned by the Gateway.|
+| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation) |
+| state | Always |  [Transaction state](annexes#transactionStates) |
+| timestamp | Always | Time the transaction was created or last modified. |
+| transactionUnique | If supplied | Any value supplied in the initial request. |
+| authorisationCode | On success | Authorisation code received from Acquirer. |
+| referralPhone | If provided | Telephone number supplied by Acquirer to phone for voice authorisation when provided.|
+| amountReceived | On success | Amount the Acquirer authorised. This should always be the full `amount` requested. |
+| amountRefunded | If refund | Total amount of original SALE that has so far been refunded. Returned when action is REFUND_SALE. |
+| orderRef | If supplied | Any value supplied in the initial request. |
+| cardNumberMask | Always | Card number masked for Merchant storage.|
+| cardTypeCode | Always | Code identifying the type of card used. Refer to the [Card Identification](annexes#cardIdentification) guide. |
+| cardType | Always | Description of the type of card used. Refer to the [Card Identification](annexes#cardIdentification) guide. |
+| cardSchemeCode | Always | Code identifying the Card Scheme used. Refer to the [Card Identification](annexes#cardIdentification) guide.  |
+| cardScheme | Always | Description of the Card Scheme used. Refer to the [Card Identification](annexes#cardIdentification) guide. |
+| cardIssuer | Always | Card Issues name (when known). |
+| cardIssuerCountry | Always | Card issuing country’s name (when known). |
+| cardIssuerCountryCode | Always | Card issuing country’s ISO-3166 2-letter code (when known). |
+
+Other response fields may be returned as documented elsewhere in this guide. Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
+The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
+The response is also POSTed to any URL provided by optional callbackURL.

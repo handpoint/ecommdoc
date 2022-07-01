@@ -277,6 +277,12 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Credentials on File {#credentialsOnFile}
 
+## Response Codes {#responseCodes}
+
+## Transaction States {#transactionStates}
+
+## Card Identification {#cardIdentification}
+
 ## Test Card Data
 The test accounts will only accept card numbers that are designated for test purposes. These test cards cannot be used on production accounts.
 

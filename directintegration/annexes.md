@@ -278,6 +278,12 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Credentials on File {#credentialsOnFile}
 
+## Response Codes {#responseCodes}
+
+## Transaction States {#transactionStates}
+
+## Card Identification {#cardIdentification}
+
 ## Gateway Library (PHP)
 
 The gateway.php file contains the main body of the SDK.
