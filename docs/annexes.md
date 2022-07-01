@@ -199,3 +199,13 @@ The following transaction types are considered as Continuous Authority (CA) Paym
 Your Acquirer may need to enable Continuous Authority capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
 
 The Gateway offers a means of automating the taking of regular CA transactions using Recurring Transaction Agreements (RTA) as detailed in section 12.
+
+## Test Card Data
+The test accounts will only accept card numbers that are designated for test purposes. These test cards cannot be used on production accounts.
+
+Card Brand: **Mastercard** <br/>
+Cardholder Name: **Test Customer** <br/>
+Card Number: **5573 4712 3456 7898** <br/>
+Expiration Date: **12/25** <br/>
+CVV: **159** <br/>
+Customer Address: **Merevale Avenue Leicester LE10 2BU**
