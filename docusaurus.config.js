@@ -78,6 +78,28 @@ const config = {
     [
       '@docusaurus/plugin-content-docs',
       {
+        id: 'hostedpaymentfields',
+        path: 'hostedpaymentfields',
+        routeBasePath: 'hostedpaymentfields',
+        sidebarPath: require.resolve('./sidebars6.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'batchintegration',
+        path: 'batchintegration',
+        routeBasePath: 'batchintegration',
+        sidebarPath: require.resolve('./sidebars7.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
         id: 'mobilesdks',
         path: 'mobilesdks',
         routeBasePath: 'mobilesdks',
@@ -113,12 +135,24 @@ const config = {
             type: 'doc',
             docId: 'overview',
             position: 'left',
-            label: 'Hosted Integration',
+            label: 'Hosted Payment Page',
           },
           {
-            to: '/directintegration/directintegration',
+            to: '/hostedpaymentfields/overview',
+            position: 'left',
+            label: 'Hosted Payment Fields',
+
+          },
+          {
+            to: '/directintegration/overview',
             position: 'left',
             label: 'Direct Integration',
+
+          },
+          {
+            to: '/batchintegration/overview',
+            position: 'left',
+            label: 'Batch Integration',
 
           },
           {
@@ -139,8 +173,6 @@ const config = {
             label: 'Mobile SDKs',
 
           },
-
-
           // {
           //   to: '/blog', label: 'Blog', position: 'left'},
           {

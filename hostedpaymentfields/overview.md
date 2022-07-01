@@ -1,19 +1,19 @@
 ---
 sidebar_position: 1
+id: overview
 ---
 
 # Overview
 
 ## Introduction 
 
-The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using our **Hosted Payment Page**. You can use this method if you **do not want to collect and store cardholder data**.
+The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using our **Hosted Payment Fields**. You can use this method if you **do not want to collect and store cardholder data**.
 
-The Hosted integration works by redirecting the customer to our Gateway’s Hosted Payment Page, which will collect the Customer’s payment details and process the payment before redirecting the customer back to a page on your website, letting you know the payment outcome. **This is the quickest path to integrating with the Gateway**.
-The standard Hosted Payment Page is designed to be shown in a lightbox (modal) over your website and styled with logos and colours to match. Alternatively, you can arrange for fully customised Hosted Payment Pages to be produced that can match your website’s style and layout. These fully customised pages are usually provided using a browser redirect, displaying full-page in the browser, or can be displayed embedded in an iframe on your website.
+For greater control over the customisation of the payment page, our Gateway offers the use of Hosted Payment Fields, where only the individual input fields collecting the sensitive cardholder data are hosted by the Gateway while the remainder of the payment form is provided by your website. These Hosted Payment Fields fit seamlessly into your payment page and can be styled to match your payment fields. When your payment form is submitted to your server, the Gateway will submit a payment token representing the sensitive card data it collected and your webserver can then use the [Direct Integration](directintegration/overview)  to process the payment without ever being in contact with the collected cardholder data. 
 
 ## Security and Compliance 
 
-If you use Hosted Payment Pages with the Hosted Integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
+If you use Hosted Payment Fields with the Direct or Batch Integrations, then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
 
 The Gateway will make transaction details available for a maximum period of 13 months. Your acquirer may hold information for a different period of time.
 
@@ -24,11 +24,12 @@ You will need the following information to integrate with the Gateway which will
 | Name      | Description |
 | ----------- | ----------- |
 | Merchant Account ID | Your unique Merchant Account ID. |
-| Hosted Integration URL | Your unique URL to use the Hosted Integration. |
+| Direct Integration URL | Your unique URL to use the Direct Integration. |
+| Batch Integration URL (Optional) | Your unique URL to use the Batch Integration. |
 
  You will be provided with unique production and test Merchant Account IDs during the onboarding process. You will also be provided with the integration URL. 
 
-All requests must specify which merchant account they are for, using the merchantID request field. In addition to this, message signing is enforced.
+All requests must specify which merchant account they are for, using the merchantID request field. In addition to this, message signing is enforced. 
 
 ### Message signing 
 
@@ -37,37 +38,6 @@ You must configure a signing secret phrase for each merchant account. When confi
 The Gateway will also return the hash of the response message in the returned signature field, allowing you to create your own hash of the response (minus the signature field) and verify that the hashes match. The data POSTed to any callback URL will also be signed. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash.
 
 
-## HTTP Requests 
-
-A request can be sent to the Gateway by submitting a HTTP POST request to the integration URL provided.
-
-The request should have a `Content-Type: application/x-www-form-urlencoded` HTTP header and the request should be name, value pairs URL encoded as per RFC 1738.
-Complex fields consisting of single or multidimensional records or arrays must be formatted as per the [PHP http_build_query method](https://www.php.net/manual/en/function.http-build-query.php) using square brackets to represent multiple dimensions. The sub-field names must be numeric or alphanumeric only, alphanumeric fields must not start with a numeric. Any square brackets around the nested field names should be URL encoded, [ as %5B and ] as %5D.
-
-The following example request contains a complex items field consisting of an array of records representing the following table of purchased items.
-
-| Description | Quantity | Amount |
-| ----------- | ----------- | -----------  |
-| Newspaper | 1 | 110 |
-| Chocolate bar | 3 |249 |
-| Carrier bag | 1 | 10 |
-
-For example, a request would be URL encoded as:
-merchantID=100001&action=SALE&type=1&amount=1001&currencyCode=826&countryCode=826&transactionUnique=55f6db1c81d95&orderRef=Test+purchase&customerPostCode=NN17+8YG&responseCode=0&responseMessage=AUTHCODE%3A350333&state=captured&xref=15091702MG47WN32MM88LPK&cardNumber=4929+4212+3460+0821&cardExpiryDate=1215&items%5B0%5D%5Bdescription%5D=Newspaper&items%5B0%5D%5Bquantity%5D=1&items%5B0%5D%5Bamount%5D=110&items%5B1%5D%5Bdescription%5D=Chocolate+bar&items%5B1%5D%5Bquantity%5D=3&items%5B1%5D%5Bamount%5D=249&items%5B2%5D%5Bdescription%5D=Carrier+bag&items%5B2%5D%5Bquantity%5D=1&items%5B2%5D%5Bamount%5D=1
-
-**Please note that the field and sub-field names must be alphanumeric only and are cAsE sEnSiTiVe. Root integration fields must be numeric only and alphanumeric fields must not start with a numeric.** 
-
-The response will use the same URL encoding and return the request fields in addition to any dedicated response field. If the request contains a field that is also intended as a response field, then any incoming request value will be overwritten by the correct response value.
-
-**The Gateway may add new request and response fields at any time and so your integration must take care not to send request fields that may conflict with future Gateway fields and be able to ignore response fields which it doesn’t yet understand.**
-
-## Hosted HTTP Requests 
-
-When using the Hosted Integration, the request must be sent from the Customer’s web browser as the response will be a HTML Hosted Payment Page (HPP), used to collect the Customer’s details. The format of the request is designed so that it can be sent using a standard HTML form with the data in hidden form fields. The browser will then automatically encode the request correctly according to `application/x-www-form-urlencoded` format.
-
-When the Hosted Payment Page has been completed and the payment processed, the Customer’s browser will be automatically redirected to the URL provided via the `redirectURL` field. The response will be returned to this page in `application/x-www-form-urlencoded` format, using a HTTP POST request.
-
-All request fields will be returned in the response and a merchant may add custom request fields. If the request contains a field that is also intended as a response field, then any incoming request value will be overwritten by the correct response value.
 
 ## Handling Errors 
 
@@ -115,3 +85,5 @@ Field values should use the following formats unless otherwise stated in the fie
 Note: Record format is useful when posting sub-fields directly from individual field in a HTML FORM. However, unlike the main integration fields, a record’s sub-fields are not sorted when constructing the signature and are processed in the order received. Serialised record format can overcome any problems caused by the sub-fields of a record being received in a different order to that used when generating the signature. Not all fields using the record format also support the serialised record format especially the threeDSRequest, threeDSResponse, checkoutRequest, checkoutResponse and the purchase items field.
 
 Boolean values cannot be represented when using the record format or the application/x-www-form-urlencoded serialised record format and the words ‘true’ and ‘false’ must be used. The JSON serialised record format does not have this restriction and a JSON boolean can be used.
+
+
