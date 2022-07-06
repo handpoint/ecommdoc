@@ -75,8 +75,16 @@ Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
  // The following field allows options to be passed for 3DS v2
  // and the values here are for demonstration purposes only
  'threeDSOptions' => array(
-      'paymentAccountAge' => '20220601',
-      'paymentAccountAgeIndicator' => '05',
+      'paymentAccountAge' => '20220601', //Date that the payment account was enrolled in the cardholder's account with the 3DS Requestor. 
+                                         //Accepted date format is YYYYMMDD.
+      
+      'paymentAccountAgeIndicator' => '05', //Indicates the length of time that the payment account was enrolled in the cardholder's account 
+                                            //with the 3DS Requestor. Possible values are:
+                                            //01 – No account (guest check-out) 
+                                            //02 – Created during this transaction
+                                            //03 – Less than 30 days
+                                            //04 – 30-60 days  
+                                            //05 – More than 60 days
    ),
  );
 
@@ -85,13 +93,16 @@ Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
 
  } else {
 
-   $req = array (
+  // 3DS continuation request
+    $req = array (
       // The following field are only required for tbe benefit of the SDK 
-      'merchantID' => '000111',
+      'merchantID' => '155928',
       'action' => 'SALE',
+
+      // The following field must be passed to continue the 3DS request
       'threeDSRef' => $_SESSION['threeDSRef'],
       'threeDSResponse' => $_POST['threeDSResponse'],
-    );
+    );   
         
  } 
 
@@ -105,51 +116,49 @@ Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
 
  print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
+    if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+    // Send request to the ACS server displaying response in an IFRAME
 
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+        // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+        $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+        echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
 
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+        // Silently POST the 3DS request to the ACS in the IFRAME
+        echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
 
- 
+        // Remember the threeDSRef as need it when the ACS responds
+        $_SESSION['threeDSRef'] = $res['threeDSRef'];
 
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
+    } else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
 
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+        echo "<p>Thank you for your payment.</p>";
+          } else {
+           echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+          }
 
- echo "<p>Thank you for your payment.</p>";
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
-  }
 
 // Render HTML to silently POST data to URL in target brower window 
 function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
+  $url = htmlentities($url);
+  $target = htmlentities($target);
+  $fields = '';
 
 
- if ($post) {
- foreach ($post as $name => $value) {
- $fields .= Gateway::fieldToHtml($name, $value);
- }
- }
+  if ($post) {
+    foreach ($post as $name => $value) {
+      $fields .= Gateway::fieldToHtml($name, $value);
+    }
+  }
 
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
+    $ret = "<form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+    {$fields}
+    <noscript><input type=\"submit\" value=\"Continue\"></noscript
+    </form>
+
+    <script>
+      window.setTimeout('document.forms.silentPost.submit()', 0);
+    </script>
+    ";
 
  return $ret;
 }

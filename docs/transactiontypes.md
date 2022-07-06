@@ -12,15 +12,22 @@ This will create a new transaction and attempt to seek authorisation for a sale 
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
+Take a look at the [SALE](samplecode#using-lightbox-modal) example in our Sample Code.
+
 ## VERIFY 
 This will create a new transaction and attempt to verify that the card account exists with the Acquirer. The transaction will result in no transfer of funds and no hold on any funds on the Cardholder’s account. It cannot be captured and will not be settled. The transaction `amount` must always be zero.
 
 This transaction type is the preferred method for validating that the card account exists and is in good standing; however, it cannot be used to validate that it has sufficient funds.
 
+Take a look at the [VERIFY](samplecode#verify) example in our Sample Code.
+
 ## PREAUTH
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. If authorisation is approved, then it is immediately voided (where possible) so that no funds are reserved on the Cardholder’s account. The transaction will result in no transfer of funds. It cannot be captured and will not be settled.
 
 This transaction type can be used to check whether funds are available and that the account is valid. However, due to the problem highlighted below, it is recommended that Merchants use the VERIFY action when supported by their Acquirer.
+
+Take a look at the [PREAUTH](samplecode#preauth) example in our Sample Code.
+
 
 :::warning
 If the transaction is to be completed then a new authorisation must be sought using the SALE action. If the PREAUTH authorisation could not be successfully voided, then this will result in the funds’ being authorised twice effectively putting two holds on the amount on the Cardholder’s account and thus requiring twice the amount to be available in the Cardholder’s account. It is therefore recommended only to PREAUTH small amounts, such as £1.00 to check mainly account validity.

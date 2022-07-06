@@ -114,6 +114,9 @@ color: white;
   ;
 }
 
+.navbar__item {
+  font-size: 11px;
+}
 
 @media only screen and (min-width: 1650px) {
   .navbar__item {

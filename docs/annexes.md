@@ -282,13 +282,3 @@ The schedule records should be passed in a sequential array of records, either a
 ## Transaction States {#transactionStates}
 
 ## Card Identification {#cardIdentification}
-
-## Test Card Data
-The test accounts will only accept card numbers that are designated for test purposes. These test cards cannot be used on production accounts.
-
-Card Brand: **Mastercard** <br/>
-Cardholder Name: **Test Customer** <br/>
-Card Number: **5573 4712 3456 7898** <br/>
-Expiration Date: **12/25** <br/>
-CVV: **159** <br/>
-Customer Address: **Merevale Avenue Leicester LE10 2BU**

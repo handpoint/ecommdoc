@@ -5,7 +5,44 @@ sidebar_position: 7
 # Sample Code
 
 
+## Test Cards Data
+The test accounts will only accept card numbers that are designated for test purposes. These test cards cannot be used on production accounts.
 
+<div class="card-demo">
+  <div class="card shadow--md">
+    <div class="card__header">
+      <h3>Mastercard Debit</h3>
+    </div>
+    <div class="card__body">
+      <p>
+        Cardholder Name: <strong>Test Customer</strong> <br/>
+        Card Number: <strong>5573 4712 3456 7898</strong> <br/>
+        Expiration Date: <strong>12/25</strong> <br/>
+        CVV: <strong>159</strong><br/>
+        Customer Address: <strong>Merevale Avenue Leicester LE10 2BU</strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+<br/>
+
+<div class="card-demo">
+  <div class="card shadow--md">
+    <div class="card__header">
+      <h3>Visa Credit</h3>
+    </div>
+    <div class="card__body">
+      <p>
+        Cardholder Name: <strong>Test Customer</strong> <br/>
+        Card Number: <strong>4929 4212 3460 0821</strong> <br/>
+        Expiration Date: <strong>12/25</strong> <br/>
+        CVV: <strong>356</strong><br/>
+        Customer Address: <strong>Flat 6 Primrose Rise 347 Lavender Road Northampton NN17 8YG</strong>
+      </p>
+    </div>
+  </div>
+</div>
 
 ## Hosted Payment Page 
 
@@ -13,10 +50,10 @@ sidebar_position: 7
 
 The following example code shows how to create a payment form to open the Hosted Payment Page in a lightbox style overlay on your website using the Hosted Payment Page and jQuery libraries. 
 
-The test accounts will only accept card numbers that are designated for test purposes. [Test cards](annexes#test-card-data) cannot be used on production accounts.
+The test accounts will only accept card numbers that are designated for test purposes. [Test cards](samplecode#test-cards-data) cannot be used on production accounts.
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/MiguelGarcia/0hL4y7jv/36/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/MiguelGarcia/0hL4y7jv/51/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 <br/>
@@ -25,7 +62,7 @@ The test accounts will only accept card numbers that are designated for test pur
 ### Redirecting to payments website
 The following example code shows how to create a payment form to open the Hosted Payment Page. Instead of the  lightbox (modal) on top of the page, the user is redirected to a fully separate web page
 
-<iframe width="100%" height="650" src="//jsfiddle.net/MiguelGarcia/jw0eL4hy/3/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/MiguelGarcia/jw0eL4hy/14/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ## Transaction Types
 
@@ -33,7 +70,7 @@ All requests must specify what action they require the Gateway to perform, using
 
 ### SALE
 
-This will create a new transaction (10.01GBP) and attempt to seek authorisation for a sale from the Acquirer. 
+This `form` will create a new transaction (10.01GBP) and attempt to seek authorisation for a sale from the Acquirer. 
 
 ```html
 <form id="paynow" name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/"
@@ -64,7 +101,7 @@ This will create a new transaction (10.01GBP) and attempt to seek authorisation 
 
 ### VERIFY
 
-This will create a new transaction (0.00GBP) and attempt to verify that the card account exists with the Acquirer. 
+This `form` will create a new transaction (0.00GBP) and attempt to verify that the card account exists with the Acquirer. 
 
 ```html
 <form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/"
@@ -94,7 +131,7 @@ This will create a new transaction (0.00GBP) and attempt to verify that the card
 
 
  ### PREAUTH
-This will create a new transaction (1.01GBP) and attempt to seek authorisation for a sale from the Acquirer.
+This `form` will create a new transaction (1.01GBP) and attempt to seek authorisation for a sale from the Acquirer.
 
 ```html
             <form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/"
