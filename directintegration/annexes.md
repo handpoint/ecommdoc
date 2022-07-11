@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 
 ---
 
@@ -279,6 +279,8 @@ The schedule records should be passed in a sequential array of records, either a
 ## Credentials on File {#credentialsOnFile}
 
 ## Response Codes {#responseCodes}
+
+## AVS / CV2 Check Response Codes {#AvsResponseCodes}
 
 ## Transaction States {#transactionStates}
 

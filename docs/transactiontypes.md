@@ -33,7 +33,7 @@ Take a look at the [PREAUTH](samplecode#preauth) example in our Sample Code.
 If the transaction is to be completed then a new authorisation must be sought using the SALE action. If the PREAUTH authorisation could not be successfully voided, then this will result in the funds’ being authorised twice effectively putting two holds on the amount on the Cardholder’s account and thus requiring twice the amount to be available in the Cardholder’s account. It is therefore recommended only to PREAUTH small amounts, such as £1.00 to check mainly account validity.
 :::
 
-## Transaction Request 
+## Transaction Request {#transactionRequest}
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
@@ -61,7 +61,7 @@ If the transaction is to be completed then a new authorisation must be sought us
 | rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
 
-## Transaction Response 
+## Transaction Response {#transactionResponse}
 
 The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
 

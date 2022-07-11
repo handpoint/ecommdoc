@@ -42,7 +42,7 @@ This will create a new transaction and attempt to seek authorisation for a refun
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
-### Transaction Request 
+### Transaction Request {#transactionRequest}
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
@@ -55,11 +55,11 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`.|
-| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryMonth | No | Payment card’s expiry month from 1 to 12.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryYear | No | Payment card’s expiry year from 00 to 99. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. <br></br><br></br>**For hosted payment fields integrations, the card number is contained in the token representing sensitive card data.**|
+| cardExpiryMonth | No | Payment card’s expiry month from 1 to 12.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.<br></br><br></br>**For hosted payment fields integrations, the card expiry month is contained in the token representing sensitive card data.**|
+| cardExpiryYear | No | Payment card’s expiry year from 00 to 99. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.<br></br><br></br>**For hosted payment fields integrations, the card expiry year is contained in the token representing sensitive card data.**|
 | cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.<br></br><br></br>**For hosted payment fields integrations, the card cvv is contained in the token representing sensitive card data.** |
 | transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
 | orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
@@ -72,7 +72,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 
 
 
-### Transaction Response 
+### Transaction Response {#transactionResponse}
 
 The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
 

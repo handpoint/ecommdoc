@@ -42,7 +42,7 @@ This will create a new transaction and attempt to seek authorisation for a refun
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
-### Transaction Request 
+### Transaction Request {#transactionRequest}
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
@@ -72,7 +72,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 
 
 
-### Transaction Response 
+### Transaction Response {#transactionResponse}
 
 The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
 

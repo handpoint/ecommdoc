@@ -279,6 +279,8 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Response Codes {#responseCodes}
 
+## AVS / CV2 Check Response Codes {#AvsResponseCodes}
+
 ## Transaction States {#transactionStates}
 
 ## Card Identification {#cardIdentification}
