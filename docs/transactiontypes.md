@@ -39,27 +39,26 @@ If the transaction is to be completed then a new authorisation must be sought us
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer.  |
-| signature | <span class="badge badge--primary">Yes</span> | hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE|
-| amount  | <span class="badge badge--primary">Yes</span> | the amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| amount  | <span class="badge badge--primary">Yes</span> | The amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| redirectURL | <span class="badge badge--primary">Yes</span> | URL to which the hosted form will redirect the Customer’s browser after the transaction has been completed. The URL must be fully qualified and include at least the scheme and host components. Refer to the [redirect URL](overview#redirectUrl) docs for details. |
 | paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`. |
-| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. **Optional** if using the Hosted Integration, any value provided will be used to initialise any hosted payment page input field.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| cardExpiryMonth | No | Payment card’s expiry month from 1 to 12. **Optional** if using the Hosted Integration, any value provided will be used to initialise any hosted payment page input field.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryYear | No | Payment card’s expiry year from 00 to 99.  **Optional** if using the Hosted Integration, any value provided will be used to initialise any hosted payment page input field.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`. **Optional** if using the Hosted Integration, any value provided will be used to initialise any hosted payment page input field.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip. **Optional** if using the Hosted Integration, any value provided will be used to initialise any hosted payment page input field.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
-| orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. <br></br><br></br> **Optional**:<br></br> - if provided it will be used to initialise the corresponding hosted payment page input field.<br></br> - if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardExpiryMonth | No | Payment card’s expiry month from 1 to 12. <br></br><br></br> **Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br> - if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardExpiryYear | No | Payment card’s expiry year from 00 to 99. <br></br><br></br> **Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`. <br></br><br></br>**Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip. <br></br><br></br>**Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
+| orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
-| captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture guide](annexes#captureDelay).|
-| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation) |
-| redirectURL | <span class="badge badge--primary">Yes</span> | URL to which the hosted form will redirect the Customer’s browser after the transaction has been completed. The URL must be fully qualified and include at least the scheme and host components. Refer to the [redirect URL docs](overview#redirectUrl) for details. |
-| callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL docs](overview#callbackUrl) for details. |
-| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
-
+| captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
+| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
+| callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
+| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
 
 ## Transaction Response 
@@ -72,8 +71,8 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
 | responseMessage | Always | Message received from the Acquiring bank, or any error message. |
 | transactionID | Always | A unique ID assigned by the Gateway.|
-| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation) |
-| state | Always |  [Transaction state](annexes#transactionStates) |
+| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation). |
+| state | Always |  [Transaction state](annexes#transactionStates). |
 | timestamp | Always | Time the transaction was created or last modified. |
 | transactionUnique | If supplied | Any value supplied in the initial request. |
 | authorisationCode | On success | Authorisation code received from Acquirer. |
@@ -85,10 +84,10 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | cardType | Always | Description of the type of card used. Refer to the [Card Identification](annexes#cardIdentification) guide. |
 | cardSchemeCode | Always | Code identifying the Card Scheme used. Refer to the [Card Identification](annexes#cardIdentification) guide.  |
 | cardScheme | Always | Description of the Card Scheme used. Refer to the [Card Identification](annexes#cardIdentification) guide. |
-| cardIssuer | Always | Card Issues name (when known). |
+| cardIssuer | Always | Card Issuer name (when known). |
 | cardIssuerCountry | Always | Card issuing country’s name (when known). |
 | cardIssuerCountryCode | Always | Card issuing country’s ISO-3166 2-letter code (when known). |
 
-Other response fields may be returned as documented elsewhere in this guide. Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
+Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
 The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
 The response is also POSTed to any URL provided by optional callbackURL.

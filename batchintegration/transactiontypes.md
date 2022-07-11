@@ -60,25 +60,25 @@ This will query an existing transaction, identified using the `xref` request fie
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer  |
-| signature | <span class="badge badge--primary">Yes</span> | hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
-| action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE, REFUND, REFUND_SALE. If a REFUND_SALE action is used, then the request must not attempt to change the payment details, or it will fail with a responseCode of 65542 (REQUEST MISMATCH) because the refund must be made to the original card.|
-| amount  | <span class="badge badge--primary">Yes</span> | the amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE, REFUND, REFUND_SALE.<br></br><br></br> If a REFUND_SALE action is used, then the request must not attempt to change the payment details, or it will fail with a responseCode of 65542 (REQUEST MISMATCH) because the refund must be made to the original card.|
+| amount  | <span class="badge badge--primary">Yes</span> | The amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`.|
-| cardNumber | <span class="badge badge--primary">Yes</span> | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| cardExpiryMonth | <span class="badge badge--primary">Yes</span> | Payment card’s expiry month from 1 to 12.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryYear | <span class="badge badge--primary">Yes</span>  | Payment card’s expiry year from 00 to 99. **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardCVV | <span class="badge badge--primary">Yes</span> | Payment card’s security number. The 3-digit number printed on the signature strip.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
-| transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
-| orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardNumber | <span class="badge badge--primary">Yes</span> | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardExpiryMonth | <span class="badge badge--primary">Yes</span> | Payment card’s expiry month from 1 to 12.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardExpiryYear | <span class="badge badge--primary">Yes</span>  | Payment card’s expiry year from 00 to 99. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| cardCVV | <span class="badge badge--primary">Yes</span> | Payment card’s security number. The 3-digit number printed on the signature strip.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
+| orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
-| captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture guide](annexes#captureDelay).|
-| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation) <br></br> **Mandatory** for a REFUND_SALE request to specify the original SALE transaction. |
+| captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
+| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation) <br></br><br></br> **Mandatory** for a REFUND_SALE request to specify the original SALE transaction. |
 | remoteAdress | No | IP address of client making the transaction. This should be provided where possible to aid fraud prevention. |
-| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
+| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
 
 ## Transaction Response 
@@ -91,8 +91,8 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
 | responseMessage | Always | Message received from the Acquiring bank, or any error message. |
 | transactionID | Always | A unique ID assigned by the Gateway.|
-| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation) |
-| state | Always |  [Transaction state](annexes#transactionStates) |
+| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation). |
+| state | Always |  [Transaction states](annexes#transactionStates). |
 | timestamp | Always | Time the transaction was created or last modified. |
 | transactionUnique | If supplied | Any value supplied in the initial request. |
 | authorisationCode | On success | Authorisation code received from Acquirer. |
@@ -109,6 +109,6 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | cardIssuerCountry | Always | Card issuing country’s name (when known). |
 | cardIssuerCountryCode | Always | Card issuing country’s ISO-3166 2-letter code (when known). |
 
-Other response fields may be returned as documented elsewhere in this guide. Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
+Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
 The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
 The response is also POSTed to any URL provided by optional callbackURL.
