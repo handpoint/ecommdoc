@@ -9,7 +9,7 @@ id: overview
 
 The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using our **Hosted Payment Fields**. You can use this method if you **do not want to collect and store cardholder data**.
 
-For greater control over the customisation of the payment page, our Gateway offers the use of Hosted Payment Fields, where only the individual input fields collecting the sensitive cardholder data are hosted by the Gateway while the remainder of the payment form is provided by your website. These Hosted Payment Fields fit seamlessly into your payment page and can be styled to match your payment fields. When your payment form is submitted to your server, the Gateway will submit a payment token representing the sensitive card data it collected and your webserver can then use the [Direct Integration](directintegration/overview)  to process the payment without ever being in contact with the collected cardholder data. 
+For greater control over the customisation of the payment page, our Gateway offers the use of Hosted Payment Fields, where only the individual input fields collecting the sensitive cardholder data are hosted by the Gateway while the remainder of the payment form is provided by your website. These Hosted Payment Fields fit seamlessly into your payment page and can be styled to match your payment fields. When your payment form is submitted to your server, the Gateway will submit a payment token representing the sensitive card data it collected and your webserver can then use the [Direct Integration](/directintegration/overview)  to process the payment without ever being in contact with the collected cardholder data. 
 
 ## Security and Compliance 
 

@@ -6,18 +6,20 @@ sidebar_position: 2
 
 All requests must specify what action they require the Gateway to perform, using the action request field. 
 
-## SALE
+## Financial Operations 
+
+### SALE
 
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. A successful authorisation will reserve the funds on the Cardholder’s account until the transaction is settled.
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
-## VERIFY 
+### VERIFY 
 This will create a new transaction and attempt to verify that the card account exists with the Acquirer. The transaction will result in no transfer of funds and no hold on any funds on the Cardholder’s account. It cannot be captured and will not be settled. The transaction `amount` must always be zero.
 
 This transaction type is the preferred method for validating that the card account exists and is in good standing; however, it cannot be used to validate that it has sufficient funds.
 
-## PREAUTH
+### PREAUTH
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. If authorisation is approved, then it is immediately voided (where possible) so that no funds are reserved on the Cardholder’s account. The transaction will result in no transfer of funds. It cannot be captured and will not be settled.
 
 This transaction type can be used to check whether funds are available and that the account is valid. However, due to the problem highlighted below, it is recommended that Merchants use the VERIFY action when supported by their Acquirer.
@@ -26,7 +28,7 @@ This transaction type can be used to check whether funds are available and that 
 If the transaction is to be completed then a new authorisation must be sought using the SALE action. If the PREAUTH authorisation could not be successfully voided, then this will result in the funds’ being authorised twice effectively putting two holds on the amount on the Cardholder’s account and thus requiring twice the amount to be available in the Cardholder’s account. It is therefore recommended only to PREAUTH small amounts, such as £1.00 to check mainly account validity.
 :::
 
-## REFUND_SALE
+### REFUND_SALE
 
 This will create a new transaction and attempt to seek authorisation for a refund of a previous SALE from the Acquirer. The transaction will then be captured and settled if and when appropriate. It can only be performed on transactions that have been successfully settled. Up until that point, a CANCEL or partial CAPTURE can be used, to refund or partially refund the original SALE transaction. The previous SALE transaction should be specified using the `xref` field. This may take up to 180 days from the date of the original sale, however different Card Schemes and Acquirers may set shorter time periods.
 
@@ -34,27 +36,13 @@ Partial refunds are allowed by specifying the amount to refund. Any amount must 
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
-## REFUND
+### REFUND
 
 This will create a new transaction and attempt to seek authorisation for a refund from the Acquirer. The transaction will then be captured and settled if and when appropriate. This is an independent refund and need not be related to any previous SALE. The amount is therefore not limited by any original received amount.
 
 The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
 
-## CAPTURE
-
-This will capture an existing transaction, identified using the `xref` request field, making it available for settlement at the next available opportunity. It can only be performed on transactions that have been authorised but not yet captured. An `amount` to capture may be specified but must not exceed the original amount authorised. This may take up to 30 days from the date of authorisation, however different Card Schemes and Acquirers may set shorter time periods.
-
-The original transaction must have been submitted with a captureDelay value that prevented immediate capture and settlement leaving the transaction in an authorised but un-captured state. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
-
-## CANCEL 
-
-This will cancel an existing transaction, identified using the `xref` request field, preventing it from being settled. It can only be performed on transactions, which have been authorised but not yet settled, and it is not reversible. Depending on the Acquirer it may not reverse the authorisation and release any reserved funds on the Cardholder’s account. In such cases authorisation will be left to expire as normal, releasing the reserved funds. This may take up to 30 days from the date of authorisation, however different Card Schemes and Acquirers may set shorter time periods.
-
-## QUERY 
-
-This will query an existing transaction, identified using the `xref` request field, returning the original response. This is a simple transaction lookup action.
-
-## Transaction Request 
+### Transaction Request 
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
@@ -84,7 +72,7 @@ This will query an existing transaction, identified using the `xref` request fie
 
 
 
-## Transaction Response 
+### Transaction Response 
 
 The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
 
@@ -115,3 +103,21 @@ The response will contain all the fields sent in the request (minus any `cardNum
 Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
 The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
 The response is also POSTed to any URL provided by optional callbackURL.
+
+
+## Management Operations 
+
+### CAPTURE
+
+This will capture an existing transaction, identified using the `xref` request field, making it available for settlement at the next available opportunity. It can only be performed on transactions that have been authorised but not yet captured. An `amount` to capture may be specified but must not exceed the original amount authorised. This may take up to 30 days from the date of authorisation, however different Card Schemes and Acquirers may set shorter time periods.
+
+The original transaction must have been submitted with a captureDelay value that prevented immediate capture and settlement leaving the transaction in an authorised but un-captured state. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
+
+### CANCEL 
+
+This will cancel an existing transaction, identified using the `xref` request field, preventing it from being settled. It can only be performed on transactions, which have been authorised but not yet settled, and it is not reversible. Depending on the Acquirer it may not reverse the authorisation and release any reserved funds on the Cardholder’s account. In such cases authorisation will be left to expire as normal, releasing the reserved funds. This may take up to 30 days from the date of authorisation, however different Card Schemes and Acquirers may set shorter time periods.
+
+### QUERY 
+
+This will query an existing transaction, identified using the `xref` request field, returning the original response. This is a simple transaction lookup action.
+
