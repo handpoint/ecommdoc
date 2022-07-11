@@ -107,6 +107,8 @@ The response is also POSTed to any URL provided by optional callbackURL.
 
 ## Management Operations
 
+You can perform a management action on an existing transaction, such as a capture or cancellation, by sending a request with the required action together with the cross reference for the transaction to act on.
+
 ### CAPTURE
 
 This will capture an existing transaction, identified using the `xref` request field, making it available for settlement at the next available opportunity. It can only be performed on transactions that have been authorised but not yet captured. An `amount` to capture may be specified but must not exceed the original amount authorised. This may take up to 30 days from the date of authorisation, however different Card Schemes and Acquirers may set shorter time periods.
@@ -120,3 +122,29 @@ This will cancel an existing transaction, identified using the `xref` request fi
 ### QUERY 
 
 This will query an existing transaction, identified using the `xref` request field, returning the original response. This is a simple transaction lookup action.
+
+### Transaction Request 
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
+| merchantPwd | No | Any password used for an added security layer.  |
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| action | <span class="badge badge--primary">Yes</span> | Possible values are: AUTHORISE, CAPTURE, CANCEL, QUERY|
+| xref | <span class="badge badge--primary">Yes</span> | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
+| amount  | No | The amount to capture or refund. **Mandatory** for partial refunds or partial captures.|
+| callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
+
+### Transaction Response 
+
+Apart from the fields below, the response will be the same as for a regular financial operation and will contain the details of the existing transaction.
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| responseCode | Always | A numeric code providing the specific outcome. Check `responseMessage` for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for details. |
+| responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
+| responseMessage | Always | Description of the above response code. |
+| action | Always | The requested action and original action separated by a colon. For example, CANCEL:SALE |
+
+Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
+The response is also POSTed to any URL provided by optional `callbackURL`.

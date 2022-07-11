@@ -129,7 +129,7 @@ const config = {
         items: [
           {
             to: 'cnpdocs',
-            label: 'Online Payments Docs',
+            label: 'Getting Started',
           },
           {
             type: 'doc',
