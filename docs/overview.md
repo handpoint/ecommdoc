@@ -11,6 +11,8 @@ The Hosted Integration method makes it easy to add secure payment processing to 
 The Hosted integration works by redirecting the customer to our Gateway’s Hosted Payment Page, which will collect the Customer’s payment details and process the payment before redirecting the customer back to a page on your website, letting you know the payment outcome. **This is the quickest path to integrating with the Gateway**.
 The standard Hosted Payment Page is designed to be shown in a lightbox (modal) over your website and styled with logos and colours to match. Alternatively, you can arrange for fully customised Hosted Payment Pages to be produced that can match your website’s style and layout. These fully customised pages are usually provided using a browser redirect, displaying full-page in the browser, or can be displayed embedded in an iframe on your website.
 
+By using the hosted payment page integration, **you are kept out of the EMV 3D-Secure flow** which allows you to keep the integration very simple without any added complexity.
+
 ## Security and Compliance 
 
 If you use Hosted Payment Pages with the Hosted Integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.

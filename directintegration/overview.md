@@ -8,6 +8,8 @@ id: overview
 The Direct Integration works by allowing you to keep the customer on your system throughout the checkout process, collecting the customer’s payment details on your own secure server before sending the collected data to our Gateway for processing. This allows you to provide a smoother, more complete checkout process to the Customer.
 In addition to basic sales processing, the Direct Integration can be used to perform other actions such as refunds and cancellations, which can provide a more advanced integration with our Gateway.
 
+By using the direct integration **you are involved in the EMV 3D-Secure flow**, adding a layer of complexity to the integration but giving you more control over the checkout process.
+
 ## Security and Compliance 
 
 If your website collects and/or stores sensitive Cardholder data, such as the card number (PAN) or card security code (CVV/CV2), then your webserver must have an SSL certificate and serve all payment forms using HTTPS. You will also need a higher level of PCI DSS compliance and complete a PCI validation form annually. 

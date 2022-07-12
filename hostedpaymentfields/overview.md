@@ -11,6 +11,8 @@ The Hosted Integration method makes it easy to add secure payment processing to 
 
 For greater control over the customisation of the payment page, our Gateway offers the use of Hosted Payment Fields, where only the individual input fields collecting the sensitive cardholder data are hosted by the Gateway while the remainder of the payment form is provided by your website. These Hosted Payment Fields fit seamlessly into your payment page and can be styled to match your payment fields. When your payment form is submitted to your server, the Gateway will submit a payment token representing the sensitive card data it collected and your webserver can then use the [Direct Integration](/directintegration/overview)  to process the payment without ever being in contact with the collected cardholder data. 
 
+By using the direct integration **you are involved in the EMV 3D-Secure flow**, adding a layer of complexity to the integration but giving you more control over the checkout process.
+
 ## Security and Compliance 
 
 If you use Hosted Payment Fields with the Direct or Batch Integrations, then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.

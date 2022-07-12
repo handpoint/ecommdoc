@@ -9,7 +9,7 @@ In addition to basic sales processing, the Batch Integration can be used to perf
 
 Unlike the Hosted and Direct Integrations, the Batch Integration does not process transactions sent to it immediately. Instead, the Gateway queues these transactions to be processed and returns a batch reference number which can be used to download a file that contains the current status of the transactions.
 
-atch Processing does not support transactions that require Customer interaction such as 3-D Secure transactions, or alternative payment methods with interactive Wallet or Checkout pages.
+Batch Processing does not support transactions that require Customer interaction such as 3-D Secure transactions, or alternative payment methods with interactive Wallet or Checkout pages.
 
 ## Security and Compliance 
 
@@ -18,6 +18,8 @@ If you use  Hosted Payment Fields with the  Batch Integrations, then your webser
 If your website collects and/or stores sensitive Cardholder data, such as the card number (PAN) or card security code (CVV/CV2), then your webserver must have an SSL certificate and serve all payment forms using HTTPS. You will also need a higher level of PCI DSS compliance and complete a PCI validation form annually. 
 
 The Gateway will make transaction details available for a maximum period of 13 months. Your acquirer may hold information for a different period of time.
+
+
 
 ## Authentication 
 

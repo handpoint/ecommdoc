@@ -8,11 +8,6 @@ export default function IntegrationPaths() {
     <section>
       <div className="container">
         <div className="row">
-          {FeatureListCol6.map((props, idx) => (
-            <FeatureCol6 key={idx} {...props} />
-          ))}
-        </div>
-        <div className="row">
           {FeatureListCol4.map((props, idx) => (
             <FeatureCol4 key={idx} {...props} />
           ))}
@@ -22,15 +17,28 @@ export default function IntegrationPaths() {
   );
 }
 
-const FeatureListCol6 = [
+const FeatureListCol4 = [
   {
-    title: 'Hosted Integration',
+    title: 'Hosted Payment Page',
     Svg: require('@site/static/img/iframe.svg').default,
     description: (
       <>
-       The hosted integration method makes it easy to add secure payment processing to your online business, using the <b>Handpoint hosted payment</b> page or <b>Handpoint payment fields</b>.
-       You can use this method if you do not want to collect and store cardholder data and be kept <b>OUT of PCI scope</b>. The standard hosted payment page is designed to be shown
-       in a lightbox over your website. The hosted payment fields can be styled to match your website and fit seamlessly into your payment page. 
+       The hosted integration method makes it easy to add secure payment processing to your online business, using the Handpoint hosted payment page.
+       You can use this method if you do not want to collect and store cardholder data and be <b>kept OUT of PCI scope</b>. The standard hosted payment page is designed to be shown
+       in a lightbox over your website but can also be embedded in an iFrame.<br></br><br></br> By using the hosted payment page integration, you are <b>kept out of the EMV 3D-Secure flow</b> which allows
+       you to keep the integration very simple without any added complexity.
+      </>
+    ),
+  },
+  {
+    title: 'Hosted Payment Fields',
+    Svg: require('@site/static/img/form.svg').default,
+    description: (
+      <>
+       The hosted integration method makes it easy to add secure payment processing to your online business, using the Handpoint payment fields.
+       You can use this method if you do not want to collect and store cardholder data and be kept <b>OUT of PCI scope</b>.
+       The hosted payment fields can be styled to match your website and fit seamlessly into your payment page.<br></br><br></br>By using the hosted payment fields integration
+       you are <b>involved in the EMV 3D-Secure flow</b>, adding a layer of complexity to the integration but giving you more control over the checkout process. 
       </>
     ),
   },
@@ -39,15 +47,13 @@ const FeatureListCol6 = [
     Svg: require('@site/static/img/api.svg').default,
     description: (
       <>
-       With direct integration, your merchant’s website captures the user’s personal and credit card details and then forwards these behind the scenes
-       to the secure Handpoint gateway. Direct integration is more complex than the hosted integration method and puts your software <b>IN PCI scope</b> as
+       With direct integration, your merchant’s website captures the card details and then forwards these to the secure Handpoint gateway. 
+       Direct integration is more complex than the hosted integration methods and puts your software <b>IN PCI scope</b> as
        you will be handling card data. The benefit of this integration method is that the entire shopping process can occur within your merchants’ websites.
+       <br></br><br></br>By using the direct integration you are <b>involved in the EMV 3D-Secure flow</b>, adding a layer of complexity to the integration but giving you more control over the checkout process. 
       </>
     ),
   },
-];
-
-const FeatureListCol4 = [
   {
     title: 'Pay By Link',
     Svg: require('@site/static/img/link.svg').default,
@@ -80,21 +86,6 @@ const FeatureListCol4 = [
     ),
   },
 ];
-
-
-function FeatureCol6({Svg, title, description}) {
-  return (
-    <div className={clsx('col col--6')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center">
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-}
 
 function FeatureCol4({Svg, title, description}) {
   return (
