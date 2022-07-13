@@ -62,6 +62,29 @@ Your Merchant Account must be configured with your Merchant Category Code (MCC).
 
  To use 3-D Secure on your Hosted Form, you must enable this support and fully configure your account in the backend (3-D Secure is usually enabled by default for all merchants). There should be no need for you to change your code to enable 3-D Secure support, unless you wish to use the data returned here in step 3.
 
+### Final Response 
+
+These fields are returned when the 3-D Secure stage has completed, and no further challenge is required.
+These fields will be returned in addition to the [basic response fields](transactiontypes#transactionResponse).
+
+ | Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
+| threeDSPolicy | If available | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
+| threeDSXID | If 3DS enabled | The unique identifier for the transaction in the 3DS system.|
+| threeDSVETimestamp | If 3DS enabled | The time the card was checked for 3DS enrolment, and any initial challenge determined.|
+| threeDSEnrolled | If 3DS enabled | The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. <br></br><br></br>Possible values are:<br></br> Y – Enrolled. <br></br>N – Not enrolled.<br></br> U – Unable to verify if enrolled. <br></br>E – Error verifying enrolment.|
+| threeDSCATimestamp | If 3DS enabled | The time the last challenge was checked.|
+| threeDSAuthenticated | If 3DS enabled | The 3DS authentication status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details.<br></br><br></br> Possible values are:<br></br> Y – Authenticated. <br></br>A – Attempted to authenticate. <br></br>N – Not authenticated. <br></br>R – Reject transaction.<br></br> I – Information only.<br></br> U – Unable to authenticate.<br></br> E – Error checking authentication.|
+| threeDSECI | If 3DS authenticated | This contains a two-digit Electronic Commerce Indicator (ECI) value. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSCAVV | If 3DS authenticated |This contains a 28-character Base-64 encoded Cardholder Authentication Verification Value (CAVV). Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSDetails |If 3DS authenticated  |Record containing further details about the 3-D Secure processing stage. Notable sub fields are:<br></br>version – 3-D Secure version used <br></br>versions – 3-D Secure versions available <br></br>psd2Region – whether payment in PSD2 jurisdiction|
+| threeDSErrorCode |If 3DS error |Any error response code returned by the ACS if there is an error in determining the card’s 3DS status.|
+| threeDSErrorDescription |If 3DS error |Any error response description returned by the ACS if there is an error in determining the card's 3DS status.|
+| threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for more details.|
+| threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
+
+
 ## 3DS Options {#3dsOptions}
 
 The following options may be sent in the `threeDSOptions` field to provide additional information to help customise the 3-D Secure experience or to help the ACS decide if a challenge is required.

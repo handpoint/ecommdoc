@@ -89,7 +89,7 @@ Each step of the 3-D Secure flow is described below. At a high level it consists
 
   You might have noticed that steps 3-6 were remarkably similar. It is in fact the same implementation, repeated. We recommend creating a loop to handle these similar messages as continuations of the same process, then simply ending the loop when you receive a Final Response.
 
-### Initial Request (Verify Enrolment)
+### Initial Request (Verify Enrolment) {#initial3dSecureRequest}
 
 If no 3-D Secure authentication details are provided in the initial request, the Gateway will determine if the transaction is eligible for 3-D Secure by checking whether the card is enrolled in the 3-D Secure scheme.
 
@@ -120,7 +120,7 @@ These fields should be sent in addition to basic request fields detailed in the 
 | scaExemption | No | An SCA exemption can be used to request that a frictionless flow is preferable. Refer to [Exemptions to Strong Customer Authentication](annexes#scaExemptions).<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS).| 
 
 
-### Continuation Request (Check Authentication and Authorise)
+### Continuation Request (Check Authentication and Authorise) {#3dSecurecontinuationRequest}
 
 On completion of the 3-D Secure authentication the ACS will send the challenge results to you callback page, as originally specified using the `threeDSRedirectURL` field in the initial request.
 
@@ -155,6 +155,45 @@ The IFRAME should be of sufficient size to display the ACS challenge form. The c
 The device fingerprinting method invocation is handled in the same way as a normal Cardholder challenge, except that it can be done silently in a hidden IFRAME, invisible to the normal payment flow. This silent device fingerprinting method request can be determined by the presence of a `threeDSMethodData` element in the `threeDSRequest` record (this is one time when the normally opaque data does need to be checked).
 
 This method should take no longer than 10 seconds and therefore if the ACS has not POSTed the results back within 10 seconds, then the browser can stop waiting and the transaction can be continued as normal but the `threeDSResponse` field should be returned indicating the timeout by including a `threeDSMethodData` element with the value of 'timeout', for example, “threeDSResponse[threeDSMethodData]=timeout”
+
+### Challenge Response {#3dSecureChallengeResponse}
+
+These fields are returned when a 3-D Secure challenge is required and provide the information necessary for you to request the Access Control Server (ACS) perform that challenge.
+
+These fields will be returned in addition to the [3D secure request fields](#initial3dSecureRequest) and the [basic response fields](transactiontypes#transactionResponse).
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
+| threeDSPolicy | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
+| threeDSVETimestamp | If 3DS enabled| The time the card was checked for 3DS enrolment, and any initial challenge determined.|
+| threeDSEnrolled | If 3DS enabled| The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. <br></br> <br></br> Possible values are:<br></br>  Y – Enrolled. <br></br> N – Not enrolled.<br></br>  U – Unable to verify if enrolled.<br></br> E – Error verifying enrolment.|
+| threeDSRef | If 3DS enabled| Value to return in the continuation request.|
+| threeDSURL | If 3DS enrolled| The URL of the ACS to which the challenge data should be sent via a HTTP POST request from the Cardholder’s browser.|
+| threeDSRequest | If 3DS enrolled| Record containing the name/value pairs that should be sent to the ACS via HTTP POST request from the Cardholder’s browser.|
+
+### Final Response 
+
+These fields are returned when the 3-D Secure stage has completed, and no further challenge is required.
+These fields will be returned in addition to the [3D secure request fields](#initial3dSecureRequest); any [continuation request fields](#3dSecurecontinuationRequest); any [challenge response fields](#3dSecureChallengeResponse); and the [basic response fields](transactiontypes#transactionResponse).
+
+ | Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
+| threeDSPolicy | If available | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
+| threeDSXID | If 3DS enabled | The unique identifier for the transaction in the 3DS system.|
+| threeDSVETimestamp | If 3DS enabled | The time the card was checked for 3DS enrolment, and any initial challenge determined.|
+| threeDSEnrolled | If 3DS enabled | The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. <br></br><br></br>Possible values are:<br></br> Y – Enrolled. <br></br>N – Not enrolled.<br></br> U – Unable to verify if enrolled. <br></br>E – Error verifying enrolment.|
+| threeDSCATimestamp | If 3DS enabled | The time the last challenge was checked.|
+| threeDSAuthenticated | If 3DS enabled | The 3DS authentication status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details.<br></br><br></br> Possible values are:<br></br> Y – Authenticated. <br></br>A – Attempted to authenticate. <br></br>N – Not authenticated. <br></br>R – Reject transaction.<br></br> I – Information only.<br></br> U – Unable to authenticate.<br></br> E – Error checking authentication.|
+| threeDSECI | If 3DS authenticated | This contains a two-digit Electronic Commerce Indicator (ECI) value. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSCAVV | If 3DS authenticated |This contains a 28-character Base-64 encoded Cardholder Authentication Verification Value (CAVV). Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSDetails |If 3DS authenticated  |Record containing further details about the 3-D Secure processing stage. Notable sub fields are:<br></br>version – 3-D Secure version used <br></br>versions – 3-D Secure versions available <br></br>psd2Region – whether payment in PSD2 jurisdiction|
+| threeDSErrorCode |If 3DS error |Any error response code returned by the ACS if there is an error in determining the card’s 3DS status.|
+| threeDSErrorDescription |If 3DS error |Any error response description returned by the ACS if there is an error in determining the card's 3DS status.|
+| threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for more details.|
+| threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
+
 
 ### External Authentication Request
 
