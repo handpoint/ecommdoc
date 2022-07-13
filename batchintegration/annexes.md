@@ -284,3 +284,11 @@ The schedule records should be passed in a sequential array of records, either a
 ## AVS / CV2 Check Response Codes {#AvsResponseCodes}
 
 ## Card Identification {#cardIdentification}
+
+## Device Information Fields {#deviceInformationFields}
+
+## SCA Using 3-D Secure {#scaUsing3dSecure}
+
+## Exemptions to Strong Customer Authentication {#scaExemptions}
+
+## 3-D Secure Authentication Data {#3dSecureAuthenticationData}

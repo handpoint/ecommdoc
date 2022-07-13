@@ -288,6 +288,14 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Gateway Library (PHP)
 
+## Device Information Fields {#deviceInformationFields}
+
+## SCA Using 3-D Secure {#scaUsing3dSecure}
+
+## Exemptions to Strong Customer Authentication {#scaExemptions}
+
+## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
+
 The gateway.php file contains the main body of the SDK.
 
 
