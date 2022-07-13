@@ -292,3 +292,21 @@ The schedule records should be passed in a sequential array of records, either a
 ## Exemptions to Strong Customer Authentication {#scaExemptions}
 
 ## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
+
+## Test Amounts
+
+Transaction `amount` can be used to trigger different authorisation and settlement outcomes as follows:
+
+| Min. Amount      | Max. Amount | Authorisation response | Settlement outcome | 
+| ----------- | ----------- | ----------- | ----------- |
+| 100 (1.00) | 2499 (24.99) | (0) AUTH CODE: XXXXXX | ACCEPTED |
+| 2500 (25.00) | 4999 (49.99) | (0) AUTH CODE: XXXXXX | REJECTED |
+| 5000 (50.00) | 7499 (74.99) | (1) CARD REFERRED <br/> (0) AUTH CODE: XXXXXX | ACCEPTED |
+| 7500 (75.00) | 9999 (99.99) | (1) CARD REFERRED  <br/> (0) AUTH CODE: XXXXXX | REJECTED |
+| 10000 (100.00) | 14999 (149.99) | (5) CARD DECLINED | N/A |
+| 15000 (150.00) | 19999 (199.99) | (4) CARD DECLINED – KEEP CARD | N/A |
+| 20000 (200.00) | 24999 (249.99) | (65) CARD DECLINED - SCA REQUIRED <br/> (0) AUTH CODE: XXXXXX | ACCEPTED |
+| 25000 (250.00)| 29999 (299.99) | (65) CARD DECLINED – SCA REQUIRED <br/> (5) CARD DECLINED | N/A |
+
+
+Any other amount will return a responseCode of **66311** (Invalid Test Amount).
