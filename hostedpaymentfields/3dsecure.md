@@ -195,7 +195,7 @@ These fields will be returned in addition to the [3D secure request fields](#ini
 | threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
 
 
-### External Authentication Request
+### External Authentication Request {#externalAuthRequest}
 
 You can choose to obtain the 3-D Secure authentication details from a third-party, in which case you should provide them as part of a standard request. If the Gateway receives valid third-party authentication details, then it will use those and not attempt to perform the 3-D Secure challenge flow.
 
@@ -214,6 +214,23 @@ Note: If 3-D Secure is not enabled for the Merchant Account, then any 3-D Secure
 When an external 3-D Secure provider is used then you are responsible for deciding whether to continue at the different 3-D Secure stages and any preferences provided in the merchant management system (MMS) or using the threeDSCheckPref request field are ignored.
 
 If the external provider returns an authentication status of ‘R’ then you must not continue with the transaction either with or without 3-D Secure. Do not attempt to send a `threeDSAuthentication` status of ‘R’ expecting the Gateway to reject the transaction.
+
+### External Authentication Response
+
+These fields will be returned in addition to the [external authentication request fields](#externalAuthRequest) and the [basic response fields](transactiontypes#transactionResponse).
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
+
+Note: If 3-D Secure is not enabled for the Merchant Account, then any 3-D Secure authentication fields sent in the request are ignored and the transaction is processed as normal without 3-D Secure.
+
+### Cardholder Information
+In the case of a frictionless flow, the card Issuer may sometimes wish to provide a message to the Cardholder. In this case, the `threeDSResponseMessage` will start with the text ‘Cardholder Info: ‘ and be followed by the message from the card Issuer.
+
+### PSD2 Strong Customer Authentication
+3-D Secure can be used to provide the Strong Customer Authentication (SCA) required by the European Union's Payment Services Directive 2 (PSD2).
+For more details on how to use 3-D Secure to maintain PSD2 SCA Compliance please refer to Refer to [SCA Using 3-D Secure](annexes#scaUsing3dSecure). 
 
 ## 3DS Options {#3dsOptions}
 

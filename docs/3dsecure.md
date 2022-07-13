@@ -84,6 +84,12 @@ These fields will be returned in addition to the [basic response fields](transac
 | threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for more details.|
 | threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
 
+## Cardholder Information
+In the case of a frictionless flow, the card Issuer may sometimes wish to provide a message to the Cardholder. In this case, the `threeDSResponseMessage` will start with the text ‘Cardholder Info: ‘ and be followed by the message from the card Issuer.
+
+## PSD2 Strong Customer Authentication
+3-D Secure can be used to provide the Strong Customer Authentication (SCA) required by the European Union's Payment Services Directive 2 (PSD2).
+For more details on how to use 3-D Secure to maintain PSD2 SCA Compliance please refer to Refer to [SCA Using 3-D Secure](annexes#scaUsing3dSecure). 
 
 ## 3DS Options {#3dsOptions}
 
