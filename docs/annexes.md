@@ -293,7 +293,9 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
 
-## Merchant Request Fields {merchantRequestFields}
+## Merchant Request Fields {#merchantRequestFields}
+
+## Card Identification {#cardIdentification}
 
 ## Test Amounts
 

@@ -286,7 +286,9 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Card Identification {#cardIdentification}
 
-## Merchant Request Fields {merchantRequestFields}
+## Merchant Request Fields {#merchantRequestFields}
+
+## Card Identification {#cardIdentification}
 
 ## Gateway Library (PHP)
 
