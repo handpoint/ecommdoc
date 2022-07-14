@@ -293,6 +293,8 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
 
+## Merchant Request Fields {merchantRequestFields}
+
 ## Test Amounts
 
 Transaction `amount` can be used to trigger different authorisation and settlement outcomes as follows:

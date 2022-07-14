@@ -286,6 +286,8 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Card Identification {#cardIdentification}
 
+## Merchant Request Fields {merchantRequestFields}
+
 ## Gateway Library (PHP)
 
 The gateway.php file contains the main body of the SDK.
