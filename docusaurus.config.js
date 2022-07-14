@@ -138,22 +138,25 @@ const config = {
             label: 'Hosted Payment Page',
           },
           {
-            to: '/hostedpaymentfields/overview',
+            type: 'doc',
+            docId: 'overview',
+            docsPluginId: 'hostedpaymentfields',
             position: 'left',
             label: 'Hosted Payment Fields',
-
           },
           {
-            to: '/directintegration/overview',
+            type: 'doc',
+            docId: 'overview',
+            docsPluginId: 'directintegration',
             position: 'left',
             label: 'Direct Integration',
-
           },
           {
-            to: '/batchintegration/overview',
+            type: 'doc',
+            docId: 'Overview',
+            docsPluginId: 'batchintegration',
             position: 'left',
             label: 'Batch Integration',
-
           },
           {
             to: '/paybutton/paybutton',
