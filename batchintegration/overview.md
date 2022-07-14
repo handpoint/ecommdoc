@@ -9,7 +9,7 @@ In addition to basic sales processing, the Batch Integration can be used to perf
 
 Unlike the Hosted and Direct Integrations, the Batch Integration does not process transactions sent to it immediately. Instead, the Gateway queues these transactions to be processed and returns a batch reference number which can be used to download a file that contains the current status of the transactions.
 
-**Batch Processing does not support transactions that require Customer interaction such as 3-D Secure transactions, or alternative payment methods with interactive Wallet or Checkout pages.**
+**Batch Processing does not support transactions that require Customer interaction such as 3-D Secure transactions, or alternative payment methods with interactive Wallet or Checkout pages. It is also important to note that the Gateway does not support Dynamic Currency Conversion (DCC) with the batch integration method.**
 
 ## Security and Compliance 
 

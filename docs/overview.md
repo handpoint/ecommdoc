@@ -13,6 +13,8 @@ The standard Hosted Payment Page is designed to be shown in a lightbox (modal) o
 
 By using the hosted payment page integration, **you are kept out of the EMV 3D-Secure flow** which allows you to keep the integration very simple without any added complexity.
 
+ It is also important to note that if you are planning on using **Dynamic Currency Conversion (DCC)** then the Hosted Payment Page allows you to have the cardholder pay in their own currency with very little extra work. 
+
 ## Security and Compliance 
 
 If you use Hosted Payment Pages with the Hosted Integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
