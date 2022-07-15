@@ -275,8 +275,6 @@ The schedule records should be passed in a sequential array of records, either a
 
 ## Payment Tokenisation {#paymentTokenisation}
 
-## Credentials on File {#credentialsOnFile}
-
 ## Response Codes {#responseCodes}
 
 ## AVS / CV2 Check Response Codes {#AvsResponseCodes}

@@ -64,7 +64,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
 | xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation) <br></br><br></br> **Mandatory** for a REFUND_SALE request to specify the original SALE transaction. |
 | remoteAdress | No | IP address of client making the transaction. This should be provided where possible to aid fraud prevention. |
-| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
+| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the  [Credentials on File](credentialsonfile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
 
 ### Transaction Response {#transactionResponse}

@@ -68,7 +68,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | redirectURL | No | URL to which the hosted form will redirect the Customer’s browser after the transaction has been completed. The URL must be fully qualified and include at least the scheme and host components. Refer to the [redirect URL](overview#redirectUrl) docs for details. |
 | callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
 | remoteAdress | No | IP address of client making the transaction. This should be provided where possible to aid fraud prevention. |
-| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the [credentials on file](annexes#credentialsOnFile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
+| rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the  [Credentials on File](credentialsonfile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
 
 
