@@ -72,7 +72,7 @@ The schedule records should be passed in a sequential array of records, either a
 | Name      | Returned | Description |
 | ----------- | ----------- | ----------- |
 | rtID | Always| Recurring Transaction Agreement ID.|
-| rtResponseCode | Always| Result of setting up RT Agreement.Refer to [Response Codes](annexes#responseCodes) for details. |
+| rtResponseCode | Always| Result of setting up RT Agreement. Refer to [Response Codes](annexes#responseCodes) for details. |
 | rtResponseMessage | Always| Description of above response code.|
 
 
