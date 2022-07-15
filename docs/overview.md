@@ -15,6 +15,18 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 
  It is also important to note that if you are planning on using **Dynamic Currency Conversion (DCC)** then the Hosted Payment Page allows you to have the cardholder pay in their own currency with very little extra work. 
 
+## Benefits
+- You are kept out of PCI scope. 
+- You are kept out of the EMV 3D-Secure flow.
+- This is the quickest path to integration with the Gateway.
+- Supporting dynamic currency conversion requires minimal work. 
+
+## Limitations 
+- The payment page itself isn't fully customisable. 
+- If you want to support recurring payments or allow your merchants to charge for services using credentials on file you will also need to carry out a direct integration along with the Hosted Payment Page integration. 
+- With a Hosted Payment Page integration you are limited to the following transaction types : SALE, VERIFY, PREAUTH. If you want to support the REFUND, CANCEL and QUERY transaction types, you will also need to carry out a direct integration.  
+
+
 ## Security and Compliance 
 
 If you use Hosted Payment Pages with the Hosted Integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
