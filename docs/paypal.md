@@ -44,9 +44,7 @@ To customise the PayPal Checkout experience, you may send various options in the
 
 Additional information available from the PayPal Checkout will be made available in the `checkoutDetails` response field.
 
-Note: Custom Hosted Payment Pages might not support the displaying of the PayPal Checkout button. If you have a custom page that doesn’t support this, then you would need to contact support to have your Hosted Payment Page upgraded.
-
-#### Request Fields 
+### Request Fields 
 
 These fields should be sent in addition to the [basic request fields](transactiontypes.md/#transactionRequest).
 
@@ -134,7 +132,7 @@ The following request fields may be sent to provide information on the purchased
 
 Note: The shopping cart items must total to the amount specified in the transaction. If they do not, cart items will not be sent to the PayPal Checkout.
 
-### Checkout Details
+### Checkout Details {#checkoutDetails}
 
 The following details may be provided in the `checkoutDetails` field included in the response. The details will be returned using the record format detailed in the [format guide](overview#fieldFormats). 
 
@@ -263,6 +261,8 @@ PayPal transactions can be refunded in the same way as normal card transactions 
 Refunds can be made for full or partial amounts, with multiple refunds allowed up to the original authorised amount.
 
 By default, PayPal allows a Merchant up to 60 days from the original authorised transaction date to perform refunds.
+
+**Processing Refunds is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
 ### Cancel
 

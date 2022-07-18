@@ -130,7 +130,7 @@ This will query an existing transaction, identified using the `xref` request fie
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer.  |
 | signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
-| action | <span class="badge badge--primary">Yes</span> | Possible values are: AUTHORISE, CAPTURE, CANCEL, QUERY|
+| action | <span class="badge badge--primary">Yes</span> | Possible values are: AUTHORISE (PAYPAL, AMAZON PAY etc.), CAPTURE, CANCEL, QUERY|
 | xref | <span class="badge badge--primary">Yes</span> | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
 | amount  | No | The amount to capture or refund. **Mandatory** for partial refunds or partial captures.|
 | callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |

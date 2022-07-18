@@ -194,7 +194,7 @@ The following request fields may be sent to provide information on the purchased
 
 Note: The shopping cart items must total to the amount specified in the transaction. If they do not, cart items will not be sent to the PayPal Checkout.
 
-### Checkout Details
+### Checkout Details {#checkoutDetails}
 
 The following details may be provided in the `checkoutDetails` field included in the response. The details will be returned using the record format detailed in the [format guide](overview#fieldFormats). 
 
