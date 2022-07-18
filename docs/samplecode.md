@@ -19,7 +19,8 @@ The test accounts will only accept card numbers that are designated for test pur
         Card Number: <strong>5573 4712 3456 7898</strong> <br/>
         Expiration Date: <strong>12/25</strong> <br/>
         CVV: <strong>159</strong><br/>
-        Customer Address: <strong>Merevale Avenue Leicester LE10 2BU</strong>
+        Customer Address: <strong>Merevale Avenue Leicester </strong> <br/>
+        Postal Code: <strong>LE10 2BU</strong>
       </p>
     </div>
   </div>
@@ -38,7 +39,8 @@ The test accounts will only accept card numbers that are designated for test pur
         Card Number: <strong>4929 4212 3460 0821</strong> <br/>
         Expiration Date: <strong>12/25</strong> <br/>
         CVV: <strong>356</strong><br/>
-        Customer Address: <strong>Flat 6 Primrose Rise 347 Lavender Road Northampton NN17 8YG</strong>
+        Customer Address: <strong>Flat 6 Primrose Rise 347 Lavender Road Northampton </strong> <br/>
+         Postal Code: <strong>NN17 8YG</strong>
       </p>
     </div>
   </div>
