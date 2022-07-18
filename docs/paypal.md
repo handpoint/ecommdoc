@@ -224,7 +224,7 @@ The following details may be provided in the `checkoutDetails` field included in
 
 ## Transaction Lifecycle
 
-PayPal transactions will use the normal Authorise, Capture life cycle as documented in the section [Authorise, Capture and Settlement](annexes#authoriseCaptureSettlement) with the following differences. In addition, the PayPal `paymentAction` option can be included in the `checkoutOptions` field to alter the normal payment lifecycle further, to allow an Order, Authorise, Capture model or a straight Sale model to be specified.
+PayPal transactions will use the normal Authorise, Capture life cycle as documented in the section [Authorise, Capture and Settlement](annexes#authoriseCaptureSettlement) with the following differences. In addition, the PayPal `paymentAction` option can be included in the `paypalCheckoutOptions` field to alter the normal payment lifecycle further, to allow an Order, Authorise, Capture model or a straight Sale model to be specified.
 
 ### Order
 
@@ -284,6 +284,6 @@ IPR transactions will be automatically cancelled by the Gateway and treated as r
 
 PayPal does not allow ad hoc Credentials on File (COF) type repeat or recurring transactions using the xref of a reference transaction unless that transaction has specifically started a PayPal Billing Agreement.
 
-If you want to be able to make future repeat or recurring transactions, then the initial transaction must include the `billingType` and `billingAgreementDescription` options in the `checkoutOptions` so as to identify this transaction as the start of a recurring billing sequence. **Processing recurring payments is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
+If you want to be able to make future repeat or recurring transactions, then the initial transaction must include the `billingType` and `billingAgreementDescription` options in the `paypalCheckoutOptions` so as to identify this transaction as the start of a recurring billing sequence. **Processing recurring payments is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
 This will cause the Gateway to request PayPal to set up a Billing Agreement between you and the Customer. In this case, the PayPal Billing Agreement ID will be returned as part of the `checkoutDetails` and displayed on the Merchant Management System (MMS) as part of the payment details, so that you can easily see which PayPal transactions can be used for recurring billing.
