@@ -99,7 +99,7 @@ Undocumented fields may be returned at the Gateways discretion but should not be
 The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
 The response is also POSTed to any URL provided by optional callbackURL.
 
-## Management Operations
+## Management Operations {#managementOperations}
 
 You can perform a management action on an existing transaction, such as a capture or cancellation, by sending a request with the required action together with the cross reference for the transaction to act on.
 

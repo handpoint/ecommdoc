@@ -1,5 +1,5 @@
 ---
-sidebar_position: 20
+sidebar_position: 30
 ---
 
 # Annexes 
@@ -294,6 +294,10 @@ The schedule records should be passed in a sequential array of records, either a
 ## Merchant Request Fields {#merchantRequestFields}
 
 ## Card Identification {#cardIdentification}
+
+## Merchant Account Mapping {#merchantAccountMapping}
+
+## Authorise, Capture and Settlement {#authoriseCaptureSettlement}
 
 ## Test Amounts
 
