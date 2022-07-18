@@ -50,7 +50,8 @@ The test accounts will only accept card numbers that are designated for test pur
 
 The following example code shows how to create a payment form using the Hosted Payment Page via an embedded iFrame
 
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/3/embedded/html,result/dark/" sandbox="allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation allow-top-navigation" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
 ### Using Lightbox modal
 
@@ -59,7 +60,7 @@ The following example code shows how to create a payment form to open the Hosted
 The test accounts will only accept card numbers that are designated for test purposes. [Test cards](samplecode#test-cards-data) cannot be used on production accounts.
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/3/embedded/html,result/dark/" allowFullScreen={true} allowpaymentrequest="true"  frameborder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/17/embedded/html,result/dark/" allowFullScreen={true} allowpaymentrequest="true" frameBorder="0"></iframe>
 
 
 <br/>
@@ -68,7 +69,9 @@ The test accounts will only accept card numbers that are designated for test pur
 ### Redirecting to payments website
 The following example code shows how to create a payment form to open the Hosted Payment Page. Instead of the  lightbox (modal) on top of the page, the user is redirected to a fully separate web page
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/3/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
 
 ## Transaction Types
 
