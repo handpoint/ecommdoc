@@ -106,10 +106,10 @@ These fields will be returned, in addition to the request fields above and the [
 | ----------- | ----------- | ----------- |
 | checkoutRef | <span class="badge badge--primary">Yes</span> | Provided if `checkoutOnly` was used in the continuation response to indicate that a further request will be sent to finalise the transaction.|
 | checkoutName | <span class="badge badge--primary">Yes</span>  | Unique name of the Checkout. For Amazon Pay this is the value amazonpay.|
-| checkoutDetails | <span class="badge badge--primary">Yes</span>  | Record containing options used to customise the PayPal Checkout. Refer to the [checkout details](#checkoutDetails) section.|
+| checkoutDetails | <span class="badge badge--primary">Yes</span>  | Record containing options used to customise the Amazon Pay Checkout. Refer to the [checkout details](#checkoutDetails) section.|
 | acquirerResponseDetails | <span class="badge badge--primary">Yes</span> | Record containing details about the Amazon Pay response containing any error messages and codes. This can be used together with the normal `responseCode` and `responseMessage` response fields to determine further the reason for any failure.|
 | customerXXXX | No | Customer details if provided by the Amazon Pay Checkout. The response will include the Customer/billing address details if provided by the Amazon Pay Checkout. |
-| deliveryXXXX | No | Delivery details if provided by the PayPal Checkout.The response will include the delivery address details if provided by the Amazon Pay Checkout.|
+| deliveryXXXX | No | Delivery details if provided by the Amazon Pay Checkout.The response will include the delivery address details if provided by the Amazon Pay Checkout.|
 | receiverXXXX | No |Buyer details if provided by Amazon Pay. Amazon Pay will usually provide the buyer’s name, postcode and email only, which are returned in the `receiverName`, `receiverPostcode` and `receiverEmail` fields accordingly|
 
 ### Separate Checkout Details and Authorisation Requests

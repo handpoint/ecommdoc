@@ -54,6 +54,21 @@ These fields should be sent in addition to the [basic request fields](transactio
 | checkoutRedirectURL | No | URL on Merchant’s server to return to when the PayPal Checkout is closed.|
 | payPalCheckoutOptions | No | Record containing options used to customise the PayPal Checkout. See the [checkout options](#checkoutOptions) section.|
 
+
+### Response Fields
+
+These fields will be returned, in addition to the request fields above and the [basic response fields](transactiontypes.md/#transactionResponse).
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| checkoutName | <span class="badge badge--primary">Yes</span>  | Unique name of the Checkout. For PayPal this is the value paypal.|
+| acquirerResponseDetails | <span class="badge badge--primary">Yes</span>  | Record containing details about the PayPal response containing any error messages and codes. This can be used together with the normal `responseCode` and `responseMessage` response fields to determine further the reason for any failure.|
+| payPalCheckoutOptions | No | Record containing any Checkout options passed in the request.|
+| checkoutRef | <span class="badge badge--primary">Yes</span> | Unique reference.|
+| checkoutDetails | <span class="badge badge--primary">Yes</span>  | Record containing options used to customise the PayPal Checkout. Refer to the [checkout details](#checkoutDetails) section.|
+| customerXXXX | No | Customer details if provided by the PayPal Checkout. The response will include the Customer/billing address details if provided by the PayPal Checkout. |
+| deliveryXXXX | No | Delivery details if provided by the PayPal Checkout.The response will include the delivery address details if provided by the PayPal Checkout.|
+
 ### Checkout Options {#checkoutOptions}
 
 The following options may be set in the `payPalCheckoutOptions` field to customise the PayPal Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).

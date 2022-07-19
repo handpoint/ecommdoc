@@ -80,7 +80,7 @@ These fields will be returned, in addition to the request fields above and the [
 | checkoutName | <span class="badge badge--primary">Yes</span>  | Unique name of the Checkout. For PayPal this is the value paypal.|
 | checkoutURL | <span class="badge badge--primary">Yes</span>  | URL required to load the PayPal Checkout.|
 | acquirerResponseDetails | <span class="badge badge--primary">Yes</span>  | Record containing details about the PayPal response containing any error messages and codes. This can be used together with the normal `responseCode` and `responseMessage` response fields to determine further the reason for any failure.|
-| checkoutRequest | No | Record containing details to send to provide to the PayPal Checkout.|
+| checkoutRequest | No | Record containing details to send to the PayPal Checkout.|
 | checkoutOptions | No | Record containing any Checkout options passed in the request.|
 
 ### Continuation Request (Checkout Details and Authorise)

@@ -53,6 +53,23 @@ These fields should be sent in addition to the [basic request fields](transactio
 | checkoutRedirectURL | No | Reserved for future use.|
 | amazonPayCheckoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#checkoutOptions) section.|
 
+
+### Response Fields
+
+These fields will be returned, in addition to the request fields above and the [basic response fields](transactiontypes.md/#transactionResponse).
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| checkoutRef | <span class="badge badge--primary">Yes</span> | Unique reference required to continue this transaction when the Amazon Pay Checkout has completed.|
+| checkoutName | <span class="badge badge--primary">Yes</span>  | Unique name of the Checkout. For Amazon Pay this is the value amazonpay.|
+| acquirerResponseDetails | <span class="badge badge--primary">Yes</span> | Record containing details about the Amazon Pay response containing any error messages and codes. This can be used together with the normal `responseCode` and `responseMessage` response fields to further determine the reason for any failure.|
+| amazonPayCheckoutOptions | No | Record containing any Checkout options passed in the request.|
+| checkoutDetails | <span class="badge badge--primary">Yes</span>  | Record containing options used to customise the Amazon Pay Checkout. Refer to the [checkout details](#checkoutDetails) section.|
+| customerXXXX | No | Customer details if provided by the Amazon Pay Checkout. The response will include the Customer/billing address details if provided by the Amazon Pay Checkout. |
+| deliveryXXXX | No | Delivery details if provided by the Amazon Pay Checkout.The response will include the delivery address details if provided by the Amazon Pay Checkout.|
+| receiverXXXX | No |Buyer details if provided by Amazon Pay. Amazon Pay will usually provide the buyer’s name, postcode and email only, which are returned in the `receiverName`, `receiverPostcode` and `receiverEmail` fields accordingly|
+
+
 ### Checkout Options {#checkoutOptions}
 
 The following options may be set in the `amazonPayCheckoutOptions` field to customise the Amazon Pay Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
