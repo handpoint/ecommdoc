@@ -20,6 +20,7 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 - You are kept out of the EMV 3D-Secure flow.
 - This is the quickest path to integration with the Gateway.
 - Supporting dynamic currency conversion requires minimal work. 
+- Supporting alternative payment methods (Paypal, Amazon Pay, Pay by bank etc.) requires less effort than a Direct or Hosted Payment Fields integration. 
 
 ## Limitations 
 - The payment page itself isn't fully customisable. 
