@@ -95,14 +95,15 @@ This `form` will create a new transaction (10.01GBP) and attempt to seek authori
       <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
       <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
       <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester LE10 2BU" /> <!-- Cardholder address -->
-      <input type="hidden" name="signature" value="7e9d7b598dfb56f5be68cfbba571caf0e7bce138dc6f066a733c6f523fd96db745ff4909d64a37ccf1b5e99169c23dcdf6f298f381ea4f5236a3fe37e4760060" />
+      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+      <input type="hidden" name="signature" value="6cdc7f1b2b457ad63261837e9fb7fb96530b4aa37a703717a926e58739f809c64f28d2f5f31563b1ac022b04ea94c34b6e375cf8370362cd5179bda12d2f76fd" />
       <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
       <input type="submit" value="Pay Now">
 </form>
 ```
 
-<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/15/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/22/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
  
 
 ### VERIFY
@@ -121,14 +122,15 @@ This `form` will create a new transaction (0.00GBP) and attempt to verify that t
       <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
       <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
       <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester LE10 2BU" /><!-- Cardholder address -->
-      <input type="hidden" name="signature" value="1b2779af8d178265545353d1fb5d83dbdb596ca158e3d770c469010bd0c8cdf32f43e40e33d540c9b76222c75c3a1f456487f1c44655086352ffca0179065ef6" />
+      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+      <input type="hidden" name="signature" value="63f917d6031480d5a5dfce926a767c6982ee93135bfd1e488113046be98d3db9ff3270aa3a4a25bc76bf61b83618449d532c464bb42166705a27cf26547716ca" />
       <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
       <input type="submit" value="Verify Card">
 </form>
 ```            
 
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/15/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
  ### PREAUTH
 This `form` will create a new transaction (1.01GBP) and attempt to seek authorisation for a sale from the Acquirer.
@@ -137,19 +139,32 @@ This `form` will create a new transaction (1.01GBP) and attempt to seek authoris
 <!--form example of PREAUTH (1,01GBP)-->
 
 <form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-      <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-      <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
-      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester LE10 2BU" /> <!-- Cardholder address -->
-      <input type="hidden" name="signature" value="d0f9bd499ac12911ccc8c764375d963536c54b6613b91932a2b04b59b1c34019961fee69f9389bb1ea8d9fecdeaa8aec84d40566af9e52fb28793cf2b9a4a427" />
-      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-      <input type="submit" value="Pre Authorization">
+    <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+    <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+    <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+    <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+    <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+    <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
+    <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+    <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+    <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+    <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+    <input type="hidden" name="signature" value="f4f7b0c893d846d09efd2edfc3cbb21ab0c4248e35da0a8ae8cd8634273e4d10f53ca2fa5502508058319ce49adef9cd329d4bc781896e0d9db41a19e6ddac2d" />
+    <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+    <input type="submit" value="Pre Authorization (£1,01)">
 </form>
 ```
 
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/9/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/16/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+
+## Gateway Wallet
+
+### Hosted Integration using Gateway Wallet
+
+In this example we can make a SALE of 19.99 GBP using the Gateway Wallet.
+Using the **Saved Cards** option will allow you to use a previously used card.
+
+The CVV of the stored card is **159**.
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
