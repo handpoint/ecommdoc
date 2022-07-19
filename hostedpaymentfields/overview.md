@@ -14,6 +14,9 @@ For greater control over the customisation of the payment page, our Gateway offe
 By using the direct integration **you are involved in the EMV 3D-Secure flow**, adding a layer of complexity to the integration but giving you more control over the checkout process.
 
 
+The Hosted payment fields integration method supports Digital Wallets like **Google Pay and Apple Pay**. 
+
+
 ## Security and Compliance 
 
 If you use Hosted Payment Fields with the Direct or Batch Integrations, then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.

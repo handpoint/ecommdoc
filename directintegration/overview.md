@@ -10,6 +10,8 @@ In addition to basic sales processing, the Direct Integration can be used to per
 
 By using the direct integration **you are involved in the EMV 3D-Secure flow**, adding a layer of complexity to the integration but giving you more control over the checkout process.
 
+The Direct Integration method supports Digital Wallets like **Google Pay and Apple Pay**. 
+
 ## Security and Compliance 
 
 If your website collects and/or stores sensitive Cardholder data, such as the card number (PAN) or card security code (CVV/CV2), then your webserver must have an SSL certificate and serve all payment forms using HTTPS. You will also need a higher level of PCI DSS compliance and complete a PCI validation form annually. 

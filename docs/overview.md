@@ -13,7 +13,9 @@ The standard Hosted Payment Page is designed to be shown in a lightbox (modal) o
 
 By using the hosted payment page integration, **you are kept out of the EMV 3D-Secure flow** which allows you to keep the integration very simple without any added complexity.
 
- It is also important to note that if you are planning on using **Dynamic Currency Conversion (DCC)** then the Hosted Payment Page allows you to have the cardholder pay in their own currency with very little extra work. 
+ Please note that if you are planning on using **Dynamic Currency Conversion (DCC)** or **alternative payment methods** then the Hosted Payment Page allows you to have the cardholder pay in their own currency with very little extra work. 
+
+ A very important limitation of the Hosted Payment Page integration is that **Google Pay and Apple Pay are NOT supported**. A separate Direct integration will be required to support those digital wallets. 
 
 ## Benefits
 - You are kept out of PCI scope. 
@@ -26,6 +28,7 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 - The payment page itself isn't fully customisable. 
 - If you want to support recurring payments or allow your merchants to charge for services using credentials on file you will also need to carry out a direct integration along with the Hosted Payment Page integration. 
 - With a Hosted Payment Page integration you are limited to the following transaction types : SALE, VERIFY, PREAUTH. If you want to support the REFUND, CANCEL and QUERY transaction types, you will also need to carry out a direct integration.  
+- As mentioned above, the Hosted Payment Page integration does not support Google Pay and Apple Pay.
 
 
 ## Security and Compliance 
