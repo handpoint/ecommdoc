@@ -54,7 +54,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 |pproCheckoutOptions|No||Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
 
 
-#### Response Fields
+### Response Fields
 
 These fields will be returned, in addition to the request fields above and the [basic response fields](transactiontypes.md/#transactionResponse).
 
