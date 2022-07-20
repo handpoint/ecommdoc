@@ -160,11 +160,24 @@ This `form` will create a new transaction (1.01GBP) and attempt to seek authoris
 
 ## Gateway Wallet
 
+### Hosted Integration creating a new Gateway Wallet
+
+In this example we can make a SALE of 19.99 GBP.
+
+Once the card data has been entered, the option "**Save my card details**" must be selected.
+
+![Save card details ](/img/CardDetailsWallet.png)
+
+A `walletID` will be generated, the transaction information (and the included `walletID`) will appear on the website indicated in the request `callbackURL` field.
+This wallet ID will have to be used in the requests so that it can be used. See example of using a `walletID` [Hosted Integration using Gateway Wallet](samplecode.md#hosted-integration-using-gateway-wallet)
+
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
 ### Hosted Integration using Gateway Wallet
 
-In this example we can make a SALE of 19.99 GBP using the Gateway Wallet.
-Using the **Saved Cards** option will allow you to use a previously used card.
+Using the **Saved Cards** option will allow you to use a previously used card. A `walletID` needs to be provided in the request.
 
-The CVV of the stored card is **159**.
+The CVV of the stored card is **159**. 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
