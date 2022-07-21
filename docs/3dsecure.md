@@ -73,11 +73,11 @@ These fields will be returned in addition to the [basic response fields](transac
 | threeDSPolicy | If available | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
 | threeDSXID | If 3DS enabled | The unique identifier for the transaction in the 3DS system.|
 | threeDSVETimestamp | If 3DS enabled | The time the card was checked for 3DS enrolment, and any initial challenge determined.|
-| threeDSEnrolled | If 3DS enabled | The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. <br></br><br></br>Possible values are:<br></br> Y – Enrolled. <br></br>N – Not enrolled.<br></br> U – Unable to verify if enrolled. <br></br>E – Error verifying enrolment.|
+| threeDSEnrolled | If 3DS enabled | The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. <br></br><br></br>Possible values are:<br></br> Y – Enrolled. <br></br>N – Not enrolled.<br></br> U – Unable to verify if enrolled. <br></br>E – Error verifying enrolment.|
 | threeDSCATimestamp | If 3DS enabled | The time the last challenge was checked.|
-| threeDSAuthenticated | If 3DS enabled | The 3DS authentication status for the credit card. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details.<br></br><br></br> Possible values are:<br></br> Y – Authenticated. <br></br>A – Attempted to authenticate. <br></br>N – Not authenticated. <br></br>R – Reject transaction.<br></br> I – Information only.<br></br> U – Unable to authenticate.<br></br> E – Error checking authentication.|
-| threeDSECI | If 3DS authenticated | This contains a two-digit Electronic Commerce Indicator (ECI) value. Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
-| threeDSCAVV | If 3DS authenticated |This contains a 28-character Base-64 encoded Cardholder Authentication Verification Value (CAVV). Refer to [3-D Secure Authentication Data](annexes#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSAuthenticated | If 3DS enabled | The 3DS authentication status for the credit card. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details.<br></br><br></br> Possible values are:<br></br> Y – Authenticated. <br></br>A – Attempted to authenticate. <br></br>N – Not authenticated. <br></br>R – Reject transaction.<br></br> I – Information only.<br></br> U – Unable to authenticate.<br></br> E – Error checking authentication.|
+| threeDSECI | If 3DS authenticated | This contains a two-digit Electronic Commerce Indicator (ECI) value. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
+| threeDSCAVV | If 3DS authenticated |This contains a 28-character Base-64 encoded Cardholder Authentication Verification Value (CAVV). Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. The data contained within this property is only valid if the threeDSAuthenticated value is Y or A.|
 | threeDSDetails |If 3DS authenticated  |Record containing further details about the 3-D Secure processing stage. Notable sub fields are:<br></br>version – 3-D Secure version used <br></br>versions – 3-D Secure versions available <br></br>psd2Region – whether payment in PSD2 jurisdiction|
 | threeDSErrorCode |If 3DS error |Any error response code returned by the ACS if there is an error in determining the card’s 3DS status.|
 | threeDSErrorDescription |If 3DS error |Any error response description returned by the ACS if there is an error in determining the card's 3DS status.|
@@ -191,3 +191,82 @@ The options must be formatted using the record or serialised record formats deta
 | shippingAddressState | No |The state or province of the address as an ISO 3166-2 country subdivision code. Maximum length is 3 characters.|
 | suspiciousAccountActivity | No |Indicates whether the 3DS Requestor has experienced suspicious activity (including previous fraud) on the cardholder account.<br></br> <br></br>  Possible values are:<br></br>  01 – No suspicious activity has been observed <br></br> 02 – Suspicious activity has been observed|
 | whitelistStatus | No |Whitelist status. <br></br><br></br>Possible values are: <br></br>Y – 3DS Requestor is whitelisted by cardholder<br></br> N – 3DS Requestor is not whitelisted by cardholder|
+
+## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
+
+The 3-D Secure system uses various data fields to report the authentication status of the Cardholder. Each 3-D Secure version may use slightly different terminology for the fields and have slightly different values but for ease of use the Gateway uses the terminology and values as described in this appendix.
+
+The field’s values would normally be populated by the Gateway’s 3DS Server component (The 3DS Server is the Gateway/Merchant component that provides the interface with the 3DS Directory Server), however you may choose to use your own 3DS Server component and provide the values.
+
+### 3D Secure enrolment status
+
+The `threeDSEnrolled` field indicates if the card is enrolled in the 3-D Secure program.
+
+The value is determined if the card number is within one of the enrolled ranges downloaded daily from the Directory Server using a Preparation Request/Response (PReq/PRes) message.
+
+The field can contain one of the following values:
+
+**Y – Enrolled**. The card is enrolled in the 3-D Secure program and the payer is eligible for authentication
+processing.
+
+**N - Not Enrolled**. The checked card is eligible for the 3-D Secure (it is within the card association’s range of accepted cards) but the card issuing bank does not participate in the 3-D Secure program. If the Cardholder later disputes the purchase, the issuer may not submit a chargeback to you.
+
+**U - Unable To Verify Enrolment**. The card associations were unable to verify whether the Cardholder is registered. As the card is ineligible for 3-D Secure, you can choose to accept the card nonetheless and precede the purchase as non-authenticated and submits authorisation with ECI 07.
+
+**E - Error Verifying Enrolment**. The Gateway encountered an error. This card is flagged as 3-D Secure ineligible. The card can be accepted for payment at your discretion.
+
+### 3DS Authentication status
+
+The `threeDSAuthenticated` field indicates if the cardholder has been authenticated by the 3-D Secure program.
+
+The value is provided by the Directory Server either on requesting authentication in the Authentication Response (ARes) message, in the case of a frictionless flow, or after a Cardholder
+challenge in the Result Request (RReq) message, in the case of a challenge flow.
+
+The field can contain one of the following values:
+
+**Y - Authentication Successful**. The Issuer has authenticated the Cardholder by verifying the identity information or password. A CAVV and an ECI of 5 is returned. The card is accepted for payment and authentication data passed to authorisation processing.
+
+**A - Attempted Authentication**. A proof of authentication attempt was generated. The Cardholder is not participating, but the attempt to authenticate was recorded. The card can be accepted for payment at your discretion and authentication data passed to authorisation processing.
+
+**N - Not Authenticated**. The Cardholder did not complete authentication and the card should not be accepted for payment.
+
+**R – Rejected By Issuer**. The Issuer rejected the transaction and must not be accepted for payment.
+
+**D – Decoupled Challenge Required**. Decoupled authentication confirmed.
+
+**I – Information Only**. 3DS Requestor challenge preference acknowledged.
+
+**U - Unable To Authenticate**. The authentication was not completed due to technical or another problem. A transmission error prevented authentication from completing. The card can be accepted for payment at your discretion, but no authentication data will be passed on to authorisation processing.
+
+**E - Error Checking Authentication**. The Gateway encountered an error. The card can be accepted for payment at your discretion, but no authentication data will be passed on to authorisation processing.
+
+### 3DS Transaction Identifier 
+
+The `threeDSXID` field provides a unique value to identify the transaction through the 3-D Secure system.
+The value is provided by the Directory Server and is a 36-character universally unique identifier (UUID) as defined in IETF RFC 4122.
+
+### 3DS Electronic Commerce Indicator
+
+The `threeDSECI` field indicates the security status of the transaction after the Cardholder has been authenticated or attempted authentication.
+
+The value is provided by the Directory Server either on requesting authentication in the Authentication Response (ARes) message, in the case of a frictionless flow, or after a Cardholder challenge in the Result Request (RReq) message, in the case of a challenge flow.
+
+The value is always present if the `threeDSAuthenticated` field has a value of Y (successful authentication), or A (attempted authentication) but can be present at other times.
+
+The field can contain one of the following 2-digit values (the values are shown as pairs, the first value is for Visa and other Card Schemes and the second for Mastercard only):
+
+- **05/02** - Both cardholder and card issuing bank are 3DS enabled. 3DS card authentication is successful.
+- **06/01** - Either cardholder or card issuing bank is not 3DS enrolled. 3DS card authentication is unsuccessful, in sample situations as:
+    - 3DS cardholder not enrolled.
+    - Card issuing bank is not 3DS ready.
+- **07/00** - Authentication is unsuccessful or not attempted. The card is either a non-3DS card or card issuing bank does not handle it as a 3DS transaction.
+
+### 3DS Cardholder Authentication Verification Value
+
+The `threeDSCAVV` field provides proof that the Cardholder has been authenticated or attempted authentication.
+
+The value is provided by the Directory Server either on requesting authentication in the Authentication Response (ARes) message, in the case of a frictionless flow, or after a Cardholder challenge in the Result Request (RReq) message, in the case of a challenge flow.
+
+The value is present if the `threeDSAuthenticated` field has a value of Y (successful authentication), or A (attempted authentication).
+
+The field will contain a 28-character Base-64 encoded value (32-characters for Mastercard).

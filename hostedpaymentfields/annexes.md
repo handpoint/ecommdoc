@@ -830,55 +830,6 @@ decoded as below, the remaining 2 characters are currently reserved for future u
 | 4 | Authorising entity – card scheme | 
 | 8 | Authorising entity – issuer | 
 
-## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
-
-The 3-D Secure system uses various data fields to report the authentication status of the Cardholder. Each 3-D Secure version may use slightly different terminology for the fields and have slightly different values but for ease of use the Gateway uses the terminology and values as described in this appendix.
-
-The field’s values would normally be populated by the Gateway’s 3DS Server component (The 3DS Server is the Gateway/Merchant component that provides the interface with the 3DS Directory Server), however you may choose to use your own 3DS Server component and provide the values.
-
-### 3D Secure enrolment status
-
-The `threeDSEnrolled` field indicates if the card is enrolled in the 3-D Secure program.
-
-The value is determined if the card number is within one of the enrolled ranges downloaded daily from the Directory Server using a Preparation Request/Response (PReq/PRes) message.
-
-The field can contain one of the following values:
-
-**Y – Enrolled**. The card is enrolled in the 3-D Secure program and the payer is eligible for authentication
-processing.
-
-**N - Not Enrolled**. The checked card is eligible for the 3-D Secure (it is within the card association’s range of accepted cards) but the card issuing bank does not participate in the 3-D Secure program. If the Cardholder later disputes the purchase, the issuer may not submit a chargeback to you.
-
-**U - Unable To Verify Enrolment**. The card associations were unable to verify whether the Cardholder is registered. As the card is ineligible for 3-D Secure, you can choose to accept the card nonetheless and precede the purchase as non-authenticated and submits authorisation with ECI 07.
-
-**E - Error Verifying Enrolment**. The Gateway encountered an error. This card is flagged as 3-D Secure ineligible. The card can be accepted for payment at your discretion.
-
-### 3DS Authentication status
-
-The `threeDSAuthenticated` field indicates if the cardholder has been authenticated by the 3-D Secure program.
-
-The value is provided by the Directory Server either on requesting authentication in the Authentication Response (ARes) message, in the case of a frictionless flow, or after a Cardholder
-challenge in the Result Request (RReq) message, in the case of a challenge flow.
-
-The field can contain one of the following values:
-
-**Y - Authentication Successful**. The Issuer has authenticated the Cardholder by verifying the identity information or password. A CAVV and an ECI of 5 is returned. The card is accepted for payment and authentication data passed to authorisation processing.
-
-**A - Attempted Authentication**. A proof of authentication attempt was generated. The Cardholder is not participating, but the attempt to authenticate was recorded. The card can be accepted for payment at your discretion and authentication data passed to authorisation processing.
-
-**N - Not Authenticated**. The Cardholder did not complete authentication and the card should not be accepted for payment.
-
-**R – Rejected By Issuer**. The Issuer rejected the transaction and must not be accepted for payment.
-
-**D – Decoupled Challenge Required**. Decoupled authentication confirmed.
-
-**I – Information Only**. 3DS Requestor challenge preference acknowledged.
-
-**U - Unable To Authenticate**. The authentication was not completed due to technical or another problem. A transmission error prevented authentication from completing. The card can be accepted for payment at your discretion, but no authentication data will be passed on to authorisation processing.
-
-**E - Error Checking Authentication**. The Gateway encountered an error. The card can be accepted for payment at your discretion, but no authentication data will be passed on to authorisation processing.
-
-
 ## Signature Calculation {#signatureCalculation} 
 
 It is highly recommended that transactions are protected using message signing. The signing process offers a quick and simple way to ensure that the message came from an authorised source and has not been tampered with during transmission.

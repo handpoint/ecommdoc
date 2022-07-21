@@ -218,8 +218,6 @@ The Gateway offers a mean of automating the taking of regular CA transactions us
 
 ## Exemptions to Strong Customer Authentication {#scaExemptions}
 
-## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
-
 ## Merchant Request Fields {#merchantRequestFields}
 
 ## Card Identification {#cardIdentification}

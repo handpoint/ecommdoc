@@ -829,7 +829,6 @@ EOS;
 
 ## Exemptions to Strong Customer Authentication {#scaExemptions}
 
-## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
 
 
 
