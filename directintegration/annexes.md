@@ -7,7 +7,7 @@ sidebar_position: 30
 
 ## Capture Delay {#captureDelay}
 
-### Overview
+#### Overview
 
 Capture Delay enables you to specify a delay between the authorisation of a payment and its capture. This allows you time to verify the order and choose whether to fulfil it or cancel it. This can be very helpful in preventing chargebacks due to fraud.
 
@@ -23,7 +23,7 @@ The Gateway will automatically capture the transaction after any delay specified
 
 Note that some cards require capture within 4 to 5 days - if payment is not automatically captured within that period, the transaction will expire, and the reserved funds will be released to the Customer.
 
-### Why Use Capture Delay?
+#### Why Use Capture Delay?
 
 Capture delay allows you to accept online orders normally but allows you to cancel any transactions that you cannot or will not fulfil, thereby reducing the risks of chargeback. If you receive an order that appears to be fraudulent or that you cannot or do not wish to fulfil, you can simply cancel the transaction.
 
@@ -31,22 +31,22 @@ Note: Cancelling a transaction may not always reverse the authorisation and rele
 
 Some Acquirers do not support delayed capture, in which case the Hosted Integration will return a responseCode of 66358 (INVALID CAPTURE DELAY).
 
-## Transaction Types 
+## Transaction Types Definitions
 
 The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
 The type of transaction required is specified using the `type` request field when performing a new payment transaction.
 
-### E-Commerce (ECOM) {#ecommerce}
+#### E-Commerce (ECOM) {#ecommerce}
 
 E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions MUST use advance fraud detection, such as 3-D Secure V2.
 
-### Mail Order/Telephone Order (MOTO){#moto}
+#### Mail Order/Telephone Order (MOTO){#moto}
 
 Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
 
 Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
 
-### Continuous Authority (CA) {#continuousAuthority}
+#### Continuous Authority (CA) {#continuousAuthority}
 
 Continuous Authority transactions are supported by the Gateway by using a transaction `type` of `9`. They are designed for you to make subscription transactions. 
 
