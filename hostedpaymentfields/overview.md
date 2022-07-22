@@ -23,7 +23,7 @@ If you use Hosted Payment Fields with the Direct or Batch Integrations, then you
 
 The Gateway will make transaction details available for a maximum period of 13 months. Your acquirer may hold information for a different period of time.
 
-## Authentication 
+## Authentication {#authentication}
 
 You will need the following information to integrate with the Gateway which will be provided during onboarding:
 

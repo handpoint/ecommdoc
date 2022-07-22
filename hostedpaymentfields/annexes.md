@@ -830,6 +830,152 @@ decoded as below, the remaining 2 characters are currently reserved for future u
 | 4 | Authorising entity – card scheme | 
 | 8 | Authorising entity – issuer | 
 
+## Merchant Account Mapping {#merchantAccountMapping}
+
+Merchant Accounts can be grouped together so that if a transaction is sent to an account that doesn't support either the requested card type or currency, then it can be automatically routed to another account in the same group that does support them.
+
+For example, you can group a Merchant Account that only supports American Express cards with a Merchant Account that only supports Visa cards. Then, if a request using an American Express card is sent to the Visa only Merchant Account, the Gateway will automatically route it to the American Express Merchant Account.
+
+This prevents you from needing to know the card type in advance in order to send the request to the correct Merchant Account. This is important when using the Hosted integration, because you don’t know the card type at the time you send the request.
+
+It is usual for you to have one master account to which you direct all requests and then group all your accounts together.
+
+Any Gateway routing of the transaction can be seen from the following additional response fields:
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| requestMerchantID | Always | ID of Merchant Account request was sent to (usually same as merchantID).|
+| processMerchantID | Always | ID of Merchant Account request was processed by.|
+
+## Velocity Control System (VCS)
+
+The Gateway allows you to configure velocity controls using the Merchant Management System (MMS). These can be used to email you declined transactions automatically, where they exceed these controls.
+
+For example, you can set up a control that stops a certain card number from being used more than twice in the space of a few minutes.
+
+If one or more of these controls are broken by a transaction, then the following response fields will 
+show the problem.
+If a transaction is declined through breach of one or more of these rules, then a `responseCode` of 5 (VCS DECLINE) will be returned.
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| vcsResponseCode | Always | VCS error code. Normally 5.|
+| vcsResponseMessage | Always | Description of above response code or list of rules broken by this transaction.|
+
+## Duplicate Transaction Checking
+
+Duplicate transaction checking prevents transaction requests from accidentally processing more than once. This can happen if a Customer refreshes your checkout page or clicks a button that issues a new transaction request. While duplicate checking can help prevent repeat transactions from going through, we recommend talking with your developers to see whether changes can be made to your form to reduce the likelihood of this occurring (eg disabling the Submit button after it has been clicked).
+
+To help prevent duplicate transactions, each transaction can specify a time window during which previous transactions will be checked to see whether they could be possible duplicates.
+
+This time window is specified using the `duplicateDelay` field. The value for this field can range from 0 to 9999 seconds (approx. 2 ¾ hours).
+
+If the transaction request does not include the `duplicateDelay` field or specifies a value of zero, then a default delay of 300 seconds (5 minutes) is used.
+
+The following fields are used in transaction comparison and must be the same for a transaction to be regarded as a duplicate:
+- merchantID
+- action
+- type
+- amount
+- transactionUnique
+- currencyCode
+- xref (if provided in lieu of card details)
+- cardNumber (may be specified indirectly via cross reference)
+
+If a transaction is regarded as being a duplicate, then a responseCode of 65554 (REQUEST DUPLICATE) will be returned.
+
+## Capture Delay {#captureDelay}
+
+### Overview
+
+Capture Delay enables you to specify a delay between the authorisation of a payment and its capture. This allows you time to verify the order and choose whether to fulfil it or cancel it. This can be very helpful in preventing chargebacks due to fraud.
+
+When NOT using capture delay, payments are authorised and captured immediately - funds are automatically debited from the Customer’s credit or debit card at that time.
+
+When using capture delay, the payment is authorised only at the time of payment - funds are reserved against the credit or debit card and will not be debited until the payment is captured. 
+
+The Customer experience with capture delay is the same as when capture delay is not used. The Customer will not know whether you are using capture delay or not.
+
+If you choose to use capture delay, you can use the `captureDelay` request field to specify the number of days for which capture is delayed, within a range of 0 to 30 days. Alternatively, you can use the value -1 or ‘never’ to specify that the Gateway should never automatically capture in which case you must manually capture.
+
+The Gateway will automatically capture the transaction after any delay specified unless you manually cancel or capture the transaction, using either the Direct Integration or via the Merchant Management System (MMS).
+
+Note that some cards require capture within 4 to 5 days - if payment is not automatically captured within that period, the transaction will expire, and the reserved funds will be released to the Customer.
+
+### Why Use Capture Delay?
+
+Capture delay allows you to accept online orders normally but allows you to cancel any transactions that you cannot or will not fulfil, thereby reducing the risks of chargeback. If you receive an order that appears to be fraudulent or that you cannot or do not wish to fulfil, you can simply cancel the transaction.
+
+Note: Cancelling a transaction may not always reverse the authorisation and release the funds back to the Customer. This is dependent on the Acquirer and in these cases the authorisation will never be settled and will be left to expire releasing any reserved funds. The time taken for this varies between cards.
+
+Some Acquirers do not support delayed capture, in which case the Hosted Integration will return a `responseCode` of 66358 (INVALID CAPTURE DELAY).
+
+## Card Identification {#cardIdentification}
+
+The Gateway will attempt to identify the type of each card number provided along with the associated Card Scheme (network) and, when available, the issuing institution and issuing country.
+
+The Gateway primarily supports Mastercard, Visa and American Express branded cards. Some Acquirers may support JCB, Discover and Diners Club cards. Not all Acquirers support all types.
+
+The card type and scheme codes will be returned in the `cardTypeCode` and `cardSchemeCode` response fields. When available, the issuer details will be returned in the `cardIssuer` and `cardIssuerCountryCode` response fields.
+
+If the Gateway is unable to identify the card, then a code of ‘XX’ will be returned.
+
+The following fields are returned by the Gateway to indicate a cards identity.
+
+| Name | Description |
+| ----------- | ----------- |
+| cardTypeCode | Card type identification code, eg ‘VD’.|
+|cardType |Card type name, eg, ‘Visa Debit’.|
+| cardSchemeCode |Scheme identification code, eg ‘VC’.|
+| cardScheme |Scheme name, eg ‘Visa’.|
+| cardIssuer |Card Issuer’s name, eg ‘HSBC UK BANK PLC’.|
+| cardIssuerCountryCode |Issuing country’s ISO-3166 2-letter code, eg ‘GB’.|
+|cardIssuerCountry|Issuing country’s name, eg ‘United Kingdom’.|
+|cardFlags|Bitmask of flags where each bit number indicates the following:<br></br><br></br>01 – debit (not credit) card.<br></br>02 – alternative debit (not credit) card. <br></br>03 – prepaid card.<br></br>09 – corporate card (not consumer) card.<br></br>12 – tokenised card (reserved for future use).<br></br>17 – ECOM use allowed.<br></br>18 – MOTO use allowed.<br></br>19 – EPOS use allowed.<br></br>20 – CA use allowed.<br></br>21 – LUHN conforming.<br></br>22 – 3-D Secure available (doesn’t indicate the card is enrolled).<br></br>23 – Contactless available.<br></br><br></br>An unset bit may mean that the information is unavailable and not necessarily that the information doesn’t apply to the card.|
+
+The following is a list of primary card types supported by the Gateway.
+
+| Card Code | Scheme Code | Card Type |
+| ----------- | ----------- | ----------- |
+|MC|MC|Mastercard Credit|
+|MD|MC|Mastercard Debit|
+|MA|MC|Mastercard International Maestro|
+|MI|MC|Mastercard/Diners Club|
+|MP|MC|Mastercard Purchasing|
+|MU|MC|Mastercard Domestic Maestro (UK)|
+|VC|VC|Visa Credit|
+|VD|VC|Visa Debt|
+|EL|VC|Visa Electron|
+|VA|VC|Visa ATM|
+|VP|VC|Visa Purchasing|
+|AM|AM|American Express|
+|JC|JC|JCB|
+|DS|DS|Discover|
+|DI|DI|Diners Club|
+|DC|DI|Diners Club Carte Blanche|
+|CU|CU|China UnionPay|
+|CC|CU|China UnionPay Credit|
+|CD|CU|China UnionPay Debit|
+
+The following is a list of secondary card types recognised by the Gateway. These cards may be
+returned in response to a card lookup, but they are either deprecated or most likely not supported
+by any current Acquirer.
+
+| Card Code | Scheme Code | Card Type |
+| ----------- | ----------- | ----------- |
+|CF|CF|Clydesdale Financial Services|
+|BC|BC|BankCard|
+|DK|DK|Dankort|
+|DE|DI|Diners Club Enroute|
+|FC|FC|FlexCache|
+|LS|LS|Laser|
+|SO|SO|Solo|
+|ST|ST|Style|
+|SW|SW|Switch|
+|TP|TP|Tempo Payments|
+|IP|IP|InstaPayment|
+
+
 ## Signature Calculation {#signatureCalculation} 
 
 It is highly recommended that transactions are protected using message signing. The signing process offers a quick and simple way to ensure that the message came from an authorised source and has not been tampered with during transmission.
@@ -972,31 +1118,7 @@ $tran = array (
 
  ```
 
-## Capture Delay {#captureDelay}
 
-### Overview
-
-Capture Delay enables you to specify a delay between the authorisation of a payment and its capture. This allows you time to verify the order and choose whether to fulfil it or cancel it. This can be very helpful in preventing chargebacks due to fraud.
-
-When NOT using capture delay, payments are authorised and captured immediately - funds are automatically debited from the Customer’s credit or debit card at that time.
-
-When using capture delay, the payment is authorised only at the time of payment - funds are reserved against the credit or debit card and will not be debited until the payment is captured. 
-
-The Customer experience with capture delay is the same as when capture delay is not used. The Customer will not know whether you are using capture delay or not.
-
-If you choose to use capture delay, you can use the captureDelay request field to specify the number of days for which capture is delayed, within a range of 0 to 30 days. Alternatively, you can use the value -1 or ‘never’ to specify that the Gateway should never automatically capture in which case you must manually capture.
-
-The Gateway will automatically capture the transaction after any delay specified unless you manually cancel or capture the transaction, using either the Direct Integration or via the Merchant Management System (MMS).
-
-Note that some cards require capture within 4 to 5 days - if payment is not automatically captured within that period, the transaction will expire, and the reserved funds will be released to the Customer.
-
-### Why Use Capture Delay?
-
-Capture delay allows you to accept online orders normally but allows you to cancel any transactions that you cannot or will not fulfil, thereby reducing the risks of chargeback. If you receive an order that appears to be fraudulent or that you cannot or do not wish to fulfil, you can simply cancel the transaction.
-
-Note: Cancelling a transaction may not always reverse the authorisation and release the funds back to the Customer. This is dependent on the Acquirer and in these cases the authorisation will never be settled and will be left to expire releasing any reserved funds. The time taken for this varies between cards.
-
-Some Acquirers do not support delayed capture, in which case the Hosted Integration will return a responseCode of 66358 (INVALID CAPTURE DELAY).
 
 ## Transaction Types 
 
@@ -1042,12 +1164,6 @@ The Gateway offers a mean of automating the taking of regular CA transactions us
 
 ## Exemptions to Strong Customer Authentication {#scaExemptions}
 
-
-
 ## Merchant Request Fields {#merchantRequestFields}
-
-## Merchant Account Mapping {#merchantAccountMapping}
-
-## Card Identification {#cardIdentification}
 
 ## Authorise, Capture and Settlement {#authoriseCaptureSettlement}

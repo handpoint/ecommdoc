@@ -21,7 +21,7 @@ The Gateway will make transaction details available for a maximum period of 13 m
 
 
 
-## Authentication 
+## Authentication {#authentication}
 
 You will need the following information to integrate with the Gateway which will be provided during onboarding:
 
