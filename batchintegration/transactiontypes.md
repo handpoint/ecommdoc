@@ -46,7 +46,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer  |
-| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](samplecode#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE, REFUND, REFUND_SALE.<br></br><br></br> If a REFUND_SALE action is used, then the request must not attempt to change the payment details, or it will fail with a responseCode of 65542 (REQUEST MISMATCH) because the refund must be made to the original card.|
 | amount  | <span class="badge badge--primary">Yes</span> | The amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
 | Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
@@ -122,7 +122,7 @@ This will query an existing transaction, identified using the `xref` request fie
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer.  |
-| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](samplecode#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: AUTHORISE, CAPTURE, CANCEL, QUERY|
 | xref | <span class="badge badge--primary">Yes</span> | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
 | amount  | No | The amount to capture or refund. **Mandatory** for partial refunds or partial captures.|

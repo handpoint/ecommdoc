@@ -7,7 +7,7 @@ sidebar_position: 2
 
 ## Testing 
 
-You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are not connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
+You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
 
 ### Test Amounts 
 
@@ -40,7 +40,7 @@ The test accounts will only accept card numbers that are designated for test pur
 
 To test AVS and CV2 verification then the associated CVV and billing addresses are provided for each card. If a different value is used, then the Simulator will mark the responses as ‘not matched’.
 
-Unless stated otherwise an expiry date sometime in the near future should be used.
+**Unless stated otherwise an expiry date sometime in the near future should be used.**
 
 #### Visa Credit 
 
@@ -106,7 +106,38 @@ Unless stated otherwise an expiry date sometime in the near future should be use
 
 Diners Club do not support the Address Verification Service (AVS). For testing purposes, we advise that a separate Merchant Account is used with AVS is turned off.
 
-## Request Checking Only
+### 3D Secure Testing 
+
+Your test accounts are connected to our 3-D Secure Product Integration Testing (PIT) system rather than to the production 3-D Secure servers. You can use any of the test cards provided above with this PIT system, and the authentication status returned by the Directory Server (for frictionless flow simulation) can be selected using the value of the card expiry month as follows:
+
+| Card Expiry Month| Auth Status | Simulation (Frictionless) | 
+| ----------- | ----------- | ----------- |
+| 01 - January | Y | Fully authenticated | 
+| 02 - February | N | Not authenticated 
+|03 - March|U|Unknown authentication status | 
+|04 - April|A|Attempted authentication| 
+|05 - May|D|Decoupled authentication | 
+|06 - June|R|Transaction rejected (do not attempt to send for authorisation) | 
+|07 – July|E|Unknown error performing 3-D Secure checks | 
+|08 - August|E| Error due to timeout communicating with the Directory Server| 
+|09 – September|E|Error due to corrupt response from the Directory Server.| 
+|10 – October|I|Information only| 
+|11 – November|U|Unknown authentication due to Cardholder not enrolled (error 13)| 
+|12 - December|C|Frictionless not possible, challenge Cardholder| 
+
+An expiry month of 12 will simulate the non frictionless flow and desired authentication status (threeDSAuthenticated) can be selected on the challenge dialog shown by the PIT Access Control Server.
+
+When using an expiry month from the above table please use a suitable expiry year to ensure the date is sometime in the near future.
+
+### Paypal Sandbox Accounts 
+
+Please contact customer support to have your own PayPal test Merchant account created that connects to your own PayPal sandbox account, thus enabling you to view the transactions as they are sent to PayPal.
+
+### Amazon Pay Sandbox Accounts 
+
+Please contact customer support to have your own Amazon Pay test Merchant account created that connects to your own Amazon Pay sandbox account, thus enabling you to view the transactions as they are sent to Amazon Pay.
+
+### Request Checking Only
 
 Sometimes, you may wish to submit a request to the Gateway in order for it to be ‘validated only’ and not processed by the simulator or sent to the Acquirer. In these cases, the following flag can be used that will stop the processing after the integrity verification has been performed:
 
@@ -117,4 +148,145 @@ Sometimes, you may wish to submit a request to the Gateway in order for it to be
 If the request is OK, then a responseCode is returned as 0 (Success); otherwise, the code that would have prevented the request from completing is returned.
 
 Note: in these cases, the request is not stored by the Gateway and is not available within the Merchant Management System (MMS).
+
+## Signature Calculation {#signatureCalculation} 
+
+It is highly recommended that transactions are protected using message signing. The signing process offers a quick and simple way to ensure that the message came from an authorised source and has not been tampered with during transmission.
+
+Signing, however, must be completed on your servers and never left for the Customer’s browser to complete in JavaScript, as this would mean revealing your secret signature code to anyone who viewed the JavaScript code in the browser.
+
+Signatures are especially important when a transaction is sent from a browser’s payment form via the use of hidden form fields because the Customer can easily use tools built into their browser to modify these hidden fields and change items such as the amount they should be charged.
+
+Care must be taken to ensure that fields are sorted before signing into ascending field name order according to their numeric ASCII value. Some languages natural sort routines do NOT use ASCII order by default and so need to be adjusted or alternative methods used.
+
+Also, when signing requests with fields formatted as per the [format guide](overview#fieldFormats), only the root integration field is included in any sorting as the sub-fields are part of the value and should not have their order changed. The sub-fields must then be sent in the same order as they were hashed if added as hidden fields in HTML forms etc.
+The section below gives a step-by-step example of how to sign a transaction, complete with coding examples using the PHP language.
+
+### Example Signature Key 
+
+```php
+$key = 'DontTellAnyone'
+```
+
+### Example Transaction 
+
+```php
+$tran = array ( 
+    'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+    'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
+    'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
+    'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP
+    'countryCode' => '826', //ISO 3-letter country code. 826 -> United Kingdom
+    'amount' => '2691', //Either major currency units includes a single decimal point such as ’10.99'. 
+                      //Minor currency units contains no decimal points such as ‘1099
+    'transactionUnique' => '55f025addd3c2', //Unique identifier for this transaction. This is an added security feature to combat transaction spoofing
+    'orderRef' => 'Signature Test',  //Free format text field to store order details, reference numbers, etc. for the Merchant’s records.
+    'cardNumber' => '4929 4212 3460 0821', //Card Number
+    'cardExpiryDate' => '1213', ) //Card expiry date
+```
+:::tip
+The transaction used for signature calculation must not include any 'signature' field as this will be added after signing when its value is known.
+:::
+
+#### Step 1 - Sort transaction values by their field name
+
+Transaction fields must be in ascending field name order according to their numeric ASCII value.
+
+```php
+ksort($tran);
+array ( 'action' => 'SALE', 'amount' => '2691', 'cardExpiryDate' => '1213', 'cardNumber' => '4929 4212 3460 0821', 'countryCode' => '826', 'currencyCode' => '826', 'merchantID' => '100001', 'orderRef' => 'Signature Test', 'transactionUnique' => '55f025addd3c2', 'type' => '1' )
+```
+
+#### Step 2 - Create url encoded string from sorted fields
+
+Use RFC 1738 and the application/x-www-form-urlencoded media type, which implies that spaces are encoded as plus (+) signs.
+
+```php
+$str = http_build_query($tran, '', '&');
+
+action=SALE&amount=2691&cardExpiryDate=1213&cardNumber=4929+4212+3460+0821&countryCode=826&currencyCode=826&merchantID=100001&orderRef=Signature+Test&transactionUnique=55f025addd3c2&type=1
+```
+
+#### Step 3 - Normalise all line endings in the url encoded string
+
+Convert all CR NL, NL CR, CR character sequences to a single NL character.
+
+```php
+$str = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $str);
+
+action=SALE&amount=2691&cardExpiryDate=1213&cardNumber=4929+4212+3460+0821&countryCode=826&currencyCode=826&merchantID=100001&orderRef=Signature+Test&transactionUnique=55f025addd3c2&type=1
+```
+#### Step 4 - Append your signature key to the normalised string
+
+The signature key is appended to the normalised string with no separator characters.
+
+```php
+$str .= 'DontTellAnyone'
+
+action=SALE&amount=2691&cardExpiryDate=1213&cardNumber=4929+4212+3460+0821&countryCode=826&currencyCode=826&merchantID=100001&orderRef=Signature+Test&transactionUnique=55f025addd3c2&type=1DontTellAnyone
+```
+
+#### Step 5 - Hash the string using the SHA-512 algorithm
+
+The normalised string is hashed to a more compact value using the secure SHA-512 hashing algorithm.
+
+```php
+$signature = hash('SHA512', $str);
+
+da0acd2c404945365d0e7ae74ad32d57c561e9b942f6bdb7e3dda49a08fcddf74fe6af6b23b8481b8dc8895c12fc21c72c69d60f137fdf574720363e33d94097
+```
+
+#### Step 6 - Add the signature to the transaction form or post data
+
+The signature should be sent as part of the transaction in a field called 'signature'.
+
+```php
+<input type="hidden" name="signature" value="<?=$signature?>">
+or
+$tran['signature'] = $signature;
+```
+
+### Sample Code PHP
+
+Example of calculating the signature in PHP:
+
+```php
+
+<?PHP 
+
+//Merchant signature key
+$key = 'm3rch4nts1gn4tur3k3y';
+
+
+//Request Information
+$tran = array (
+'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+    'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
+    'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
+    'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP
+    'countryCode' => '826', //ISO 3-letter country code. 826 -> United Kingdom
+    'amount' => '2691', //Either major currency units includes a single decimal point such as ’10.99'. 
+                      //Minor currency units contains no decimal points such as ‘1099
+    'transactionUnique' => '55f025addd3c2', //Unique identifier for this transaction. This is an added security feature to combat transaction spoofing
+    'orderRef' => 'Signature Test',  //Free format text field to store order details, reference numbers, etc. for the Merchant’s records.
+    'cardNumber' => '4929 4212 3460 0821', //Card Number
+    'cardExpiryDate' => '1213',
+);
+ 
+
+ ksort($tran);
+
+ $str = http_build_query($tran, '', '&');
+
+ $str = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $str);
+
+ $str .= '3obzOxdqw6e1u';
+
+ $signature = hash('SHA512', $str);
+
+ //Prints the signature
+ printf("Signature %s", $signature);
+ ?>
+
+ ```
 

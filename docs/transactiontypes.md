@@ -39,7 +39,7 @@ If the transaction is to be completed then a new authorisation must be sought us
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
 | merchantPwd | No | Any password used for an added security layer.  |
-| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](annexes#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
+| signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](samplecode#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE|
 | amount  | <span class="badge badge--primary">Yes</span> | The amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br><br></br>**Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
 | Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
