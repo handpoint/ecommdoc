@@ -35,6 +35,12 @@ If the transaction is to be completed then a new authorisation must be sought us
 
 ## Transaction Request {#transactionRequest}
 
+For the Hosted payment page integration only a few fields are required (see table below). However, you can customise the appearance of the Hosted Payment Page by sending additional fields in the request.
+
+You can control which payment methods are displayed and the default or initial value to display in the input fields.
+
+You can also state which fields you require to be mandatory, in which case the payment form may not be submitted until the Cardholder has completed all the mandatory fields. On the standard modal Hosted Payment Page, the mandatory requirement can also control whether the field needs to be displayed. A value of ‘Y’ or ‘N’ means the field must be displayed, ‘Y’ indicates that a value must be supplied, while ‘N’ indicates the value can be blank. Omitting the request field means that the field need not be displayed if the form can provide a better user experience without it.
+
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
 | merchantID | <span class="badge badge--primary">Yes</span> | Your Gateway Merchant Account ID. |
@@ -46,19 +52,43 @@ If the transaction is to be completed then a new authorisation must be sought us
 | countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | redirectURL | <span class="badge badge--primary">Yes</span> | URL to which the hosted form will redirect the Customer’s browser after the transaction has been completed. The URL must be fully qualified and include at least the scheme and host components. Refer to the [redirect URL](overview#redirectUrl) docs for details. |
-| paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`. |
-| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. <br></br><br></br> **Optional**:<br></br> - if provided it will be used to initialise the corresponding hosted payment page input field.<br></br> - if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`. It can also request the Hosted Payment Page to invoke an alternative payment method on display without the need for the Customer to select it. |
+| allowedPaymentMethods | No | Comma separated list of paymentMethods supported by the Merchant to show on Hosted Payment Page where supported. |
+| cardNumber | No | The primary account number (PAN) as printed on the front of the payment card. Digits and spaces only. <br></br><br></br> **Optional**:<br></br> - if provided it will be used to initialise the corresponding hosted payment page input field.<br></br> - This should only be used by Merchants who are storing Card numbers as per PCI DSS requirements<br></br> - if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | cardExpiryMonth | No | Payment card’s expiry month from 1 to 12. <br></br><br></br> **Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br> - if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
 | cardExpiryYear | No | Payment card’s expiry year from 00 to 99. <br></br><br></br> **Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
 | cardExpiryDate | No | Payment card’s expiry date in MMYY format as an alternative to sending a separate `cardExpiryMonth` and `cardExpiryYear`. <br></br><br></br>**Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip. <br></br><br></br>**Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
+| cardCVV | No | Payment card’s security number. The 3-digit number printed on the signature strip. <br></br><br></br>**Optional**:<br></br>- if provided it will be used to initialise the corresponding hosted payment page input field.<br></br>- This should only be used for test purpose as Merchants are not allowed to store Card CVV numbers.<br></br>- if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | transactionUnique | No | You can supply a unique identifier for this transaction. This is an added security feature to combat transaction spoofing.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.  |
 | orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
 | captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
 | xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
 | callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
-
+| customerName | No | Default value for the Cardholder’s name field. |
+| customerAddress | No | Default value for the Cardholder’s address field. |
+| customerTown| No | Default value for the Cardholder’s town field. |
+| customerCounty| No | Default value for the Cardholder’s county field. |
+| customerPostcode| No | Default value for the Cardholder’s postcode field. |
+| customerCountryCode| No | Default value for the Cardholder’s country field.|
+| customerEmail| No | Default value for the Cardholder’s email field.|
+|customerPhone | No | Default value for the Cardholder’s phone number field.|
+| receiverDateOfBirth| No | Default value for the Cardholder’s date of birth field.|
+| cardCVVMandatory| No | Card security number field requirements (Y or N). |
+| customerNameMandatory| No | Cardholder’s name field requirements (Y or N). |
+| customerFullNameMandatory| No | Cardholder’s name field requirements (Y or N).|
+| customerAddressMandatory| No | Cardholder’s address field requirements (Y or N).|
+| customerTownMandatory| No | Cardholder’s town field requirements (Y or N).|
+| customerCountyMandatory | No | Cardholder’s county field requirements (Y or N).|
+| customerPostcodeMandatory| No | Cardholder’s postcode field requirements (Y or N).|
+| customerCountryCodeMandatory| No |Cardholder’s country field requirements (Y or N). |
+| customerPostcodeMandatory | No | Cardholder’s postcode field requirements (Y or N).|
+| customerEmailMandatory | No | Cardholder’s email field requirements (Y or N).|
+| customerPhoneMandatory | No | Cardholder’s phone field requirements (Y or N).|
+| receiverDateOfBirthMandatory | No | Cardholder’s date of birth requirements (Y or N).|
+| formAmountEditable | No | Enables the payment amount to be edited by the consumer thus allowing the consumer to choose the amount they wish to pay.|
+| formResponsive | No |Request the Hosted Payment Page adjust its layout according to the browser display size etc. (Y or N). |
+| formAllowCancel | No | Request the Hosted Payment Page show a cancel button to allow the payment to be cancelled resulting in a transaction responseCode of 65576 (REQUEST CANCELLED).|
 
 ## Transaction Response {#transactionResponse}
 
