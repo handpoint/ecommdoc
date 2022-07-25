@@ -683,9 +683,7 @@ EOS;
 
 ## Device Information Fields {#deviceInformationFields}
 
-## SCA Using 3-D Secure {#scaUsing3dSecure}
 
-## Exemptions to Strong Customer Authentication {#scaExemptions}
 
 
 

@@ -2,10 +2,119 @@
 sidebar_position: 4
 ---
 
-# 3D Secure
+# 3D Secure & Strong Customer Authentication (SCA)
+
+## PSD2 SCA Compliance 
+
+Strong Customer Authentication (SCA) is a requirement of the second Payment Services Directive (PSD2) in the European Economic Area (EEA), Monaco, and the United Kingdom. It aims to add extra layers of security to e-commerce payments by requiring banks to perform additional checks when Customers make payments.
+
+PSD2 is for banks, not for merchants. This means that to comply with the law in their home country, banks must refuse non-compliant payments. To avoid the risk of the bank declining your payment, you as a merchant need to ensure that your payments comply with PSD2 SCA regulations.
+
+You can comply by obtaining additional authentication to verify the Customer’s identity or by providing a valid reason for the payment to be exempt from SCA. Any authentication must use a least two of the following three elements:
+1. Something the Customer knows (eg password)
+2. Something the Customer has (eg phone)
+3. Something the Customer is (eg fingerprint)
+
+PSD2 countries are: Austria, Belgium, Bulgaria, Croatia, Republic of Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta, Monaco, Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia, Spain, Sweden, and the UK.
+
+### Obtaining Strong Customer Authentication 
+
+Strong Customer Authentication applies to Customer entered online transactions (ECOM). Mail Order/Telephone Order (MOTO) transactions and recurring transactions are considered Merchant entered transactions and do not require strong authentication.
+
+Currently, the most common way of authenticating an online card payment is to use 3-D Secure. 3-D Secure is accepted as a means of obtaining Cardholder authentication for the purposes of SCA.
+
+Other card-based payment method such as Apple Pay and some Google Pay payments already support payment flows with a built-in layer of strong authentication (biometric or password). These can be a great way for you to offer a frictionless checkout experience while meeting the new requirements.
+
+We also expect many alternative European payment methods such as PayPal, Amazon Pay, iDEAL, etc. to follow the new SCA rules without any major changes to their user experience.
+
+### SCA Soft-Declines
+
+There are two main types of card transaction declines: hard declines and soft declines.
+
+Hard declines happen when the issuing bank rejects the transaction. Examples include attempting to use a card that has been reported lost or stolen, or the card has expired. Hard declines are permanent, so the payment should not be retried.
+
+Soft declines are temporary authorisation failures. Around 80% to 90% of all declines fall into this category. They occur for a host of reasons including the need to authenticate the Cardholder further or because there are issues with the technical infrastructures that process the transaction. Soft declines are temporary, meaning you can process the transaction again after meeting the requirements that led to the decline the first time around.
+
+If you do not obtain SCA on an eligible payment the issuer may soft decline the payment insisting that SCA be obtained. In which case a `responseCode` of 65 will be returned by the Gateway and you can choose to resubmit the payment with SCA if required.
+
+With the Handpoint Gateway you can use 3-D Secure to obtain SCA and automatically retry payments that have been soft declined for this reason. If 3-D Secure has been used to provide SCA and the issuer still declines insisting that SCA be obtained, then the Gateway will return a normal decline `responseCode` of 5 to prevent an infinite loop of obtaining SCA and then being declined for lack of SCA.
+
+### Exemptions to Strong Customer Authentication {#scaExemptions}
+
+There are some e-commerce transactions which are out of scope of the regulation, and others that may be exempt.
+
+Obtaining Strong Customer Authentication can add friction and increase Customer drop-off and therefore you should make use of exemptions to reduce the number of times you will need to authenticate a Customer.
+
+However, the bank has the right to refuse any requested exemption and decline the payment insisting that SCA be obtained. The following exemptions are available:
+
+#### Mail Order / Telephone Order Payments
+
+Card details collected via mail or over the phone (MOTO) fall outside of the scope of SCA and do not require authentication. You can flag such payments by passing a value of ‘2’ in the `type` request field.
+
+#### Merchant Initiated Transactions (including recurring transactions)
+
+Payments made with saved cards when the Customer is not present in the payment flow may qualify as [Merchant Initiated Transactions](credentialsonfile). These payments fall outside of the scope of SCA however it is still up to the bank to decide whether authentication is needed for the payment.
+
+The initial payment that saved the card will still need to have obtained SCA or be exempt and agreement must be obtained from the Customer to charge their card at a later point.
+
+You can flag such payments by passing a value of ‘9’ (Continuous Authority) in the `type` request field or using an `rtAgreementType` that signifies the transaction as being Merchant Initiated.
+
+#### Low Value Exemption 
+
+Payments below €30 are considered low value and are generally exempt from authentication. However, if the Customer initiates more than five consecutive low value payments or if the total payments value exceeds €100) then SCA will be required.
+
+You can request this exemption by passing a value of ‘lowvalue’ in the `scaExemption` request field, or it may be automatically applied by the Issuer.
+
+#### Trusted Beneficiary Exemption
+
+The Customer can opt to trust you as a Merchant during their first authentication, then subsequent payments with you are likely to be exempt from future SCA.
+
+You can request this exemption by passing a value of ‘trusted’ in the `scaExemption` request field to allow this trust to be taken into consideration.
+
+#### Trusted Risk Analysis (TRA) Exemption
+
+If the payment provider, having in place effective risk analysis tools, assesses that the fraud risk associated with the payment is low then they can allow this exemption.
+
+You can request this exemption by passing a value of ‘risk’ in the `scaExemption` request field if agreed to by the payment provider.
+
+#### Secured Corporate Payment Exemption
+
+Payments initiated by a business rather than a Consumer and processed through a secured dedicated payment protocol can be exempt from SCA provided alternative controls are sufficiently secure.
+
+You can request this exemption by passing a value of ‘corporate’ in the `scaExemption` request field to indicate such a secure transaction.
+
+#### Delegated Authentication Exemption
+
+If you already require your Customers to perform sufficient authentication on your website, such as secure account logins etc., then you can use this exemption to request that further SCA is not required.
+
+You can request this exemption by passing a value of ‘delegated’ in the `scaExemption` request field to indicate such a secure transaction.
+
+### SCA Using 3-D Secure {#scaUsing3dSecure}
+
+3-D Secure can be used to provide the necessary Strong Customer Authentication. You have a choice of how and when to use 3-D Secure to satisfy SCA:
+
+**Authentication Before Authorisation**
+You submit payments using 3-D Secure for authentication up front so that the authorisation will be submitted to the Acquirer with the appropriate authentication data showing that SCA was sought. You may pass an exemption indicator (an exemption can be explicitly requested using the `scaExemption` field) causing the Gateway to automatically request a frictionless flow (the Gateway will use the correct ‘requestorChallengeIndicator’ unless overridden by any value passed in the request).
+
+**Authentication After Authorisation, when requested by the Issuer (Bypass)**
+You submit payments without 3-D Secure authentication but with an exemption indicator (an exemption can be explicitly requested using the `scaExemption` field), if required, and the authorisation will be submitted to the Acquirer with no authentication data. If the Issuer approves the authorisation, then no further additional authentication is needed. However, if the Issuer refuses the authorisation due to SCA being required (the issuer will soft decline the transaction indicating SCA is required) then transaction can be repeated but this time using 3-D Secure (you are advised to send a `threeDSOptions` ‘requestorChallengeIndicator’ value of 4 to mandate a challenge) and no exception indicator.
+
+The Gateway can support both choices and in the case of the second choice it can automatically perform the repeat transaction on your behalf.
+
+The choice of how and when authentication is performed is indicated by selecting a 3-D Secure Policy in the Merchant Management System or by sending the `threeDSPolicy` field in the request.
+
+The policies available are:
+1. Authenticate Before Authorisation or When Issuer Requests (Default)
+2. Authenticate Before Authorisation Only
+3. Authenticate When Issuer Requests Only (Bypass)
+4. Authenticate Before Authorisation or When Issuer Requests [PSD2]
+5. Authenticate Before Authorisation Only [PSD2]
+6. Authenticate When Issuer Requests Only [PSD2] (Bypass)
+
+The [PSD2] policies will perform 3-D Secure authentication only if the transaction falls within the jurisdiction of the European Union's Payment Services Directive 2, otherwise it will behave as if 3-D Secure had not been required.
 
 
-## Overview 
+## 3D Secure Overview 
 
 :::tip
 The Gateway supports both 3-D Secure version 1 and version 2 and will use the highest version available. Version 2 is also commonly known as EMV 3-D Secure. 
@@ -115,9 +224,9 @@ These fields should be sent in addition to basic request fields detailed in the 
 | merchantCategoryCode | No | Merchant category code.|
 | threeDSRequired | No | Is 3DS required for this transaction? <br></br><br></br>Possible values are:<br></br> N – 3DS is not required.  <br></br>Y – Abort if 3DS is not enabled<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS).|
 | threeDSCheckPref | No | List of `threeDSCheck` response values that are to be accepted, any other value will cause the transaction to be declined. <br></br><br></br>Value is a comma separated list containing one or more of the following values: ‘not known', 'not checked', ' not authenticated', 'attempted authentication', 'authenticated’.<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS).|
-| threeDSPolicy | No | 3DS Policy used. Refer to [SCA Using 3-D Secure](annexes#scaUsing3dSecure).<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS). |
+| threeDSPolicy | No | 3DS Policy used. Refer to [SCA Using 3-D Secure](#scaUsing3dSecure).<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS). |
 | threeDSVersion | No | Force a particular version to be used rather than using the highest available for the transaction details. **Use of this request field is not encouraged under normal circumstances.**<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS). |
-| scaExemption | No | An SCA exemption can be used to request that a frictionless flow is preferable. Refer to [Exemptions to Strong Customer Authentication](annexes#scaExemptions).<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS).| 
+| scaExemption | No | An SCA exemption can be used to request that a frictionless flow is preferable. Refer to [Exemptions to Strong Customer Authentication](#scaExemptions).<br></br><br></br>Overrides any Merchant Account setting configured via the Merchant Management System (MMS).| 
 
 
 ### Continuation Request (Check Authentication and Authorise) {#3dSecurecontinuationRequest}
@@ -165,7 +274,7 @@ These fields will be returned in addition to the [3D secure request fields](#ini
 | Name      | Returned | Description |
 | ----------- | ----------- | ----------- |
 | threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
-| threeDSPolicy | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
+| threeDSPolicy | 3DS Policy used. Refer to [SCA using 3-D Secure](#scaUsing3dSecure) for more details.|
 | threeDSVETimestamp | If 3DS enabled| The time the card was checked for 3DS enrolment, and any initial challenge determined.|
 | threeDSEnrolled | If 3DS enabled| The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. <br></br> <br></br> Possible values are:<br></br>  Y – Enrolled. <br></br> N – Not enrolled.<br></br>  U – Unable to verify if enrolled.<br></br> E – Error verifying enrolment.|
 | threeDSRef | If 3DS enabled| Value to return in the continuation request.|
@@ -180,7 +289,7 @@ These fields will be returned in addition to the [3D secure request fields](#ini
  | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
 | threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
-| threeDSPolicy | If available | 3DS Policy used. Refer to [SCA using 3-D Secure](annexes#scaUsing3dSecure) for more details.|
+| threeDSPolicy | If available | 3DS Policy used. Refer to [SCA using 3-D Secure](#scaUsing3dSecure) for more details.|
 | threeDSXID | If 3DS enabled | The unique identifier for the transaction in the 3DS system.|
 | threeDSVETimestamp | If 3DS enabled | The time the card was checked for 3DS enrolment, and any initial challenge determined.|
 | threeDSEnrolled | If 3DS enabled | The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. <br></br><br></br>Possible values are:<br></br> Y – Enrolled. <br></br>N – Not enrolled.<br></br> U – Unable to verify if enrolled. <br></br>E – Error verifying enrolment.|
@@ -230,7 +339,7 @@ In the case of a frictionless flow, the card Issuer may sometimes wish to provid
 
 ### PSD2 Strong Customer Authentication
 3-D Secure can be used to provide the Strong Customer Authentication (SCA) required by the European Union's Payment Services Directive 2 (PSD2).
-For more details on how to use 3-D Secure to maintain PSD2 SCA Compliance please refer to Refer to [SCA Using 3-D Secure](annexes#scaUsing3dSecure). 
+For more details on how to use 3-D Secure to maintain PSD2 SCA Compliance please refer to Refer to [SCA Using 3-D Secure](#scaUsing3dSecure). 
 
 ## 3DS Options {#3dsOptions}
 

@@ -106,3 +106,22 @@ For backwards compatibility, the Gateway will try to automatically identify if a
 You may also pass the `initiator` field in the request to force a classification. This can be used if the Gateway is unable to correctly classify the transaction. If, however, the requested classification is incompatible with the provided request fields then the transaction will fail with a `   ` of 66944 (INVALID INITIATOR).
 
 The `initiator` field will be returned in the response with either the value passed in the request or the automatically identified value.
+
+## Credentials on File Matrix {#credentialsOnFileMatrix}
+
+| Scenario | CIT/MIT | CNP | COF | SCA (3D Secure) | initiator | type | rtAgreementType | xref |
+| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
+| Cardholder opts to store their card details on Merchant's website. | CIT | ECOMMERCE | initial | Required | consumer | 1 | cardonfile  | Optional for cloning |
+| Cardholder opts to store their card details provided to Merchant via mail or telephone. | CIT | MOTO | initial | Exempt | consumer | 2 | cardonfile | Optional for cloning  |
+| Cardholder pays using a card they previously stored on the Merchant's website. | CIT | ECOMMERCE | Subsequent | Required | consumer | 1 | cardonfile | Reference to transaction that initially stored the card |
+| Cardholder provides their card details to sign up to a subscription on the Merchant's website. | CIT | ECOMMERCE | initial or subsequent | Required  | consumer | 1 | recurring | Optional for cloning or using previous stored card |
+| Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.| CIT | ECOMMERCE | initial or subsequent |Required| consumer | 1 | instalment | Optional for cloning or using previous stored card  |
+| Cardholder provides their card details to sign up to a subscription via mail or telephone to the Merchant. | CIT | MOTO | initial or subsequent | Exempt |consumer | 2 | recurring | Optional for cloning or using previous stored card  |
+| Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant. | CIT | MOTO | initial or subsequent | Exempt |  consumer | 2 | instalment |Optional for cloning or using previous stored card|
+| Merchant/Gateway takes an automatic subscription payment at the interval agreed to by the Cardholder. | MIT | Continuous Authority | Subsequent | Exempt | merchant | 9 | recurring  | Reference to initial or previous recurring payment |
+| Merchant/Gateway makes an automatic instalment payment at the interval agreed to by the Cardholder. | MIT | Continuous Authority | Subsequent |Exempt | merchant | 9 | instalment  | Reference to initial or previous instalment payment |
+| Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details. | MIT | MOTO | Subsequent  | Exempt | merchant | 2 | unscheduled | Reference to transaction that initially stored the card |
+| Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder. | MIT | MOTO | N/A  | Exempt | merchant | 2 | resubmission | Reference to initial payment that was declined |
+| Merchant reauthorises a payment when the completion or fulfilment of the original order or service extends beyond the authorization validity limit set by the Card Scheme. | MIT | MOTO | N/A | Exempt | merchant | 2 | reauthorisation | Reference to payment that is to be reauthorised |
+| Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
+| Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |

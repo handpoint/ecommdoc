@@ -58,28 +58,6 @@ Your Acquirer may need to enable Continuous Authority capabilities on your main 
 
 The Gateway offers a mean of automating the taking of regular CA transactions using [Recurring Transaction Agreements (RTA)](recurringtransactionagreements).
 
-## Transaction Cloning {#transactionCloning}
-
-## Payment Tokenisation {#paymentTokenisation}
-
-## Transaction States {#transactionStates}
-
-## Response Codes {#responseCodes}
-
-## AVS / CV2 Check Response Codes {#AvsResponseCodes}
-
-## Card Identification {#cardIdentification}
-
 ## Device Information Fields {#deviceInformationFields}
 
-## SCA Using 3-D Secure {#scaUsing3dSecure}
-
-## Exemptions to Strong Customer Authentication {#scaExemptions}
-
 ## Merchant Request Fields {#merchantRequestFields}
-
-## Card Identification {#cardIdentification}
-
-## Merchant Account Mapping {#merchantAccountMapping}
-
-## Authorise, Capture and Settlement {#authoriseCaptureSettlement}
