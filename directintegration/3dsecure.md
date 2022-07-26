@@ -205,7 +205,7 @@ If the Gateway determines that the transaction is not eligible for 3-D Secure, t
 
 To support 3-D Secure, you must pass the `threeDSRedirectURL` field in the initial request. This field must contain the complete URL to a web page on your server that the 3-D Secure Access Control Server (ACS) will HTTP POST the authentication results back to, when the authentication has been completed.
 
-You must also provide details about the Cardholder’s device, using the fields documented in [device information fields](annexes#deviceInformationFields) or using the associated options in the `threeDSOptions` field. You may also use the `threeDSOptions` field to pass additional information about the transaction and Cardholder, which can help the Issuer decide on whether a challenge is required.
+You must also provide details about the Cardholder’s device, using the fields documented in [device information fields](advanceddata#deviceInformationFields) or using the associated options in the `threeDSOptions` field. You may also use the `threeDSOptions` field to pass additional information about the transaction and Cardholder, which can help the Issuer decide on whether a challenge is required.
 
 If the Gateway determines that the transaction is eligible, it will respond with a responseCode of 65802 (3DS AUTHENTICATION REQUIRED) and included in the response will be a `threeDSRef` field, a `threeDSReqest` field and a `threeDSURL` field.
 

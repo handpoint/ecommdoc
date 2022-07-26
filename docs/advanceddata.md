@@ -26,7 +26,7 @@ The Gateway provides a number of fields that you can use to store information ab
 | customerMerchantRef | No | Customer’s reference for the Merchant.|
 | customerTaxRef | No | Customer’s tax reference number.|
 
-## Merchant Request Fields
+## Merchant Request Fields {#merchantRequestFields}
 
 These fields can be used to store details about the Merchant and any relationship between the Merchant and Customer such as any invoice reference.
 
@@ -126,7 +126,7 @@ These fields can be used to store details about the recipient of the purchased g
 
 Note: no attempt is made to check that any gross, net and tax amounts are correct with respect to each other. It is the sender’s responsibility to ensure alternative amount formats are correct.
 
-## Device Information Fields
+## Device Information Fields {#deviceInformationFields}
 
 These fields can be used to provide details of the device from which the transaction is being made. Although not strictly mandatory, they may be required for fraud checking or 3-D Secure authentication, in which case it is highly recommended that they be provided.
 

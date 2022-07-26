@@ -4,6 +4,623 @@ sidebar_position: 30
 
 # Annexes 
 
+## Merchant Account Mapping {#merchantAccountMapping}
+
+Merchant Accounts can be grouped together so that if a transaction is sent to an account that doesn't support either the requested card type or currency, then it can be automatically routed to another account in the same group that does support them.
+
+For example, you can group a Merchant Account that only supports American Express cards with a Merchant Account that only supports Visa cards. Then, if a request using an American Express card is sent to the Visa only Merchant Account, the Gateway will automatically route it to the American Express Merchant Account.
+
+This prevents you from needing to know the card type in advance in order to send the request to the correct Merchant Account. This is important when using the Hosted integration, because you don’t know the card type at the time you send the request.
+
+It is usual for you to have one master account to which you direct all requests and then group all your accounts together.
+
+Any Gateway routing of the transaction can be seen from the following additional response fields:
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| requestMerchantID | Always | ID of Merchant Account request was sent to (usually same as merchantID).|
+| processMerchantID | Always | ID of Merchant Account request was processed by.|
+
+## Velocity Control System (VCS)
+
+The Gateway allows you to configure velocity controls using the Merchant Management System (MMS). These can be used to email you declined transactions automatically, where they exceed these controls.
+
+For example, you can set up a control that stops a certain card number from being used more than twice in the space of a few minutes.
+
+If one or more of these controls are broken by a transaction, then the following response fields will 
+show the problem.
+If a transaction is declined through breach of one or more of these rules, then a `responseCode` of 5 (VCS DECLINE) will be returned.
+
+| Name      | Returned | Description |
+| ----------- | ----------- | ----------- |
+| vcsResponseCode | Always | VCS error code. Normally 5.|
+| vcsResponseMessage | Always | Description of above response code or list of rules broken by this transaction.|
+
+## Duplicate Transaction Checking
+
+Duplicate transaction checking prevents transaction requests from accidentally processing more than once. This can happen if a Customer refreshes your checkout page or clicks a button that issues a new transaction request. While duplicate checking can help prevent repeat transactions from going through, we recommend talking with your developers to see whether changes can be made to your form to reduce the likelihood of this occurring (eg disabling the Submit button after it has been clicked).
+
+To help prevent duplicate transactions, each transaction can specify a time window during which previous transactions will be checked to see whether they could be possible duplicates.
+
+This time window is specified using the `duplicateDelay` field. The value for this field can range from 0 to 9999 seconds (approx. 2 ¾ hours).
+
+If the transaction request does not include the `duplicateDelay` field or specifies a value of zero, then a default delay of 300 seconds (5 minutes) is used.
+
+The following fields are used in transaction comparison and must be the same for a transaction to be regarded as a duplicate:
+- merchantID
+- action
+- type
+- amount
+- transactionUnique
+- currencyCode
+- xref (if provided in lieu of card details)
+- cardNumber (may be specified indirectly via cross reference)
+
+If a transaction is regarded as being a duplicate, then a responseCode of 65554 (REQUEST DUPLICATE) will be returned.
+
+## Capture Delay {#captureDelay}
+
+#### Overview
+
+Capture Delay enables you to specify a delay between the authorisation of a payment and its capture. This allows you time to verify the order and choose whether to fulfil it or cancel it. This can be very helpful in preventing chargebacks due to fraud.
+
+When NOT using capture delay, payments are authorised and captured immediately - funds are automatically debited from the Customer’s credit or debit card at that time.
+
+When using capture delay, the payment is authorised only at the time of payment - funds are reserved against the credit or debit card and will not be debited until the payment is captured. 
+
+The Customer experience with capture delay is the same as when capture delay is not used. The Customer will not know whether you are using capture delay or not.
+
+If you choose to use capture delay, you can use the `captureDelay` request field to specify the number of days for which capture is delayed, within a range of 0 to 30 days. Alternatively, you can use the value -1 or ‘never’ to specify that the Gateway should never automatically capture in which case you must manually capture.
+
+The Gateway will automatically capture the transaction after any delay specified unless you manually cancel or capture the transaction, using either the Direct Integration or via the Merchant Management System (MMS).
+
+Note that some cards require capture within 4 to 5 days - if payment is not automatically captured within that period, the transaction will expire, and the reserved funds will be released to the Customer.
+
+#### Why Use Capture Delay?
+
+Capture delay allows you to accept online orders normally but allows you to cancel any transactions that you cannot or will not fulfil, thereby reducing the risks of chargeback. If you receive an order that appears to be fraudulent or that you cannot or do not wish to fulfil, you can simply cancel the transaction.
+
+Note: Cancelling a transaction may not always reverse the authorisation and release the funds back to the Customer. This is dependent on the Acquirer and in these cases the authorisation will never be settled and will be left to expire releasing any reserved funds. The time taken for this varies between cards.
+
+Some Acquirers do not support delayed capture, in which case the Hosted Integration will return a `responseCode` of 66358 (INVALID CAPTURE DELAY).
+
+## Card Identification {#cardIdentification}
+
+The Gateway will attempt to identify the type of each card number provided along with the associated Card Scheme (network) and, when available, the issuing institution and issuing country.
+
+The Gateway primarily supports Mastercard, Visa and American Express branded cards. Some Acquirers may support JCB, Discover and Diners Club cards. Not all Acquirers support all types.
+
+The card type and scheme codes will be returned in the `cardTypeCode` and `cardSchemeCode` response fields. When available, the issuer details will be returned in the `cardIssuer` and `cardIssuerCountryCode` response fields.
+
+If the Gateway is unable to identify the card, then a code of ‘XX’ will be returned.
+
+The following fields are returned by the Gateway to indicate a cards identity.
+
+| Name | Description |
+| ----------- | ----------- |
+| cardTypeCode | Card type identification code, eg ‘VD’.|
+|cardType |Card type name, eg, ‘Visa Debit’.|
+| cardSchemeCode |Scheme identification code, eg ‘VC’.|
+| cardScheme |Scheme name, eg ‘Visa’.|
+| cardIssuer |Card Issuer’s name, eg ‘HSBC UK BANK PLC’.|
+| cardIssuerCountryCode |Issuing country’s ISO-3166 2-letter code, eg ‘GB’.|
+|cardIssuerCountry|Issuing country’s name, eg ‘United Kingdom’.|
+|cardFlags|Bitmask of flags where each bit number indicates the following:<br></br><br></br>01 – debit (not credit) card.<br></br>02 – alternative debit (not credit) card. <br></br>03 – prepaid card.<br></br>09 – corporate card (not consumer) card.<br></br>12 – tokenised card (reserved for future use).<br></br>17 – ECOM use allowed.<br></br>18 – MOTO use allowed.<br></br>19 – EPOS use allowed.<br></br>20 – CA use allowed.<br></br>21 – LUHN conforming.<br></br>22 – 3-D Secure available (doesn’t indicate the card is enrolled).<br></br>23 – Contactless available.<br></br><br></br>An unset bit may mean that the information is unavailable and not necessarily that the information doesn’t apply to the card.|
+
+The following is a list of primary card types supported by the Gateway.
+
+| Card Code | Scheme Code | Card Type |
+| ----------- | ----------- | ----------- |
+|MC|MC|Mastercard Credit|
+|MD|MC|Mastercard Debit|
+|MA|MC|Mastercard International Maestro|
+|MI|MC|Mastercard/Diners Club|
+|MP|MC|Mastercard Purchasing|
+|MU|MC|Mastercard Domestic Maestro (UK)|
+|VC|VC|Visa Credit|
+|VD|VC|Visa Debt|
+|EL|VC|Visa Electron|
+|VA|VC|Visa ATM|
+|VP|VC|Visa Purchasing|
+|AM|AM|American Express|
+|JC|JC|JCB|
+|DS|DS|Discover|
+|DI|DI|Diners Club|
+|DC|DI|Diners Club Carte Blanche|
+|CU|CU|China UnionPay|
+|CC|CU|China UnionPay Credit|
+|CD|CU|China UnionPay Debit|
+
+The following is a list of secondary card types recognised by the Gateway. These cards may be
+returned in response to a card lookup, but they are either deprecated or most likely not supported
+by any current Acquirer.
+
+| Card Code | Scheme Code | Card Type |
+| ----------- | ----------- | ----------- |
+|CF|CF|Clydesdale Financial Services|
+|BC|BC|BankCard|
+|DK|DK|Dankort|
+|DE|DI|Diners Club Enroute|
+|FC|FC|FlexCache|
+|LS|LS|Laser|
+|SO|SO|Solo|
+|ST|ST|Style|
+|SW|SW|Switch|
+|TP|TP|Tempo Payments|
+|IP|IP|InstaPayment|
+
+## Transaction Life Cycle
+
+Each transaction received by the Gateway follows a pre-determined life cycle from receipt to completion. The stages in the life cycle are determined by the type of transaction and its success or failure at different stages in its life.
+
+#### Authorise, Capture and Settlement {#authoriseCaptureSettlement}
+
+The key stages in the transaction’s life cycle can be grouped into the Authorisation, Capture and Settlement stages as follows:
+
+##### Authorisation
+
+An authorisation places a hold on the transaction amount in the Cardholder’s issuing bank. No money actually changes hands yet. For example, let’s say that you are going to ship a physical product from your website. First, you authorise the amount of the transaction; then you ship the product. You only capture the transaction after the product is shipped.
+
+##### Capture
+
+A capture essentially marks a transaction as ready for settlement. As soon as the product is shipped, you can capture an amount up to the amount of the authorisation. Usually, the full amount is captured. An example of a situation in which the whole amount is not captured is where the Customer ordered multiple items and one of them is unavailable.
+The Gateway will normally automatically capture all authorisations as soon as they are approved, freeing you up from having to do this.
+
+However, it is usually more desirable to delay the capture either for a period of time or indefinitely. The `captureDelay` field can be used for this purpose and will allow you to state the number of days to delay any automatic capture or never to automatically capture. For more details on delayed capture, refer to the [delayed capture guide](#captureDelay)
+
+##### Settlement 
+
+Within 24 hours, the Gateway will instruct your Acquirer to settle the captured transaction. The Acquirer then transfers the funds between the Cardholder’s and your accounts.
+
+#### Transaction States {#transactionStates}
+
+At any time during the transaction’s life cycle, it is in one of a number of states as follows:
+
+##### Received 
+The transaction has been received by the Gateway and stored away. This is the first stage. The Gateway will examine the transaction and pass it on to the next stage, as appropriate.
+
+##### Approved 
+
+The transaction has been sent to the Acquirer for authorisation and the Acquirer has approved it and is holding the Cardholder’s funds.
+
+This is an intermediate state and follows the received state.
+
+##### Verified
+
+The transaction has been sent to the Acquirer for verification and the Acquirer has confirmed that the account is valid.
+
+This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred.
+
+##### Declined 
+The transaction has been sent to the Acquirer for authorisation and the Acquirer declined it. The Acquirer will not usually give any reason for a decline and will not have held any funds.
+
+The transaction has now completed its life cycle and no more processing will be done on it.
+
+This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred. The transaction `responseCode` will be 5 (Declined).
+
+##### Referred 
+The transaction has been sent to the Acquirer for authorisation and the Acquirer referred it for verbal approval.
+
+You can choose not to seek verbal approval and treat these transactions the same as a normal ‘declined’ authorisation.
+
+To seek verbal approval, you must phone the Acquirer and ask for an authorisation code. They will probably ask for more information about the transaction and might require you to gather other forms of identification from the Cardholder. If an authorisation code is provided, then a new transaction can be sent to the Gateway specifying the `xref` of this transaction and the received `authorisationCode`. This new request will not be sent for authorisation and will be in the ‘approved’ state ready for capture and settlement.
+
+This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred. The transaction `responseCode` will be 2 (Referred).
+
+##### Reversed 
+The transaction was sent to the Acquirer for authorisation and the Acquirer approved it. However, the transaction has been voided and the approval reversed. The Acquirer will have been asked to reverse any approval previously received, effectively cancelling the authorisation and returning any held funds back to the Cardholder.
+
+The Gateway will reverse an authorisation if it declines the transaction post authorisation due to any AVS/CV2 checking. The PREAUTH action will also automatically reverse an authorisation before return.
+
+This is a terminal state and follows the approved state. The transaction will never be settled and no funds will ever be transferred.
+
+If the transaction was reversed due to AVS/CV2 checking, then the transaction `responseCode` will be 5 (AVS/CV2 Declined).
+
+##### Captured 
+
+The transaction has been captured and the Acquirer will be asked to capture the approved held funds when the settling process next runs. The settling process usually runs each evening but the Acquirer may take up to 3 days to transfer the funds.
+
+The capture state can either be entered automatically if the transaction requested an immediate or delayed capture; or it can be manually requested by sending a CAPTURE request. You are free to change the amount to be captured to a value less than that initially approved by issuing one or more CAPTURE commands. When captured, there is no way to un-capture a transaction. If not explicitly cancelled, it will be sent for settlement at the next opportunity.
+
+This is an intermediate state and follows the approved state.
+
+##### Tendered 
+The transaction has been sent to the Acquirer for settlement by the settling process and is awaiting confirmation that it has been accepted.
+
+At this point, the transaction can no longer be cancelled or re-captured.
+
+This is an intermediate state and follows the captured state.
+
+##### Deferred 
+
+The transaction could not be settled due to some temporary problem such as a communications loss. It will be attempted again the next time the settling process runs – usually first thing the next day.
+
+This is an intermediate state and follows the tendered state. It will normally be accompanied by a transaction response that indicates why the settlement process could not settle the transaction.
+
+##### Accepted 
+The transaction has been accepted for settlement by the Acquirer. The held funds will be transferred between the Merchant and Cardholder in due course.
+
+The transaction has now completed its life cycle and no more processing will be done on it, unless it is subject to a rejection while the Acquirer is settling it.
+
+This is a terminal state and follows the tendered state.
+
+##### Rejected
+
+The transaction has been rejected for settlement by the Acquirer. The held funds will not be transferred between the Merchant and Cardholder.
+
+Only a few Acquirers inform the Gateway that they have rejected a transaction: they usually inform you directly. Therefore, a transaction may show as accepted even if was ultimately rejected or it may change from accepted to rejected if the Acquirer does inform the Gateway.
+
+The transaction has now completed its life cycle and no more processing will be done on it.
+
+This is a terminal state and follows the tendered or accepted states. The transaction response will normally indicate the reason the transaction was rejected.
+
+##### Canceled 
+
+The transaction has been cancelled by the Merchant by sending a cancellation request to the Gateway either using the CANCEL action or via the Merchant Management System (MMS).
+
+You can cancel any transaction that is not in a terminal state or in the ‘tendered’ state. When cancelled, any further processing that would have normally taken place will be halted. Cancelling a transaction may or may not release any funds held on the Cardholder’s card, depending on support from the Acquirer and Card Scheme. Note: the state is spelt American style, with a single ‘l’ as canceled.
+
+This is a terminal state and follows any non-terminal state that occurs before the transaction reaches the tendered state.
+
+##### Finished 
+
+The transaction has finished and reached the end of its lifespan but did not reach one of the other terminal states. Usually this indicates that a problem has occurred with the transaction that prevents it continuing with its normal life cycle.
+
+This is a terminal state and can follow any other state. The transaction response will normally indicate the reason that the transaction failed.
+
+
+## Transaction Types Definitions
+
+The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
+
+The type of transaction required is specified using the `type` request field when performing a new payment transaction.
+
+#### E-Commerce (ECOM) {#ecommerce}
+
+E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions in the EU region MUST use advance fraud detection, such as 3-D Secure V2.
+
+#### Mail Order/Telephone Order (MOTO){#moto}
+
+Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
+
+Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
+
+
+#### Continuous Authority (CA) {#continuousAuthority}
+
+Continuous Authority transactions are supported by the Gateway by using a transaction `type` of `9`. They are designed for you to make subscription transactions. 
+
+The following transaction types are considered as Continuous Authority (CA) Payments :
+- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment.
+
+- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription.
+
+Your Acquirer may need to enable Continuous Authority capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
+
+The Gateway offers a mean of automating the taking of regular CA transactions using [Recurring Transaction Agreements (RTA)](recurringtransactionagreements).
+
+#### How do I Choose Between MOTO, ECOM or Continous Authority (CA) as a Type ? 
+
+If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product. If you are storing cards on file (COF) for recurring payments or a one-off payment you should refer to the [credential on file Matrix](credentialsonfile#credentialsOnFileMatrix) to understand if you should use ECOM (1), MOTO (2) or Continuous Authority (9). 
+
+
+## Payment Tokenisation {#paymentTokenisation}
+
+All new transactions stored by the Gateway are assigned a unique reference number that is referred to as the cross reference and returned in the `xref` response field. This cross reference is displayed on the Merchant Management System (MMS) and used whenever a reference to a previous transaction is required.
+
+The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. This is usually for management actions such as CANCEL or CAPTURE.
+
+The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](#continuousAuthority) section.
+
+The use of cross references to perform repeat transactions is referred to as Payment Tokenisation and should not be confused with Card Tokenisation which is a separate service offered by the Gateway.
+
+Refer to the [credentials on file](#credentialsonfile) section for details on how to instruct the Gateway to repeat a payment automatically.
+
+The Gateway will make transaction details available for a maximum period of 13 months, after this time the `xref` to the transaction will be invalid. The card number will be available during this time, but you may request that it is removed sooner. Once the card number has been removed the `xref` can no longer be used to provide the number to a future a transaction.
+
+The way each action handles any supplied `xref` is as follows:
+
+#### PREAUTH, SALE, REFUND, VERIFY requests
+
+These requests will always create a new transaction.
+
+The `xref` field can be provided to reference an existing transaction, which will be used to complete any missing fields in the current transaction. The previous transaction will not be modified. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
+
+The request is expected to contain any transaction information required.
+
+The `xref` will only be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
+
+#### REFUND_SALE requests
+
+These requests will always create a new transaction.
+
+The `xref` field can be provided to reference an existing transaction that is going to be refunded. This existing transaction will be marked as have been fully or partially refunded and the amounts will be tallied to ensure that you cannot refund more than the original amount of this existing transaction. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
+
+The request is expected to contain any transaction information required.
+
+The `xref` will not only be used to find the transaction to be refunded: additionally, that transaction will be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
+
+#### CANCEL or CAPTURE requests
+
+These requests will always modify an existing transaction.
+
+The `xref` field must be provided to reference an existing transaction, which will be modified to the desired state. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
+
+The request must not contain any new transaction information any attempt to send any new transaction information will result in an error. The exception is that a CAPTURE request can send in a new lesser `amount` field when a lesser amount, than originally authorised, must be settled.
+
+#### QUERY requests
+
+These requests will not create or modify any transaction.
+
+The `xref` field must be provided to reference an existing transaction, which will be returned as if it had just been performed. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
+
+The request must not contain any new transaction information and any attempt to send any new transaction information will result in an error.
+
+#### SALE or REFUND Referred Authorisation requests
+
+These will always create a new transaction.
+
+The `xref` field must be provided to reference an existing transaction, which must be of the same request type and be in the referred state. A new transaction will be created based upon this transaction. If the existing transaction cannot be found or is not in the referred state, then an error will be returned and recorded against the new transaction.
+
+The new transaction will be put in the approved state and captured when specified by the existing or new transaction details. It will not be sent for authorisation again first.
+
+The request may contain new transaction details, but any card details or order amount must be the same as the existing transaction. Any attempt to send different card details or order details will result in an error.
+
+NB: This usage is very similar to a normal SALE or REFUND request sent with an `authorisationCode` included. The difference is that the `xref` must refer to an existing referred transaction whose full details are used if required and not simply an existing transaction whose card details are used if required.
+
+This means it is not possible to create a pre-authorised SALE or REFUND request and use a xref (ie to use the card and order details from an existing transaction). As a soon as the `xref` field is seen, the Gateway identifies that it is a referred transaction that you wish to authorise.
+
+## Transaction Cloning {#transactionCloning}
+
+If a new transaction request is received with the Cross Reference (xref) of an existing transaction, then the values of certain fields in the existing transaction will be used to initialise the new transaction where new values have not been provided in the new request. This copying of fields from a base transaction is termed ‘transaction cloning’, and the copied-over value is termed the ‘cloned value’. To allow for easy addition of future fields, the fields are grouped into logical groupings and each group is given a name, given in brackets after the group title.
+
+Certain groups of fields, such as address fields, can only be copied as a whole entity and any new value provided in the new request will prevent the whole group from being copied from the existing transaction. These fields are marked with an asterisk after the field name.
+
+By default, the values of all the fields are copied from the existing transaction where appropriate. However, you can control exactly which fields are copied using the `cloneFields` field in the new request. The value of `cloneFields` should be a comma separated list of field names or group names that should be copied over. Alternatively, if you wish to specify a list of fields not to copy, then prefix the list with a single exclamation mark (!).
+
+| Name | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+|cloneFields|No|Comma separated list of field names or group names whose values should be cloned.|
+
+**Examples**
+
+To copy over only the value of `customerName` and any values for the fields in the `customerAddressFields` group:
+
+`cloneFields=”customerName, customerAddressFields”`
+
+To copy over the values of all supported fields apart from the value of `customerName` and `merchantName`:
+
+`cloneFields=”!customerName,merchantName”`
+
+#### Cloned Fields 
+
+Transaction fields currently cloned are as follows:
+
+Order Details Fields (`orderFields`)
+    - type
+    - countryCode
+    - currencyCode
+    - amount
+    - grossAmount
+    - netAmount
+    - taxRate
+    - taxAmount
+    - taxReason
+    - discountAmount
+    - discountReason
+    - handlingAmount
+    - insuranceAmount
+    - surchargeAmount
+
+Order Reference Fields (`orderRefFields`)
+    - transactionUnique
+    - orderRef
+    - orderDate
+
+Card Fields (`cardFields`)
+    - paymentMethod
+    - paymentToken
+    - cardToken
+    - cardNumber
+    - cardExpiryDate*
+    - cardExpiryMonth*
+    - cardExpiryYear*
+    - cardStartDate*
+    - cardStartMonth*
+    - cardStartYear*
+    - cardIssueNumber
+
+Cardholder Fields (`cardholderFields`)
+    - customerName
+    - customerAddress
+    - customerPostcode
+    - customerEmail
+    - customerPhone
+
+Purchase Fields (`purchaseFields`)
+    - items
+
+Statement Narrative Fields (`narrativeFields`)
+    - statementNarrative1
+    - statementNarrative2
+
+AVS/CV2 Fields (`avscv2Fields`)
+    - avscv2Required
+    - cv2CheckPref
+    - addressCheckPref
+    - postcodeCheckPref
+    - customerAddress
+    - customerPostcode
+
+Risk Check Fields (`riskCheckFields`)
+    - riskCheckRequired
+    - riskCheckPref
+    - riskCheckOptions
+
+3-D Secure Fields (`threedsFields`) - 3-D Secure fields are only cloned if both the existing and new transaction support 3-D Secure.
+    - threeDSRequired
+    - threeDSPolicy
+    - threeDSCheckPref
+    - threeDSRedirectURL
+    - threeDSOptions
+    - scaExemption
+
+ Merchant Email Notification Fields (`notifyFields`)
+    - notifyEmailRequired
+    - notifyEmail
+
+Customer Receipt Fields (`cReceiptFields`)
+    - customerReceiptsRequired
+    - customerEmail
+
+Merchant Information Fields (`merchantFields`)
+    - merchantName
+    - merchantCompany
+    - merchantAddress*
+    - merchantTown*
+    - merchantCounty*
+    - merchantPostcode*
+    - merchantCountryCode*
+    - merchantPhone
+    - merchantMobile
+    - merchantFax
+    - merchantEmail
+    - merchantWebsite
+    - merchantData
+    - merchantOrderRef
+    - merchantCustomerRef
+    - merchantTaxRef
+    - merchantOriginalOrderRef
+    - merchantCategoryCode
+    - merchantAccountNo
+    - merchantType
+
+Customer Information Fields (`customerFields`)
+    - customerName
+    - customerCompany
+    - customerAddress*
+    - customerTown*
+    - customerCounty*
+    - customerPostcode*
+    - customerCountryCode*
+    - customerPhone
+    - customerMobile
+    - customerFax
+    - customerEmail
+    - customerDateOfBirth
+    - customerOrderRef
+    - customerMerchantRef
+    - customerTaxRef
+
+Supplier Information Fields (`supplierFields`)
+    - supplierName
+    - supplierCompany
+    - supplierAddress*
+    - supplierTown*
+    - supplierCounty*
+    - supplierPostcode*
+    - supplierCountryCode*
+    - supplierPhone
+    - supplierMobile
+    - supplierFax
+    - supplierEmail
+    - supplierOrderRef
+    - supplierAccountNo
+
+Receiver Information Fields (`receiverFields`)
+    - receiverName
+    - receiverCompany
+    - receiverAddress*
+    - receiverTown*
+    - receiverCounty*
+    - receiverPostcode*
+    - receiverCountryCode*
+    - receiverPhone
+    - receiverMobile
+    - receiverFax
+    - receiverEmail
+    - receiverAccountNo
+    - receiverDateOfBirth
+
+Delivery Information Fields (`deliveryFields`)
+    - deliveryName
+    - deliveryCompany
+    - deliveryAddress*
+    - deliveryTown*
+    - deliveryCounty*
+    - deliveryPostcode*
+    - deliveryCountryCode*
+    - deliveryPhone
+    - deliveryMobile
+    - deliveryFax
+    - deliveryEmail
+
+Shipping Information Fields (`shippingFields`)
+    - shippingMethod
+    - shippingTrackingRef
+    - shippingAmount
+    - shippingGrossAmount
+    - shippingNetAmount
+    - shippingTaxRate
+    - shippingTaxAmount
+    - shippingTaxReason
+    - shippingDiscountAmount
+    - shippingDiscountReason
+
+MCC 6012 Additional Authorisation Data (mcc6012Fields)
+    - receiverName
+    - receiverPostcode
+    - receiverAccountNo
+    - receiverDateOfBirth
+
+Payment Facilitator Data (`facilitatorFields`) - Payment facilitator fields are only cloned if the existing transaction uses the same merchantID as the new transaction.
+    - subMerchantID
+    - facilitatorID
+    - facilitatorName
+    - isoID
+
+Surcharge Data (`surchargeFields`)
+    - surchargeRequired
+    - surchargeAmount
+    - surchargeRules
+
+Device Data (`deviceFields`)
+    - deviceType
+    - deviceChannel
+    - deviceIdentity
+    - deviceTimeZone
+    - deviceCapabilities
+    - deviceAcceptContent
+    - deviceAcceptCharset
+    - deviceAcceptEncoding
+    - deviceAcceptLanguage
+    - deviceScreenResolution
+    - deviceOperatingSystem
+
+Acquirer Data (`acquirerFields`)
+    - acquirerOptions
+
+#### Cloned Groups
+
+To allow for easy future addition of new fields, the existing fields are grouped into logic groupings. Each group is given a name (as shown in brackets after the group title). It is recommended that this group name be used in any `cloneFields` value instead of listing all the fields separately.
+
+##### Compound Groups
+To help maintain transaction integrity, certain groups of fields, such as address fields, can only be copied as a whole entity and any new value provided in the new request will prevent the whole group from being copied from the existing transaction.
+
+These compound fields are marked with an asterisk in the list of fields above and can be referred to in `cloneFields` as logical groups using the following group names; merchantAddressFields, customerAddressFields, deliveryAddressFields, supplierAddressFields and receiverAddressFields.
+
+##### Line-Item Data 
+Any line-item data (`items`) is copied over in its entirety and there is no way to merge the line item from an existing transaction with any sent in a new transaction.
+
+##### Amount Consistency 
+he Gateway does not validate that the various sub-amount fields, such as `netAmount`, `grossAmount`, all add up to the actual requested amount. Therefore, these fields are currently not treated as a compound group.
+
+If a new amount value is passed that is different from the value in the existing transaction, then the following fields should also be passed so that they tally with the new amount.
+- grossAmount
+- netAmount
+- taxRate
+- discountAmount
+
 ## Response Codes {#responseCodes}
 
 The Gateway will always issue a numeric `responseCode` to report the status of the transaction. These codes should be used rather than the `responseMessage` field to determine the outcome
@@ -829,626 +1446,3 @@ decoded as below, the remaining 2 characters are currently reserved for future u
 | 2 | Authorising entity – acquirer host| 
 | 4 | Authorising entity – card scheme | 
 | 8 | Authorising entity – issuer | 
-
-## Merchant Account Mapping {#merchantAccountMapping}
-
-Merchant Accounts can be grouped together so that if a transaction is sent to an account that doesn't support either the requested card type or currency, then it can be automatically routed to another account in the same group that does support them.
-
-For example, you can group a Merchant Account that only supports American Express cards with a Merchant Account that only supports Visa cards. Then, if a request using an American Express card is sent to the Visa only Merchant Account, the Gateway will automatically route it to the American Express Merchant Account.
-
-This prevents you from needing to know the card type in advance in order to send the request to the correct Merchant Account. This is important when using the Hosted integration, because you don’t know the card type at the time you send the request.
-
-It is usual for you to have one master account to which you direct all requests and then group all your accounts together.
-
-Any Gateway routing of the transaction can be seen from the following additional response fields:
-
-| Name      | Returned | Description |
-| ----------- | ----------- | ----------- |
-| requestMerchantID | Always | ID of Merchant Account request was sent to (usually same as merchantID).|
-| processMerchantID | Always | ID of Merchant Account request was processed by.|
-
-## Velocity Control System (VCS)
-
-The Gateway allows you to configure velocity controls using the Merchant Management System (MMS). These can be used to email you declined transactions automatically, where they exceed these controls.
-
-For example, you can set up a control that stops a certain card number from being used more than twice in the space of a few minutes.
-
-If one or more of these controls are broken by a transaction, then the following response fields will 
-show the problem.
-If a transaction is declined through breach of one or more of these rules, then a `responseCode` of 5 (VCS DECLINE) will be returned.
-
-| Name      | Returned | Description |
-| ----------- | ----------- | ----------- |
-| vcsResponseCode | Always | VCS error code. Normally 5.|
-| vcsResponseMessage | Always | Description of above response code or list of rules broken by this transaction.|
-
-## Duplicate Transaction Checking
-
-Duplicate transaction checking prevents transaction requests from accidentally processing more than once. This can happen if a Customer refreshes your checkout page or clicks a button that issues a new transaction request. While duplicate checking can help prevent repeat transactions from going through, we recommend talking with your developers to see whether changes can be made to your form to reduce the likelihood of this occurring (eg disabling the Submit button after it has been clicked).
-
-To help prevent duplicate transactions, each transaction can specify a time window during which previous transactions will be checked to see whether they could be possible duplicates.
-
-This time window is specified using the `duplicateDelay` field. The value for this field can range from 0 to 9999 seconds (approx. 2 ¾ hours).
-
-If the transaction request does not include the `duplicateDelay` field or specifies a value of zero, then a default delay of 300 seconds (5 minutes) is used.
-
-The following fields are used in transaction comparison and must be the same for a transaction to be regarded as a duplicate:
-- merchantID
-- action
-- type
-- amount
-- transactionUnique
-- currencyCode
-- xref (if provided in lieu of card details)
-- cardNumber (may be specified indirectly via cross reference)
-
-If a transaction is regarded as being a duplicate, then a responseCode of 65554 (REQUEST DUPLICATE) will be returned.
-
-## Capture Delay {#captureDelay}
-
-#### Overview
-
-Capture Delay enables you to specify a delay between the authorisation of a payment and its capture. This allows you time to verify the order and choose whether to fulfil it or cancel it. This can be very helpful in preventing chargebacks due to fraud.
-
-When NOT using capture delay, payments are authorised and captured immediately - funds are automatically debited from the Customer’s credit or debit card at that time.
-
-When using capture delay, the payment is authorised only at the time of payment - funds are reserved against the credit or debit card and will not be debited until the payment is captured. 
-
-The Customer experience with capture delay is the same as when capture delay is not used. The Customer will not know whether you are using capture delay or not.
-
-If you choose to use capture delay, you can use the `captureDelay` request field to specify the number of days for which capture is delayed, within a range of 0 to 30 days. Alternatively, you can use the value -1 or ‘never’ to specify that the Gateway should never automatically capture in which case you must manually capture.
-
-The Gateway will automatically capture the transaction after any delay specified unless you manually cancel or capture the transaction, using either the Direct Integration or via the Merchant Management System (MMS).
-
-Note that some cards require capture within 4 to 5 days - if payment is not automatically captured within that period, the transaction will expire, and the reserved funds will be released to the Customer.
-
-#### Why Use Capture Delay?
-
-Capture delay allows you to accept online orders normally but allows you to cancel any transactions that you cannot or will not fulfil, thereby reducing the risks of chargeback. If you receive an order that appears to be fraudulent or that you cannot or do not wish to fulfil, you can simply cancel the transaction.
-
-Note: Cancelling a transaction may not always reverse the authorisation and release the funds back to the Customer. This is dependent on the Acquirer and in these cases the authorisation will never be settled and will be left to expire releasing any reserved funds. The time taken for this varies between cards.
-
-Some Acquirers do not support delayed capture, in which case the Hosted Integration will return a `responseCode` of 66358 (INVALID CAPTURE DELAY).
-
-## Card Identification {#cardIdentification}
-
-The Gateway will attempt to identify the type of each card number provided along with the associated Card Scheme (network) and, when available, the issuing institution and issuing country.
-
-The Gateway primarily supports Mastercard, Visa and American Express branded cards. Some Acquirers may support JCB, Discover and Diners Club cards. Not all Acquirers support all types.
-
-The card type and scheme codes will be returned in the `cardTypeCode` and `cardSchemeCode` response fields. When available, the issuer details will be returned in the `cardIssuer` and `cardIssuerCountryCode` response fields.
-
-If the Gateway is unable to identify the card, then a code of ‘XX’ will be returned.
-
-The following fields are returned by the Gateway to indicate a cards identity.
-
-| Name | Description |
-| ----------- | ----------- |
-| cardTypeCode | Card type identification code, eg ‘VD’.|
-|cardType |Card type name, eg, ‘Visa Debit’.|
-| cardSchemeCode |Scheme identification code, eg ‘VC’.|
-| cardScheme |Scheme name, eg ‘Visa’.|
-| cardIssuer |Card Issuer’s name, eg ‘HSBC UK BANK PLC’.|
-| cardIssuerCountryCode |Issuing country’s ISO-3166 2-letter code, eg ‘GB’.|
-|cardIssuerCountry|Issuing country’s name, eg ‘United Kingdom’.|
-|cardFlags|Bitmask of flags where each bit number indicates the following:<br></br><br></br>01 – debit (not credit) card.<br></br>02 – alternative debit (not credit) card. <br></br>03 – prepaid card.<br></br>09 – corporate card (not consumer) card.<br></br>12 – tokenised card (reserved for future use).<br></br>17 – ECOM use allowed.<br></br>18 – MOTO use allowed.<br></br>19 – EPOS use allowed.<br></br>20 – CA use allowed.<br></br>21 – LUHN conforming.<br></br>22 – 3-D Secure available (doesn’t indicate the card is enrolled).<br></br>23 – Contactless available.<br></br><br></br>An unset bit may mean that the information is unavailable and not necessarily that the information doesn’t apply to the card.|
-
-The following is a list of primary card types supported by the Gateway.
-
-| Card Code | Scheme Code | Card Type |
-| ----------- | ----------- | ----------- |
-|MC|MC|Mastercard Credit|
-|MD|MC|Mastercard Debit|
-|MA|MC|Mastercard International Maestro|
-|MI|MC|Mastercard/Diners Club|
-|MP|MC|Mastercard Purchasing|
-|MU|MC|Mastercard Domestic Maestro (UK)|
-|VC|VC|Visa Credit|
-|VD|VC|Visa Debt|
-|EL|VC|Visa Electron|
-|VA|VC|Visa ATM|
-|VP|VC|Visa Purchasing|
-|AM|AM|American Express|
-|JC|JC|JCB|
-|DS|DS|Discover|
-|DI|DI|Diners Club|
-|DC|DI|Diners Club Carte Blanche|
-|CU|CU|China UnionPay|
-|CC|CU|China UnionPay Credit|
-|CD|CU|China UnionPay Debit|
-
-The following is a list of secondary card types recognised by the Gateway. These cards may be
-returned in response to a card lookup, but they are either deprecated or most likely not supported
-by any current Acquirer.
-
-| Card Code | Scheme Code | Card Type |
-| ----------- | ----------- | ----------- |
-|CF|CF|Clydesdale Financial Services|
-|BC|BC|BankCard|
-|DK|DK|Dankort|
-|DE|DI|Diners Club Enroute|
-|FC|FC|FlexCache|
-|LS|LS|Laser|
-|SO|SO|Solo|
-|ST|ST|Style|
-|SW|SW|Switch|
-|TP|TP|Tempo Payments|
-|IP|IP|InstaPayment|
-
-## Transaction Life Cycle
-
-Each transaction received by the Gateway follows a pre-determined life cycle from receipt to completion. The stages in the life cycle are determined by the type of transaction and its success or failure at different stages in its life.
-
-#### Authorise, Capture and Settlement {#authoriseCaptureSettlement}
-
-The key stages in the transaction’s life cycle can be grouped into the Authorisation, Capture and Settlement stages as follows:
-
-##### Authorisation
-
-An authorisation places a hold on the transaction amount in the Cardholder’s issuing bank. No money actually changes hands yet. For example, let’s say that you are going to ship a physical product from your website. First, you authorise the amount of the transaction; then you ship the product. You only capture the transaction after the product is shipped.
-
-##### Capture
-
-A capture essentially marks a transaction as ready for settlement. As soon as the product is shipped, you can capture an amount up to the amount of the authorisation. Usually, the full amount is captured. An example of a situation in which the whole amount is not captured is where the Customer ordered multiple items and one of them is unavailable.
-The Gateway will normally automatically capture all authorisations as soon as they are approved, freeing you up from having to do this.
-
-However, it is usually more desirable to delay the capture either for a period of time or indefinitely. The `captureDelay` field can be used for this purpose and will allow you to state the number of days to delay any automatic capture or never to automatically capture. For more details on delayed capture, refer to the [delayed capture guide](#captureDelay)
-
-##### Settlement 
-
-Within 24 hours, the Gateway will instruct your Acquirer to settle the captured transaction. The Acquirer then transfers the funds between the Cardholder’s and your accounts.
-
-#### Transaction States {#transactionStates}
-
-At any time during the transaction’s life cycle, it is in one of a number of states as follows:
-
-##### Received 
-The transaction has been received by the Gateway and stored away. This is the first stage. The Gateway will examine the transaction and pass it on to the next stage, as appropriate.
-
-##### Approved 
-
-The transaction has been sent to the Acquirer for authorisation and the Acquirer has approved it and is holding the Cardholder’s funds.
-
-This is an intermediate state and follows the received state.
-
-##### Verified
-
-The transaction has been sent to the Acquirer for verification and the Acquirer has confirmed that the account is valid.
-
-This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred.
-
-##### Declined 
-The transaction has been sent to the Acquirer for authorisation and the Acquirer declined it. The Acquirer will not usually give any reason for a decline and will not have held any funds.
-
-The transaction has now completed its life cycle and no more processing will be done on it.
-
-This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred. The transaction `responseCode` will be 5 (Declined).
-
-##### Referred 
-The transaction has been sent to the Acquirer for authorisation and the Acquirer referred it for verbal approval.
-
-You can choose not to seek verbal approval and treat these transactions the same as a normal ‘declined’ authorisation.
-
-To seek verbal approval, you must phone the Acquirer and ask for an authorisation code. They will probably ask for more information about the transaction and might require you to gather other forms of identification from the Cardholder. If an authorisation code is provided, then a new transaction can be sent to the Gateway specifying the `xref` of this transaction and the received `authorisationCode`. This new request will not be sent for authorisation and will be in the ‘approved’ state ready for capture and settlement.
-
-This is a terminal state and follows the received state. The transaction will never be settled and no funds will ever be transferred. The transaction `responseCode` will be 2 (Referred).
-
-##### Reversed 
-The transaction was sent to the Acquirer for authorisation and the Acquirer approved it. However, the transaction has been voided and the approval reversed. The Acquirer will have been asked to reverse any approval previously received, effectively cancelling the authorisation and returning any held funds back to the Cardholder.
-
-The Gateway will reverse an authorisation if it declines the transaction post authorisation due to any AVS/CV2 checking. The PREAUTH action will also automatically reverse an authorisation before return.
-
-This is a terminal state and follows the approved state. The transaction will never be settled and no funds will ever be transferred.
-
-If the transaction was reversed due to AVS/CV2 checking, then the transaction `responseCode` will be 5 (AVS/CV2 Declined).
-
-##### Captured 
-
-The transaction has been captured and the Acquirer will be asked to capture the approved held funds when the settling process next runs. The settling process usually runs each evening but the Acquirer may take up to 3 days to transfer the funds.
-
-The capture state can either be entered automatically if the transaction requested an immediate or delayed capture; or it can be manually requested by sending a CAPTURE request. You are free to change the amount to be captured to a value less than that initially approved by issuing one or more CAPTURE commands. When captured, there is no way to un-capture a transaction. If not explicitly cancelled, it will be sent for settlement at the next opportunity.
-
-This is an intermediate state and follows the approved state.
-
-##### Tendered 
-The transaction has been sent to the Acquirer for settlement by the settling process and is awaiting confirmation that it has been accepted.
-
-At this point, the transaction can no longer be cancelled or re-captured.
-
-This is an intermediate state and follows the captured state.
-
-##### Deferred 
-
-The transaction could not be settled due to some temporary problem such as a communications loss. It will be attempted again the next time the settling process runs – usually first thing the next day.
-
-This is an intermediate state and follows the tendered state. It will normally be accompanied by a transaction response that indicates why the settlement process could not settle the transaction.
-
-##### Accepted 
-The transaction has been accepted for settlement by the Acquirer. The held funds will be transferred between the Merchant and Cardholder in due course.
-
-The transaction has now completed its life cycle and no more processing will be done on it, unless it is subject to a rejection while the Acquirer is settling it.
-
-This is a terminal state and follows the tendered state.
-
-##### Rejected
-
-The transaction has been rejected for settlement by the Acquirer. The held funds will not be transferred between the Merchant and Cardholder.
-
-Only a few Acquirers inform the Gateway that they have rejected a transaction: they usually inform you directly. Therefore, a transaction may show as accepted even if was ultimately rejected or it may change from accepted to rejected if the Acquirer does inform the Gateway.
-
-The transaction has now completed its life cycle and no more processing will be done on it.
-
-This is a terminal state and follows the tendered or accepted states. The transaction response will normally indicate the reason the transaction was rejected.
-
-##### Canceled 
-
-The transaction has been cancelled by the Merchant by sending a cancellation request to the Gateway either using the CANCEL action or via the Merchant Management System (MMS).
-
-You can cancel any transaction that is not in a terminal state or in the ‘tendered’ state. When cancelled, any further processing that would have normally taken place will be halted. Cancelling a transaction may or may not release any funds held on the Cardholder’s card, depending on support from the Acquirer and Card Scheme. Note: the state is spelt American style, with a single ‘l’ as canceled.
-
-This is a terminal state and follows any non-terminal state that occurs before the transaction reaches the tendered state.
-
-##### Finished 
-
-The transaction has finished and reached the end of its lifespan but did not reach one of the other terminal states. Usually this indicates that a problem has occurred with the transaction that prevents it continuing with its normal life cycle.
-
-This is a terminal state and can follow any other state. The transaction response will normally indicate the reason that the transaction failed.
-
-
-## Transaction Types Definitions
-
-The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
-
-The type of transaction required is specified using the `type` request field when performing a new payment transaction.
-
-#### E-Commerce (ECOM) {#ecommerce}
-
-E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions in the EU region MUST use advance fraud detection, such as 3-D Secure V2.
-
-#### Mail Order/Telephone Order (MOTO){#moto}
-
-Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
-
-Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
-
-
-#### Continuous Authority (CA) {#continuousAuthority}
-
-Continuous Authority transactions are supported by the Gateway by using a transaction `type` of `9`. They are designed for you to make subscription transactions. 
-
-The following transaction types are considered as Continuous Authority (CA) Payments :
-- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment.
-
-- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription.
-
-Your Acquirer may need to enable Continuous Authority capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
-
-The Gateway offers a mean of automating the taking of regular CA transactions using [Recurring Transaction Agreements (RTA)](recurringtransactionagreements).
-
-#### How do I Choose Between MOTO, ECOM or Continous Authority (CA) as a Type ? 
-
-If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product. If you are storing cards on file (COF) for recurring payments or a one-off payment you should refer to the [credential on file Matrix](credentialsonfile#credentialsOnFileMatrix) to understand if you should use ECOM (1), MOTO (2) or Continuous Authority (9). 
-
-
-## Payment Tokenisation {#paymentTokenisation}
-
-All new transactions stored by the Gateway are assigned a unique reference number that is referred to as the cross reference and returned in the `xref` response field. This cross reference is displayed on the Merchant Management System (MMS) and used whenever a reference to a previous transaction is required.
-
-The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. This is usually for management actions such as CANCEL or CAPTURE.
-
-The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](#continuousAuthority) section.
-
-The use of cross references to perform repeat transactions is referred to as Payment Tokenisation and should not be confused with Card Tokenisation which is a separate service offered by the Gateway.
-
-Refer to the [credentials on file](#credentialsonfile) section for details on how to instruct the Gateway to repeat a payment automatically.
-
-The Gateway will make transaction details available for a maximum period of 13 months, after this time the `xref` to the transaction will be invalid. The card number will be available during this time, but you may request that it is removed sooner. Once the card number has been removed the `xref` can no longer be used to provide the number to a future a transaction.
-
-The way each action handles any supplied `xref` is as follows:
-
-#### PREAUTH, SALE, REFUND, VERIFY requests
-
-These requests will always create a new transaction.
-
-The `xref` field can be provided to reference an existing transaction, which will be used to complete any missing fields in the current transaction. The previous transaction will not be modified. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
-
-The request is expected to contain any transaction information required.
-
-The `xref` will only be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
-
-#### REFUND_SALE requests
-
-These requests will always create a new transaction.
-
-The `xref` field can be provided to reference an existing transaction that is going to be refunded. This existing transaction will be marked as have been fully or partially refunded and the amounts will be tallied to ensure that you cannot refund more than the original amount of this existing transaction. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
-
-The request is expected to contain any transaction information required.
-
-The `xref` will not only be used to find the transaction to be refunded: additionally, that transaction will be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
-
-#### CANCEL or CAPTURE requests
-
-These requests will always modify an existing transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be modified to the desired state. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information any attempt to send any new transaction information will result in an error. The exception is that a CAPTURE request can send in a new lesser `amount` field when a lesser amount, than originally authorised, must be settled.
-
-#### QUERY requests
-
-These requests will not create or modify any transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be returned as if it had just been performed. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information and any attempt to send any new transaction information will result in an error.
-
-#### SALE or REFUND Referred Authorisation requests
-
-These will always create a new transaction.
-
-The `xref` field must be provided to reference an existing transaction, which must be of the same request type and be in the referred state. A new transaction will be created based upon this transaction. If the existing transaction cannot be found or is not in the referred state, then an error will be returned and recorded against the new transaction.
-
-The new transaction will be put in the approved state and captured when specified by the existing or new transaction details. It will not be sent for authorisation again first.
-
-The request may contain new transaction details, but any card details or order amount must be the same as the existing transaction. Any attempt to send different card details or order details will result in an error.
-
-NB: This usage is very similar to a normal SALE or REFUND request sent with an `authorisationCode` included. The difference is that the `xref` must refer to an existing referred transaction whose full details are used if required and not simply an existing transaction whose card details are used if required.
-
-This means it is not possible to create a pre-authorised SALE or REFUND request and use a xref (ie to use the card and order details from an existing transaction). As a soon as the `xref` field is seen, the Gateway identifies that it is a referred transaction that you wish to authorise.
-
-## Transaction Cloning {#transactionCloning}
-
-If a new transaction request is received with the Cross Reference (xref) of an existing transaction, then the values of certain fields in the existing transaction will be used to initialise the new transaction where new values have not been provided in the new request. This copying of fields from a base transaction is termed ‘transaction cloning’, and the copied-over value is termed the ‘cloned value’. To allow for easy addition of future fields, the fields are grouped into logical groupings and each group is given a name, given in brackets after the group title.
-
-Certain groups of fields, such as address fields, can only be copied as a whole entity and any new value provided in the new request will prevent the whole group from being copied from the existing transaction. These fields are marked with an asterisk after the field name.
-
-By default, the values of all the fields are copied from the existing transaction where appropriate. However, you can control exactly which fields are copied using the `cloneFields` field in the new request. The value of `cloneFields` should be a comma separated list of field names or group names that should be copied over. Alternatively, if you wish to specify a list of fields not to copy, then prefix the list with a single exclamation mark (!).
-
-| Name | Mandatory | Description |
-| ----------- | ----------- | ----------- |
-|cloneFields|No|Comma separated list of field names or group names whose values should be cloned.|
-
-**Examples**
-
-To copy over only the value of `customerName` and any values for the fields in the `customerAddressFields` group:
-
-`cloneFields=”customerName, customerAddressFields”`
-
-To copy over the values of all supported fields apart from the value of `customerName` and `merchantName`:
-
-`cloneFields=”!customerName,merchantName”`
-
-#### Cloned Fields 
-
-Transaction fields currently cloned are as follows:
-
-Order Details Fields (`orderFields`)
-    - type
-    - countryCode
-    - currencyCode
-    - amount
-    - grossAmount
-    - netAmount
-    - taxRate
-    - taxAmount
-    - taxReason
-    - discountAmount
-    - discountReason
-    - handlingAmount
-    - insuranceAmount
-    - surchargeAmount
-
-Order Reference Fields (`orderRefFields`)
-    - transactionUnique
-    - orderRef
-    - orderDate
-
-Card Fields (`cardFields`)
-    - paymentMethod
-    - paymentToken
-    - cardToken
-    - cardNumber
-    - cardExpiryDate*
-    - cardExpiryMonth*
-    - cardExpiryYear*
-    - cardStartDate*
-    - cardStartMonth*
-    - cardStartYear*
-    - cardIssueNumber
-
-Cardholder Fields (`cardholderFields`)
-    - customerName
-    - customerAddress
-    - customerPostcode
-    - customerEmail
-    - customerPhone
-
-Purchase Fields (`purchaseFields`)
-    - items
-
-Statement Narrative Fields (`narrativeFields`)
-    - statementNarrative1
-    - statementNarrative2
-
-AVS/CV2 Fields (`avscv2Fields`)
-    - avscv2Required
-    - cv2CheckPref
-    - addressCheckPref
-    - postcodeCheckPref
-    - customerAddress
-    - customerPostcode
-
-Risk Check Fields (`riskCheckFields`)
-    - riskCheckRequired
-    - riskCheckPref
-    - riskCheckOptions
-
-3-D Secure Fields (`threedsFields`) - 3-D Secure fields are only cloned if both the existing and new transaction support 3-D Secure.
-    - threeDSRequired
-    - threeDSPolicy
-    - threeDSCheckPref
-    - threeDSRedirectURL
-    - threeDSOptions
-    - scaExemption
-
- Merchant Email Notification Fields (`notifyFields`)
-    - notifyEmailRequired
-    - notifyEmail
-
-Customer Receipt Fields (`cReceiptFields`)
-    - customerReceiptsRequired
-    - customerEmail
-
-Merchant Information Fields (`merchantFields`)
-    - merchantName
-    - merchantCompany
-    - merchantAddress*
-    - merchantTown*
-    - merchantCounty*
-    - merchantPostcode*
-    - merchantCountryCode*
-    - merchantPhone
-    - merchantMobile
-    - merchantFax
-    - merchantEmail
-    - merchantWebsite
-    - merchantData
-    - merchantOrderRef
-    - merchantCustomerRef
-    - merchantTaxRef
-    - merchantOriginalOrderRef
-    - merchantCategoryCode
-    - merchantAccountNo
-    - merchantType
-
-Customer Information Fields (`customerFields`)
-    - customerName
-    - customerCompany
-    - customerAddress*
-    - customerTown*
-    - customerCounty*
-    - customerPostcode*
-    - customerCountryCode*
-    - customerPhone
-    - customerMobile
-    - customerFax
-    - customerEmail
-    - customerDateOfBirth
-    - customerOrderRef
-    - customerMerchantRef
-    - customerTaxRef
-
-Supplier Information Fields (`supplierFields`)
-    - supplierName
-    - supplierCompany
-    - supplierAddress*
-    - supplierTown*
-    - supplierCounty*
-    - supplierPostcode*
-    - supplierCountryCode*
-    - supplierPhone
-    - supplierMobile
-    - supplierFax
-    - supplierEmail
-    - supplierOrderRef
-    - supplierAccountNo
-
-Receiver Information Fields (`receiverFields`)
-    - receiverName
-    - receiverCompany
-    - receiverAddress*
-    - receiverTown*
-    - receiverCounty*
-    - receiverPostcode*
-    - receiverCountryCode*
-    - receiverPhone
-    - receiverMobile
-    - receiverFax
-    - receiverEmail
-    - receiverAccountNo
-    - receiverDateOfBirth
-
-Delivery Information Fields (`deliveryFields`)
-    - deliveryName
-    - deliveryCompany
-    - deliveryAddress*
-    - deliveryTown*
-    - deliveryCounty*
-    - deliveryPostcode*
-    - deliveryCountryCode*
-    - deliveryPhone
-    - deliveryMobile
-    - deliveryFax
-    - deliveryEmail
-
-Shipping Information Fields (`shippingFields`)
-    - shippingMethod
-    - shippingTrackingRef
-    - shippingAmount
-    - shippingGrossAmount
-    - shippingNetAmount
-    - shippingTaxRate
-    - shippingTaxAmount
-    - shippingTaxReason
-    - shippingDiscountAmount
-    - shippingDiscountReason
-
-MCC 6012 Additional Authorisation Data (mcc6012Fields)
-    - receiverName
-    - receiverPostcode
-    - receiverAccountNo
-    - receiverDateOfBirth
-
-Payment Facilitator Data (`facilitatorFields`) - Payment facilitator fields are only cloned if the existing transaction uses the same merchantID as the new transaction.
-    - subMerchantID
-    - facilitatorID
-    - facilitatorName
-    - isoID
-
-Surcharge Data (`surchargeFields`)
-    - surchargeRequired
-    - surchargeAmount
-    - surchargeRules
-
-Device Data (`deviceFields`)
-    - deviceType
-    - deviceChannel
-    - deviceIdentity
-    - deviceTimeZone
-    - deviceCapabilities
-    - deviceAcceptContent
-    - deviceAcceptCharset
-    - deviceAcceptEncoding
-    - deviceAcceptLanguage
-    - deviceScreenResolution
-    - deviceOperatingSystem
-
-Acquirer Data (`acquirerFields`)
-    - acquirerOptions
-
-#### Cloned Groups
-
-To allow for easy future addition of new fields, the existing fields are grouped into logic groupings. Each group is given a name (as shown in brackets after the group title). It is recommended that this group name be used in any `cloneFields` value instead of listing all the fields separately.
-
-##### Compound Groups
-To help maintain transaction integrity, certain groups of fields, such as address fields, can only be copied as a whole entity and any new value provided in the new request will prevent the whole group from being copied from the existing transaction.
-
-These compound fields are marked with an asterisk in the list of fields above and can be referred to in `cloneFields` as logical groups using the following group names; merchantAddressFields, customerAddressFields, deliveryAddressFields, supplierAddressFields and receiverAddressFields.
-
-##### Line-Item Data 
-Any line-item data (`items`) is copied over in its entirety and there is no way to merge the line item from an existing transaction with any sent in a new transaction.
-
-##### Amount Consistency 
-he Gateway does not validate that the various sub-amount fields, such as `netAmount`, `grossAmount`, all add up to the actual requested amount. Therefore, these fields are currently not treated as a compound group.
-
-If a new amount value is passed that is different from the value in the existing transaction, then the following fields should also be passed so that they tally with the new amount.
-- grossAmount
-- netAmount
-- taxRate
-- discountAmount
-
-
-## Device Information Fields {#deviceInformationFields}
-
-## Merchant Request Fields {#merchantRequestFields}
-
