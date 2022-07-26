@@ -53,7 +53,7 @@ Card details collected via mail or over the phone (MOTO) fall outside of the sco
 
 #### Merchant Initiated Transactions (including recurring transactions)
 
-Payments made with saved cards when the Customer is not present in the payment flow may qualify as [Merchant Initiated Transactions](credentialsonfile). These payments fall outside of the scope of SCA however it is still up to the bank to decide whether authentication is needed for the payment.
+Payments made with saved cards when the Customer is not present in the payment flow may qualify as [Merchant Initiated Transactions](credentialsonfile#mit). These payments fall outside of the scope of SCA however it is still up to the bank to decide whether authentication is needed for the payment.
 
 The initial payment that saved the card will still need to have obtained SCA or be exempt and agreement must be obtained from the Customer to charge their card at a later point.
 
@@ -300,7 +300,7 @@ These fields will be returned in addition to the [3D secure request fields](#ini
 | threeDSDetails |If 3DS authenticated  |Record containing further details about the 3-D Secure processing stage. Notable sub fields are:<br></br>version – 3-D Secure version used <br></br>versions – 3-D Secure versions available <br></br>psd2Region – whether payment in PSD2 jurisdiction|
 | threeDSErrorCode |If 3DS error |Any error response code returned by the ACS if there is an error in determining the card’s 3DS status.|
 | threeDSErrorDescription |If 3DS error |Any error response description returned by the ACS if there is an error in determining the card's 3DS status.|
-| threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for more details.|
+| threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#3dsecureErrorCodes) for more details.|
 | threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
 
 

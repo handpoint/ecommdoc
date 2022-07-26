@@ -22,7 +22,7 @@ Only the description, quantity, and amount of the first six line item details ar
 
 ### Purchase Orders
 
-These fields together with other advanced fields, as detailed in [Custom Data](customdata), can be used to send full information relating to a purchase order and related invoice indicating types; quantities; and agreed prices for products or services. Details on the supplier; shipping; delivery can also be included.
+These fields together with other advanced fields, as detailed in [Custom Data](#customData), can be used to send full information relating to a purchase order and related invoice indicating types; quantities; and agreed prices for products or services. Details on the supplier; shipping; delivery can also be included.
 
 At present, this information is not sent to the Acquirer, unless needed, but future enhancements to the Gateway may include sending such information as Level 2 or 3 Purchasing data as defined by the relevant Card Schemes.
 
@@ -80,7 +80,7 @@ Note: no attempt is made to check that any gross, net and tax amounts are correc
 
 Line item fields can either be sent ‘flat’ using field names containing the item row number as a sequential number from 1 to 99; or be sent using nested arrays of the form `items[XX][field]` where `XX` is the row number from 1 to 99 and `field` is the field name from the above table without the `itemXX` prefix and starting with a lowercase first letter. For example, the tax rate for item 5 can be sent either as `item5TaxRate`; or as `items[5][taxRate]`. The two formats should not be mixed. If a request field of `items` is seen, then the ‘flat’ fields are ignored.
 
-## Custom Data 
+## Custom Data {#customData}
 
 You may send arbitrary data with the request by appending extra fields, which will be returned unmodified in the response. These extra fields are merely ‘echoed’ back and not stored by the Gateway.
 

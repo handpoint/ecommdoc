@@ -4,15 +4,50 @@ sidebar_position: 3
 
 # Transaction Types
 
-All requests must specify what action they require the Gateway to perform, using the action request field. 
+## Financial Operations Types
 
-## Financial Operations 
+The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
+
+The type of transaction required is specified using the `type` request field when performing a new payment transaction.
+
+### E-Commerce (ECOM) {#ecommerce}
+
+E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions in the EU region MUST use advance fraud detection, such as 3-D Secure V2.
+
+### Mail Order/Telephone Order (MOTO){#moto}
+
+Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
+
+Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
+
+
+### Continuous Authority (CA) {#continuousAuthority}
+
+Continuous Authority transactions are supported by the Gateway by using a transaction `type` of `9`. They are designed for you to make subscription transactions. 
+
+The following transaction types are considered as Continuous Authority (CA) Payments :
+- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment.
+
+- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription.
+
+Your Acquirer may need to enable Continuous Authority capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
+
+The Gateway offers a mean of automating the taking of regular CA transactions using [Recurring Transaction Agreements (RTA)](credentialsonfile#recurringtransactionagreements).
+
+### How do I choose between MOTO, ECOM or CA? 
+
+If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product. If you are storing cards on file (COF) for recurring payments or a one-off payment you should refer to the [credentials on file Matrix](credentialsonfile#credentialsOnFileMatrix) to understand if you should use ECOM (1), MOTO (2) or Continuous Authority (9). 
+
+
+## Financial Operations Actions
+
+All requests must specify what action they require the Gateway to perform, using the action request field. 
 
 ### SALE
 
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. A successful authorisation will reserve the funds on the Cardholder’s account until the transaction is settled.
 
-The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
+The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay). If `captureDelay` is not used the transaction will be automatically settled at the end of the day.
 
 ### VERIFY 
 This will create a new transaction and attempt to verify that the card account exists with the Acquirer. The transaction will result in no transfer of funds and no hold on any funds on the Cardholder’s account. It cannot be captured and will not be settled. The transaction `amount` must always be zero.
@@ -34,13 +69,13 @@ This will create a new transaction and attempt to seek authorisation for a refun
 
 Partial refunds are allowed by specifying the amount to refund. Any amount must not be greater than the original received amount minus any already refunded amount. Multiple partial refunds may be made while there is still a portion of the originally received amount un-refunded.
 
-The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
+The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay). If `captureDelay` is not used the transaction will be automatically settled at the end of the day.
 
 ### REFUND
 
 This will create a new transaction and attempt to seek authorisation for a refund from the Acquirer. The transaction will then be captured and settled if and when appropriate. This is an independent refund and need not be related to any previous SALE. The amount is therefore not limited by any original received amount.
 
-The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
+The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay). If `captureDelay` is not used the transaction will be automatically settled at the end of the day.
 
 ### Transaction Request {#transactionRequest}
 
@@ -51,7 +86,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](samplecode#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: PREAUTH, VERIFY, SALE, REFUND, REFUND_SALE.<br></br><br></br> If a REFUND_SALE action is used, then the request must not attempt to change the payment details, or it will fail with a responseCode of 65542 (REQUEST MISMATCH) because the refund must be made to the original card.|
 | amount  | <span class="badge badge--primary">Yes</span> | The amount of the transaction. Either major currency units by providing a value that includes a single decimal point such as ’10.99’; or in minor currency units by providing a value that contains no decimal points such as ‘1099’. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
-| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](annexes#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](annexes#moto)<br></br> 9 – [Continuous Authority (CA)](annexes#continuousAuthority) <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
+| Type  | <span class="badge badge--primary">Yes</span> | The type of transaction. Possible values are: <br></br> 1 – [E-commerce (ECOM)](#ecommerce)<br></br> 2 -  [Mail Order/Telephone Order (MOTO)](#moto)<br></br> 9 – [Continuous Authority (CA)](#continuousAuthority) <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction.|
 | countryCode | <span class="badge badge--primary">Yes</span> | Merchant's location. Either the ISO-3166-1 2-letter, 3-letter or 3-digit code. <br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | currencyCode | <span class="badge badge--primary">Yes</span> | Transaction currency. Either the ISO-4217 3-letter or 3-digit code.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | paymentMethod | No | The payment method required. For card payments either omit this field or use the value `card`.|

@@ -40,7 +40,7 @@ If the card details are cloned from an existing transaction or loaded from a Gat
 
 If the transaction is the first in a recurring or instalment sequence then the optional `rtSequenceCount` field can be used to specify how many transactions will be taken in total, with a value greater than 1, and any optional `rtSequenceNumber` field specifying which transaction it is in the sequence will be expected to have a value of 0.
 
-### Merchant Initiated Transactions (MIT) 
+### Merchant Initiated Transactions (MIT) {#mit}
 
 Merchant Initiated Transactions (MIT) are any transaction where you have performed the transaction without the active participation of the Consumer. This would normally always be as a follow-up to a previous Consumer Initiated Transaction (CIT). The Gateway can be instructed to take Merchant Initiated recurring transactions automatically, according to a pre-determined schedule. Merchant Initiated Transactions are broken down in to two categories as follows.
 
@@ -126,7 +126,7 @@ The `initiator` field will be returned in the response with either the value pas
 | Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
 | Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |
 
-## Recurring Transaction Agreements
+## Recurring Transaction Agreements {#recurringtransactionagreements}
 
 A Recurring Transaction Agreement (RTA) is used to request that the Gateway should perform repeat payments on your behalf, using pre-agreed amounts and schedules.
 
@@ -283,7 +283,7 @@ All new transactions stored by the Gateway are assigned a unique reference numbe
 
 The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. This is usually for management actions such as CANCEL or CAPTURE.
 
-The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](annexes#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](annexes#continuousAuthority) section.
+The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](annexes#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](transactiontypes#continuousAuthority) section.
 
 The use of cross references to perform repeat transactions is referred to as Payment Tokenisation and should not be confused with Card Tokenisation which is a separate service offered by the Gateway.
 

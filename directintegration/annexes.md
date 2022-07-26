@@ -268,41 +268,6 @@ The transaction has finished and reached the end of its lifespan but did not rea
 
 This is a terminal state and can follow any other state. The transaction response will normally indicate the reason that the transaction failed.
 
-
-## Transaction Types Definitions
-
-The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
-
-The type of transaction required is specified using the `type` request field when performing a new payment transaction.
-
-#### E-Commerce (ECOM) {#ecommerce}
-
-E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions in the EU region MUST use advance fraud detection, such as 3-D Secure V2.
-
-#### Mail Order/Telephone Order (MOTO){#moto}
-
-Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
-
-Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
-
-
-#### Continuous Authority (CA) {#continuousAuthority}
-
-Continuous Authority transactions are supported by the Gateway by using a transaction `type` of `9`. They are designed for you to make subscription transactions. 
-
-The following transaction types are considered as Continuous Authority (CA) Payments :
-- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment.
-
-- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription.
-
-Your Acquirer may need to enable Continuous Authority capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
-
-The Gateway offers a mean of automating the taking of regular CA transactions using [Recurring Transaction Agreements (RTA)](recurringtransactionagreements).
-
-#### How do I Choose Between MOTO, ECOM or Continous Authority (CA) as a Type ? 
-
-If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product. If you are storing cards on file (COF) for recurring payments or a one-off payment you should refer to the [credential on file Matrix](credentialsonfile#credentialsOnFileMatrix) to understand if you should use ECOM (1), MOTO (2) or Continuous Authority (9). 
-
 ## Transaction Cloning {#transactionCloning}
 
 If a new transaction request is received with the Cross Reference (xref) of an existing transaction, then the values of certain fields in the existing transaction will be used to initialise the new transaction where new values have not been provided in the new request. This copying of fields from a base transaction is termed ‘transaction cloning’, and the copied-over value is termed the ‘cloned value’. To allow for easy addition of future fields, the fields are grouped into logical groupings and each group is given a name, given in brackets after the group title.
