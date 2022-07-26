@@ -17,6 +17,16 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 
  A very important limitation of the Hosted Payment Page integration is that **Google Pay and Apple Pay are NOT supported**. A separate Direct integration will be required to support those digital wallets. 
 
+<div align="center">
+<img src="/img/hosted_payment_page.png"></img>
+</div>
+<div align="center">
+ <img src="/img/hosted_payment_page_modal.png"></img>
+</div>
+
+
+
+
 ## Benefits
 - You are kept out of PCI scope. 
 - You are kept out of the EMV 3D-Secure flow.
