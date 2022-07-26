@@ -12,7 +12,7 @@ The stored details, or credentials, are termed Credentials on File (COF) and ref
 
 These transactions must always be identified with the reason for storing or using the stored credentials and who initiated the transaction – the Consumer (CIT) or the Merchant (MIT).
 
-You may store the credentials and send them with the future transaction, or you may store the details in the [Gateway’s Wallet](gatewaywallet) or by taking advantage of the [payment tokenisation](annexes#paymentTokenisation) feature of the Gateway. Either way you must tell the Gateway of your intentions, it will not assume that just because you have asked, for example, to store credentials in the Wallet that those are legitimate stored credentials and follow all the requirements laid out below.
+You may store the credentials and send them with the future transaction, or you may store the details in the [Gateway’s Wallet](#gatewayWallet) or by taking advantage of the [payment tokenisation](#paymentTokenisation) feature of the Gateway. Either way you must tell the Gateway of your intentions, it will not assume that just because you have asked, for example, to store credentials in the Wallet that those are legitimate stored credentials and follow all the requirements laid out below.
 
 If you store credentials on file, then you must:
 - Disclose to consumers how those credentials will be used.

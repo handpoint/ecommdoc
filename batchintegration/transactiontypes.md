@@ -62,7 +62,7 @@ The `captureDelay` field can be used to state whether the transaction should be 
 | orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
 | captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
-| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation) <br></br><br></br> **Mandatory** for a REFUND_SALE request to specify the original SALE transaction. |
+| xref | No | Reference to a previous transaction. refer to [payment tokenisation](credentialsonfile#paymentTokenisation) <br></br><br></br> **Mandatory** for a REFUND_SALE request to specify the original SALE transaction. |
 | remoteAdress | No | IP address of client making the transaction. This should be provided where possible to aid fraud prevention. |
 | rtAgreementType | No | Agreement between Merchant and Cardholder for the storage of, or subsequent use of, payment details. refer to the  [Credentials on File](credentialsonfile) section. <br></br><br></br> **Mandatory** for recurring transactions or other transactions using stored credentials.|
 
@@ -77,7 +77,7 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
 | responseMessage | Always | Message received from the Acquiring bank, or any error message. |
 | transactionID | Always | A unique ID assigned by the Gateway.|
-| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation). |
+| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](credentialsonfile#paymentTokenisation). |
 | state | Always |  [Transaction states](annexes#transactionStates). |
 | timestamp | Always | Time the transaction was created or last modified. |
 | transactionUnique | If supplied | Any value supplied in the initial request. |
@@ -124,7 +124,7 @@ This will query an existing transaction, identified using the `xref` request fie
 | merchantPwd | No | Any password used for an added security layer.  |
 | signature | <span class="badge badge--primary">Yes</span> | Hash used to sign this request. See [signature calculation](samplecode#signatureCalculation) for information on how to create the hash. A signature maybe mandatory on some Merchant Accounts and requests.|
 | action | <span class="badge badge--primary">Yes</span> | Possible values are: AUTHORISE, CAPTURE, CANCEL, QUERY|
-| xref | <span class="badge badge--primary">Yes</span> | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
+| xref | <span class="badge badge--primary">Yes</span> | Reference to a previous transaction. refer to [payment tokenisation](credentialsonfile#paymentTokenisation). |
 | amount  | No | The amount to capture or refund. **Mandatory** for partial refunds or partial captures.|
 | callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
 

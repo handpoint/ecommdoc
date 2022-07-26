@@ -1,5 +1,5 @@
 ---
-sidebar_position: 30
+sidebar_position: 9
 ---
 
 # Annexes 
@@ -302,73 +302,6 @@ The Gateway offers a mean of automating the taking of regular CA transactions us
 #### How do I Choose Between MOTO, ECOM or Continous Authority (CA) as a Type ? 
 
 If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product. If you are storing cards on file (COF) for recurring payments or a one-off payment you should refer to the [credential on file Matrix](credentialsonfile#credentialsOnFileMatrix) to understand if you should use ECOM (1), MOTO (2) or Continuous Authority (9). 
-
-
-## Payment Tokenisation {#paymentTokenisation}
-
-All new transactions stored by the Gateway are assigned a unique reference number that is referred to as the cross reference and returned in the `xref` response field. This cross reference is displayed on the Merchant Management System (MMS) and used whenever a reference to a previous transaction is required.
-
-The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. This is usually for management actions such as CANCEL or CAPTURE.
-
-The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](#continuousAuthority) section.
-
-The use of cross references to perform repeat transactions is referred to as Payment Tokenisation and should not be confused with Card Tokenisation which is a separate service offered by the Gateway.
-
-Refer to the [credentials on file](#credentialsonfile) section for details on how to instruct the Gateway to repeat a payment automatically.
-
-The Gateway will make transaction details available for a maximum period of 13 months, after this time the `xref` to the transaction will be invalid. The card number will be available during this time, but you may request that it is removed sooner. Once the card number has been removed the `xref` can no longer be used to provide the number to a future a transaction.
-
-The way each action handles any supplied `xref` is as follows:
-
-#### PREAUTH, SALE, REFUND, VERIFY requests
-
-These requests will always create a new transaction.
-
-The `xref` field can be provided to reference an existing transaction, which will be used to complete any missing fields in the current transaction. The previous transaction will not be modified. For more information on how the existing values are used, please refer to the [transaction cloning](#transactionCloning) section. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
-
-The request is expected to contain any transaction information required.
-
-The `xref` will only be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
-
-#### REFUND_SALE requests
-
-These requests will always create a new transaction.
-
-The `xref` field can be provided to reference an existing transaction that is going to be refunded. This existing transaction will be marked as have been fully or partially refunded and the amounts will be tallied to ensure that you cannot refund more than the original amount of this existing transaction. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
-
-The request is expected to contain any transaction information required.
-
-The `xref` will not only be used to find the transaction to be refunded: additionally, that transaction will be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
-
-#### CANCEL or CAPTURE requests
-
-These requests will always modify an existing transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be modified to the desired state. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information any attempt to send any new transaction information will result in an error. The exception is that a CAPTURE request can send in a new lesser `amount` field when a lesser amount, than originally authorised, must be settled.
-
-#### QUERY requests
-
-These requests will not create or modify any transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be returned as if it had just been performed. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information and any attempt to send any new transaction information will result in an error.
-
-#### SALE or REFUND Referred Authorisation requests
-
-These will always create a new transaction.
-
-The `xref` field must be provided to reference an existing transaction, which must be of the same request type and be in the referred state. A new transaction will be created based upon this transaction. If the existing transaction cannot be found or is not in the referred state, then an error will be returned and recorded against the new transaction.
-
-The new transaction will be put in the approved state and captured when specified by the existing or new transaction details. It will not be sent for authorisation again first.
-
-The request may contain new transaction details, but any card details or order amount must be the same as the existing transaction. Any attempt to send different card details or order details will result in an error.
-
-NB: This usage is very similar to a normal SALE or REFUND request sent with an `authorisationCode` included. The difference is that the `xref` must refer to an existing referred transaction whose full details are used if required and not simply an existing transaction whose card details are used if required.
-
-This means it is not possible to create a pre-authorised SALE or REFUND request and use a xref (ie to use the card and order details from an existing transaction). As a soon as the `xref` field is seen, the Gateway identifies that it is a referred transaction that you wish to authorise.
 
 ## Transaction Cloning {#transactionCloning}
 

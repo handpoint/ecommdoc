@@ -63,7 +63,7 @@ You can also state which fields you require to be mandatory, in which case the p
 | orderRef | No | Free format text field to store order details, reference numbers, etc. for the Merchant’s records.<br></br><br></br> **Optional** if an `xref` is provided as the value will be taken from the cross-referenced transaction. |
 | orderDate | No | Optional date to record with the transaction. |
 | captureDelay | No | Number of days to wait between authorisation of a payment and subsequent settlement. refer to the [delayed capture](annexes#captureDelay) guide.|
-| xref | No | Reference to a previous transaction. refer to [payment tokenisation](annexes#paymentTokenisation). |
+| xref | No | Reference to a previous transaction. refer to [payment tokenisation](credentialsonfile#paymentTokenisation). |
 | callbackURL | No | URL which will receive a copy of the transaction result by POST. The URL must be fully qualified and include at least the scheme and host components. Refer to the [callback URL](overview#callbackUrl) docs for details. |
 | customerName | No | Default value for the Cardholder’s name field. |
 | customerAddress | No | Default value for the Cardholder’s address field. |
@@ -100,7 +100,7 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | responseStatus | Always | A numeric code providing the outcome category. Possible values are:<br></br> 0 – Authorisation Approved / No reason to decline <br></br> 1 – Authorisation Declined. <br></br> 2 – Authorisation Error / Transaction malformed. |
 | responseMessage | Always | Message received from the Acquiring bank, or any error message. |
 | transactionID | Always | A unique ID assigned by the Gateway.|
-| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](annexes#paymentTokenisation). |
+| xref | Always | You may store the cross reference for repeat transactions. Refer to [payment tokenisation](credentialsonfile#paymentTokenisation). |
 | state | Always |  [Transaction state](annexes#transactionStates). |
 | timestamp | Always | Time the transaction was created or last modified. |
 | transactionUnique | If supplied | Any value supplied in the initial request. |
