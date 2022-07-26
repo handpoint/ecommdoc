@@ -30,7 +30,7 @@ You will need the following information to integrate with the Gateway which will
 | Name      | Description |
 | ----------- | ----------- |
 | Merchant Account ID | Your unique Merchant Account ID. |
-| Integration URL | Your unique URL to use the Direct Integration. |
+| Integration URL | Your unique URL to use the Hosted Payment Fields Integration. |
 
  You will be provided with unique production and test Merchant Account IDs during the onboarding process. You will also be provided with the integration URL. 
 
