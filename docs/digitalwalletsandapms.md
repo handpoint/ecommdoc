@@ -1,10 +1,205 @@
 ---
-sidebar_position: 20
+sidebar_position: 5
 ---
 
-# PayPal Transactions
+# Digital Wallets and Alternative Payment Methods 
 
-## Background
+## PPRO Transactions (APMs)
+
+PPRO is an additional payment method that is available to all Merchants using the Gateway that have a PPRO account.
+
+To use PPRO you will be supplied with a separate PPRO Merchant account that can be grouped with your main Merchant Account using the account mapping facility as documented in the [merchant account mapping](annexes#merchantAccountMapping) section. This allows transactions to be sent using your main Merchant Account and then routed automatically to the PPRO Merchant Account in the same mapping group.
+
+PPRO is an Acquirer that offers many Alternative Payment Methods (APM), that you can then offer to your Customers.
+
+E-wallets, SMS payments and PSP services are some of the many payment methods PPRO support (eg Alipay, EasyPay, Bancontact). This could allow a business to facilitate overseas transactions or alternative payment methods using a different payment method suitable for that country or business plan.
+
+All transactions created with this payment method will appear in the Merchant Management System (MMS) together with the payment method that was used to process the transaction.
+
+PPRO transactions cannot be used for ad-hoc Credential on File (COF) repeat transactions or for recurring billing.
+
+For more information on how to accept PPRO transactions please contact customer support.
+
+#### Benefits 
+
+- Multiple alternative payment methods could be used.
+- Expands range of payment methods for international use.
+- Supports a variety of e-wallets, SMS and PSP’s.
+- Ability to perform refunds on supported payment methods.
+- Transactions are controlled within the Merchant Management System (MMS) in the same manner as normal card transactions.
+
+#### Limitations 
+
+- You will need a PPRO account.
+- Payment authorisation is not always instantaneous and may require additional ‘QUERY’ requests.
+- An alternative payment method may only support one or a limited set of currencies or countries.
+- Alternative payment methods require a browser in order to display their Checkout.
+
+### Implementation 
+
+If a transaction is sent to the Hosted Integration using a `merchantID` which is part of a routing group containing a PPRO Merchant Account, then the Hosted Payment Page will show alternative payment method (APM) buttons for each payment method listed in the `allowedPaymentMethods` field. When clicked on the Hosted Payment Page may request further details from the Customer before opening the APM Checkout allowing the Customer to pay using that APM.
+
+To customise the alternative payment methods checkout experience, you may send various options in the `pproCheckoutOptions` field in your initial request.
+
+Additional information available from PPRO will be made available in the `checkoutDetails` response field.
+
+### Request Fields
+
+These fields should be sent in addition to the [basic request fields](transactiontypes.md/#transactionRequest).
+
+| Name | mandatory |Description|
+| ----------- | ----------- |----------- |
+|allowedPaymentMethods| <span class="badge badge--primary">Yes</span> |Payment method to be used with PPRO (eg ppro.astropay, ppro.alipay, etc.). Refer to the [Payment Method Tag](#pproPaymentMethodTag) section.|
+|paymentMethod| No |Request the Hosted Payment Page to invoke an alternative payment method on display without the need for the Customer to select it.|
+|pproCheckoutOptions|No||Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
+
+
+### Response Fields
+
+These fields will be returned, in addition to the request fields above and the [basic response fields](transactiontypes.md/#transactionResponse).
+
+| Name | mandatory |Description|
+| ----------- | ----------- |----------- |
+|checkoutName| <span class="badge badge--primary">Yes</span>|The `paymentMethod` you used to identify the PPRO payment method.|
+|pproCheckoutOptions| <span class="badge badge--primary">Yes</span>|Record containing any Checkout options provided in the request.|
+|checkoutDetails| <span class="badge badge--primary">Yes</span>|Record containing additional information provided from the payment method used during checkout.|
+|checkoutResponse| <span class="badge badge--primary">Yes</span>|Containing additional information provided by the Checkout. Any change in the payment’s status will be given in `responseMessage` and `responseCode`. <br></br><br></br> Not all payment methods give an immediate payment status. This will require a further QUERY to the Gateway to see whether this value has changed to a status of ‘tendered’.|
+|checkoutStatus| <span class="badge badge--primary">Yes</span>|A string containing the result of the checkout process. This is not used to identify the transaction’s payment status.|
+
+
+### Payment Method Tag {#pproPaymentMethodTag}
+
+`allowedPaymentMethods` is a comma separated list of `paymentMethod` supported by the Merchant to show on the Hosted Payment Page where supported. The `paymentMethod` field follows the format ‘ppro.XXXX’, where XXXX is the alternative payment method’s tag name as assigned by PPRO. 
+
+For example, to use the alternative payment method AstroPay Card that has a tag name of “astropaycard” (all lowercase); the resulting payment method code would be “ppro.astropaycard”.
+
+The table below is a guide to the tag names available. This list is fluid as PPRO add and remove methods.
+
+If you know of a payment method that is not on this list or the payment method cannot be used; please contact customer support for advice.
+
+| Payment Method Tag | Payment Method Name |
+| ----------- | ----------- |
+|affinbank|Affin bank|
+|alipay| AliPay|
+|ambank|AmBank|
+|argencard|Argencard|
+|astropaycard|AstroPay Card|
+|astropaydirect|AstroPay Direct|
+|aura|Aura|
+|baloto|Baloto|
+|banamex|Banamex|
+|bancodobrasil|Banco Do Brasil|
+|bancodechile|Banco de Chile|
+|bancodeoccidente|Banco de Occidente|
+|bancomer|Bancomer|
+|bankislam|Bank Islam|
+|bcmc|Bancontact|
+|bitpay|BitPay|
+|boleto|Boleto Bancario|
+|bradesco|Bradesco|
+|cabal|Cabal|
+|cartaomercadolivre|Cartao Mercado Livre|
+|carulla|Carulla|
+|ccauth|Credit/Debit Card|
+|ccweb|Credit/Debit Card|
+|cencosud|Cencosud|
+|cimbclicks|CIMB Clicks|
+|cmr|CMR|
+|davivienda|Davivienda|
+|directpay|Sofortüberweisung (Direct Pay)|
+|dragonpay|Dragonpay|
+|easypay|EasyPay|
+|efecty|Efecty|
+|elo|Elo|
+|empresedeenergia|Emprese de Energia|
+|enets|eNETS|
+|entercash|Entercash|
+|eps|EPS|
+|estonianbanks|Estonian Banks|
+|giropay|Giropay|
+|hipercard|Hipercard|
+|hongleongbank|Hong Leong Bank|
+|ideal|iDEAL|
+|instanttransfer|Instant Transfer|
+|int_payout|International Pay-Outs|
+|itau|Itau|
+|latvianbanks|Latvian Banks|
+|lithuanianbanks|Lithuanian Banks|
+|magna|Magna|
+|maxima|Maxima|
+|maybanktwou|Maybank2u|
+|multibanco|Multibanco|
+|mybank|MyBank|
+|myclearfpx|MyClear FPX|
+|naranja|Naranja|
+|narvesen|Narvesen|
+|nativa|Nativa|
+|oxxo|OXXO|
+|p24|Przelewy24|
+|p24payout|Przelewy24 Payout|
+|pagofacil|Pago Facil|
+|paypost|PayPost|
+|paysafecard|Paysafe Card|
+|paysbuy|Paysbuy|
+|paysera|Paysera|
+|payu|PayU|
+|perlas|Perlas Terminals|
+|poli|OLI|
+|presto|Presto|
+|pse|PSE|
+|pugglepay|Pugglepay|
+|qiwi|QIWI|
+|qiwipayout|QIWI Payout|
+|rapipago|Rapipago|
+|redpagos|Redpagos|
+|rhbbank|RHB Bank|
+|safetypay|SafetyPay|
+|santander|Santander|
+|sepadirectdebit|SEPA DirectDebit|
+|sepapayout|SEPA Payout|
+|seveneleven|7eleven|
+|singpost|SingPost|
+|skrill|Skrill|
+|surtimax|Surtimax|
+|tarjetashopping|Tarjeta Shopping|
+|trustly|Trustly|
+|trustpay|TrustPay|
+|unionpay|UnionPay|
+|verkkopankki|Verkkopankki – Finish Online Banking|
+|webpay|Webpay|
+|yellowpay|Yellow Pay|
+
+### Checkout Options {#checkoutOptions}
+
+The following options may be set in the `pproCheckoutOptions` field to customise the Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
+
+| Name | Description |
+| ----------- | ----------- |
+|nationalid|Consumer’s national ID (up to 30 characters).|
+|consumerref|Unique reference identifying the consumer within 1 to 20 characters and a format of A-Za-z0-9.%,&/+*$-|
+|siteid|Unique site identifier. Required for clients serving multiple points of sale and forwarded onwards whilst using the qiwi payment method.|
+|iban|Valid IBAN of consumer/destination account.|
+|sequencetype|Sequence type of the direct debit.<br></br><br></br> Possible values are:<br></br> oneOff – The direct debit is executed once (default)<br></br> first – First direct debit in a series of recurring ones|
+|mandatereference|Mandate reference as returned on the first transaction in the sequence (found from mandatereference in checkoutDetails)|
+|mandatesignaturedate|Date of the initial transaction.|
+|bic|Valid BIC (8 or 11 alphanumeric letters) – optionally supplied to skip the bank selection page (by using the bank referenced by BIC as supplied)|
+|clientip|Optional IP address of the consumer during checkout using Trustly (127.0.0.1 is not allowed!)|
+|address|Customer’s billing address <br></br><br></br>This information is supplied to PPRO by default using the Gateway field customerAddress|
+|city|Customer’s billing city<br></br><br></br>This information is supplied to PPRO by default using the Gateway field customerTown.|
+|phone|Customer’s phone<br></br><br></br>This information is supplied to PPRO by default using the Gateway field customerPhone.|
+|mobilephone|Customers mobile phone<br></br><br></br>This information is supplied to PPRO by default using the Gateway field customerMobile.|
+|dob|MCC 6012 Date of Birth<br></br><br></br>This information is supplied to PPRO by default using the Gateway field receiverDateOfBirth.|
+|dynamicdescriptor|Statement narrative<br></br><br></br>This information is supplied to PPRO by default using the Gateway field statementNarrative1.|
+
+### Notifications and "Tendered" Payments 
+
+Whilst some payment methods give an immediate payment status (ie direct card payment methods rather than SMS and e-wallet systems), some payments may come back with the status of ‘tendered’. At this time, online shopping modules will not be able to monitor the transaction status. The use of a QUERY request may be of use. **Processing management requests (QUERY) is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**   
+
+Please ask customer support in this matter who will be able to give more information and may be able to provide better advice for your situation.
+
+Notifications from PPRO regarding the payment status, seconds, minutes or hours after the checkout will automatically update the transaction status.
+
+## PayPal Transactions
 
 PayPal is an additional payment method that is available to all Merchants using the Gateway who have a PayPal account.
 
@@ -20,7 +215,7 @@ PayPal transactions cannot be used for ad-hoc Credentials on File (COF) repeat t
 
 For more information on how to accept PayPal transactions, please contact customer support.
 
-## Benefits
+#### Benefits
 
 - Provides your customers with the flexibility of paying by using their PayPal account when this is more suitable to them than using a traditional credit or debit card.
 - The in-context PayPal Express Checkout helps improve conversion rates with an easier way to pay without customers leaving your website.
@@ -28,7 +223,7 @@ For more information on how to accept PayPal transactions, please contact custom
 - The full PayPal transaction information is available and returned as part of the transaction.
 - Transactions are controlled within the Merchant Management System (MMS) in the same manner as normal card transactions.
 
-## Limitations
+#### Limitations
 
 - You will need a PayPal account.
 - Recurring transactions are not supported unless as part of a prearranged billing agreement.
@@ -36,7 +231,7 @@ For more information on how to accept PayPal transactions, please contact custom
 - Transactions require a browser in order to display the PayPal Checkout.
 - The PayPal Checkout cannot be opened from within a browser IFRAME and so care must be taken to ensure that any PayPal Checkout button is not placed within such an IFRAME.
 
-## Implementation 
+### Implementation 
 
 If a transaction is sent to the Hosted Integration using a `merchantID` that is part of a routing group containing a PayPal Merchant, then the Hosted Payment Page will display a PayPal payment button that, when clicked, will open the PayPal Checkout and allow the Customer to pay using their PayPal account.
 
@@ -235,17 +430,17 @@ The following details may be provided in the `checkoutDetails` field included in
 |storeID| No | Store identifier as entered in the transaction.|
 |terminalID| No | Terminal identifier as entered in the transaction.|
 
-## Transaction Lifecycle
+### Transaction Lifecycle
 
 PayPal transactions will use the normal Authorise, Capture life cycle as documented in the section [Authorise, Capture and Settlement](annexes#authoriseCaptureSettlement) with the following differences. In addition, the PayPal `paymentAction` option can be included in the `paypalCheckoutOptions` field to alter the normal payment lifecycle further, to allow an Order, Authorise, Capture model or a straight Sale model to be specified.
 
-### Order
+#### Order
 
 If a `paymentAction` with a value of ‘Order’ is sent, then PayPal will store the transaction but delay authorising it until instructed. To instruct PayPal to authorise the transaction, a further management request can be sent to the Gateway with an `action` of ‘AUTHORISE’ and the `xref` of the transaction to authorise. Alternatively, the AUTHORISE command can be selected in the Merchant Management System (MMS). The transaction will be left in the ‘received’ state.
 
 **Processing management requests (AUTHORISE) is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
-### Authorise
+#### Authorise
 
 If no `paymentAction` is specified or a `paymentAction` with a value of ‘Authorize’ is sent, then PayPal will authorise the transaction on receipt as per a standard card transaction and you can capture it later if you used the `captureDelay` field. Note that the value uses the PayPal spelling ‘Authorize’, and not the British spelling ‘Authorise’.
 
@@ -253,11 +448,11 @@ For the first three days (by default) of the authorisation, funds are reserved. 
 
 Authorisations have a fixed expiry period of 29 days.
 
-### Sale
+#### Sale
 
 If a `paymentAction` with a value of ‘Sale’ is sent, then PayPal will immediately capture the transaction after authorisation. The transaction will be regarded as having been settled and you will not be able to capture it manually and it will not be sent for settlement that evening. The transaction will be left in either the accepted or rejected terminal states depending on whether PayPal accepted or rejected the transaction.
 
-### Capture
+#### Capture
 
 Transactions that have been authorised by PayPal and not immediately settled due to a paymentAction of ‘Sale’ will be able to be captured as normal.
 
@@ -269,7 +464,7 @@ Note: PayPal allows multiple captures where they sum the individual capture amou
 
 **Processing management requests (CAPTURE) is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
-### Refund
+#### Refund
 
 PayPal transactions can be refunded in the same way as normal card transactions (requires a separate Direct Integration). However, in the same way as capture requests, these will be sent to PayPal immediately and not batched up to be sent as part of the nightly settlement process. This means that the transaction will be left in either the accepted or rejected terminal state, depending on whether PayPal accepted or rejected the refund request.
 
@@ -279,7 +474,7 @@ By default, PayPal allows a Merchant up to 60 days from the original authorised 
 
 **Processing Refunds is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
-### Cancel
+#### Cancel
 
 You should cancel any transactions that you do not wish to capture in order to prevent ‘pending’ transactions on the Customer’s PayPal account.
 
@@ -289,16 +484,261 @@ All transactions must be completed by being captured or cancelled.
 
 **Processing management requests (CANCEL) is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
-### Pending Payments 
+#### Pending Payments 
 
 PayPal may put a transaction into a pending state when flagged for additional fraud review. This state is known to PayPal as payment review or IPR.
 
 IPR transactions will be automatically cancelled by the Gateway and treated as referred transactions with a `responseCode` of 2 and a `responseMessage` indicating the reason that the transaction was put into a pending state. Unlike card referred transactions, an authorisation code cannot be obtained from PayPal verbally and then the transaction resent.
 
-## Reference Transactions
+### Reference Transactions
 
 PayPal does not allow ad hoc Credentials on File (COF) type repeat or recurring transactions using the xref of a reference transaction unless that transaction has specifically started a PayPal Billing Agreement.
 
 If you want to be able to make future repeat or recurring transactions, then the initial transaction must include the `billingType` and `billingAgreementDescription` options in the `paypalCheckoutOptions` so as to identify this transaction as the start of a recurring billing sequence. **Processing recurring payments is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
 
 This will cause the Gateway to request PayPal to set up a Billing Agreement between you and the Customer. In this case, the PayPal Billing Agreement ID will be returned as part of the `checkoutDetails` and displayed on the Merchant Management System (MMS) as part of the payment details, so that you can easily see which PayPal transactions can be used for recurring billing.
+
+## Amazon Pay Transactions
+
+Amazon Pay is an additional payment method that is available to all Merchants using the Gateway that have an Amazon Pay account.
+
+To use Amazon Pay, you will be supplied with a separate Amazon Pay Merchant account that can be grouped with your main Merchant account using the account mapping facility as documented in the [merchant account mapping](annexes#merchantAccountMapping) section. This allows transactions to be sent using your main Merchant Account and then routed automatically to the Amazon Pay Merchant Account in the same mapping group.
+
+It allows you to offer payment via Amazon Pay in addition to normal card payments.
+
+Amazon Pay transactions will appear in the Merchant Management System (MMS) alongside any card payments and can be captured, cancelled and refunded in the same way as card payments.
+
+Amazon Pay transactions can also be used for recurring billing but require you to indicate in the initial transaction that it will be the basis for recurring billing and a billing agreement will be entered into between your Customer and Amazon Pay when they agree to the payment.
+
+Amazon Pay transactions cannot be used for ad-hoc Credentials on File (COF) repeat transactions unless a billing agreement has been set up.
+
+For more information on how to accept Amazon Pay transactions, please contact customer support.
+
+#### Benefits 
+
+- Provides your customers with the flexibility of paying using their Amazon Pay account when this is more suitable to them.
+- The Amazon Pay Checkout can be added as an overlay on the standard checkout to help improve conversion rates with an easier way to pay without customers leaving your website.
+- There are no extra costs to add an Amazon Pay Merchant Account. However, you will still be liable for the Amazon Pay transaction fees.
+- The full Amazon Pay transaction information is available and returned as part of the transaction.
+- Transactions are controlled within the Merchant Management System (MMS) in the same manner as normal card transactions.
+
+#### Limitations
+
+- You will need an Amazon Pay account.
+- Recurring transactions are not supported unless part of a prearranged billing agreement.
+- Independent refunds that are not tied to a previous sale transaction are not supported without prior agreement.
+- Transactions require a browser in order to display the Amazon Pay Checkout widgets.
+
+### Implementation 
+
+If a transaction is sent to the Hosted Integration using a `merchantID` that is part of a routing group containing an Amazon Pay Merchant, then the Hosted Payment Page will display an Amazon Pay payment button which, when clicked, will open the Amazon Pay Checkout and allow the Customer to pay using their Amazon Pay account.
+
+To customise the Amazon Pay Checkout experience, you may send various options in the `amazonPayCheckoutOptions` field in your initial request.
+
+Additional information available from Amazon Pay will be made available in the `checkoutDetails` response field.
+
+### Request Fields 
+
+These fields should be sent in addition to the [basic request fields](transactiontypes.md/#transactionRequest).
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| paymentMethod | No| Must contain the value ‘amazonpay’ in lower case letters only.|
+| checkoutRedirectURL | No | Reserved for future use.|
+| amazonPayCheckoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#checkoutOptions) section.|
+
+
+### Response Fields
+
+These fields will be returned, in addition to the request fields above and the [basic response fields](transactiontypes.md/#transactionResponse).
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| checkoutRef | <span class="badge badge--primary">Yes</span> | Unique reference required to continue this transaction when the Amazon Pay Checkout has completed.|
+| checkoutName | <span class="badge badge--primary">Yes</span>  | Unique name of the Checkout. For Amazon Pay this is the value amazonpay.|
+| acquirerResponseDetails | <span class="badge badge--primary">Yes</span> | Record containing details about the Amazon Pay response containing any error messages and codes. This can be used together with the normal `responseCode` and `responseMessage` response fields to further determine the reason for any failure.|
+| amazonPayCheckoutOptions | No | Record containing any Checkout options passed in the request.|
+| checkoutDetails | <span class="badge badge--primary">Yes</span>  | Record containing options used to customise the Amazon Pay Checkout. Refer to the [checkout details](#checkoutDetails) section.|
+| customerXXXX | No | Customer details if provided by the Amazon Pay Checkout. The response will include the Customer/billing address details if provided by the Amazon Pay Checkout. |
+| deliveryXXXX | No | Delivery details if provided by the Amazon Pay Checkout.The response will include the delivery address details if provided by the Amazon Pay Checkout.|
+| receiverXXXX | No |Buyer details if provided by Amazon Pay. Amazon Pay will usually provide the buyer’s name, postcode and email only, which are returned in the `receiverName`, `receiverPostcode` and `receiverEmail` fields accordingly|
+
+
+### Checkout Options {#checkoutOptions}
+
+The following options may be set in the `amazonPayCheckoutOptions` field to customise the Amazon Pay Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
+
+| Name      | Description |
+| ----------- | ----------- |
+| billingAgreementRequired | Can be used to specify that a billing agreement must be started. Alternatively, the `rtAgreementType` standard integration field can be used with a value of ‘recurring’ or ‘instalment’.|
+|shippingAddressRequired|Indication that the shipping address is required, and the Address Checkout Widget will be used. |
+|sellerOrderID| The Merchant specified identifier for this order. If not sent, then any value in the merchantOrderRef standard integration field is used.|
+|sellerNote| Represents a description of the order that is displayed in emails to the buyer.|
+|sellerAuthorizationNote|A description for the authorisation transaction that is shown in emails to the buyer. |
+|sellerCaptureNote  | A description for the capture that is displayed in emails to the buyer.|
+|sellerBillingAgreementID  | The Merchant specified identifier for this billing agreement. If not sent, then any value in the `rtPolicyRef` standard integration field is used.|
+|customInformation|Any additional information that you want to include with this order reference |
+| supplementaryData |Supplementary data.|
+|softDescriptor| The description to be shown on the buyer's payment statement.|
+|billingAgreementRequired|Can be used to specify that a billing agreement must be started. Alternatively, the `rtAgreementType` standard integration field can be used with a value of ‘recurring’ or ‘instalment’. |
+|shippingAddressRequired| Indication that the shipping address is required, and the Address Checkout Widget will be used.|
+
+For further information on the options refer to the Amazon Pay API Reference Guide: https://pay.amazon.com/us/developer/documentation/apireference/201751630. 
+
+### Checkout Details {#checkoutDetails}
+
+The `checkoutDetails` field included in the response will contain the following values and any further values received from Amazon Pay allowing the Merchant to see the full Amazon Pay order information. The details will be returned using the record format detailed in the [format guide](overview#fieldFormats). 
+
+| Name      | Mandatory | Description |
+| ----------- | ----------- | ----------- |
+| referenceID| No |Amazon Pay reference id. Either the `orderReferenceID` or the `billingReferenceID` where appropriate. |
+| accessToken| No | Amazon Pay access token .|
+| bilingAgreementID| No | Amazon Pay billing agreement id.|
+|orderReferenceID | No | Amazon Pay order reference id.|
+
+### Transaction Lifecycle 
+
+Amazon Pay transactions will use the normal Authorise, Capture life cycle as documented in the section [Authorise, Capture and Settlement](annexes#authoriseCaptureSettlement) with the following differences.
+
+#### Capture 
+
+Captures made by the Merchant Management System (MMS) are sent to Amazon Pay immediately the transaction will be left in either the accepted or rejected terminal state depending on whether Amazon Pay accepted or rejected the capture request. Unlike card payments, captures do not flag the transaction to be included in the nightly settlement batch and therefore, when done they cannot be redone. This means that it is not possible to change the amount to be captured or cancel the transaction when a capture has been requested.
+
+Captures that are not explicitly performed such as normal transactions or those with a `captureDelay` are still done as part of the nightly settlement batch.
+
+Transactions that are not captured within 3 days will be placed in a pending state in the Amazon Pay system which is reflected as the tendered state in the Gateway and will show on the Merchant Management System as being settled.
+
+#### Refund Sale
+
+Amazon Pay transactions can be refunded the same as normal card transactions. however, like capture requests, these will be sent to Amazon Pay immediately and not batched up and sent as part of the nightly settlement process. This means the transaction will be left in either the accepted or rejected state depending on whether Amazon Pay accepted or rejected the refund request.
+
+Refunds can be made for full or partial amounts, with multiple refunds allowed up to the original authorised amount.
+
+**Processing Refunds is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
+
+### Reference Transactions 
+
+Amazon Pay does not allow ad hoc Credentials on File (COF) type repeat or recurring transactions using the xref of a reference transaction unless that transaction has specifically started an Amazon Pay Billing Agreement.
+
+If you want to be able to make future repeat or recurring transactions, then the initial transaction must include an `rtAgreementType` of recurring or instalment. Alternatively, the `billingAgreementRequired` option can be included in the `checkoutOptions` so as to identify this transaction as the start of a recurring billing sequence. **Processing recurring payments is not possible with the Hosted payment page integration, it requires a separate Direct Integration.**  
+
+This will cause the Gateway to request Amazon Pay setup a Billing Agreement between you and the Customer. In this case the Amazon Pay Billing Consent Widget must be used in the Checkout and the `billingAgreementID` it creates sent in the `checkoutResponse` data in the continuation request. Any billing agreement id will be displayed on the Merchant Management System (MMS) as part of the payment details so that you can easily see which Amazon Pay transactions can be used for recurring billing.
+
+## Pay by Bank app (PBBA) Transactions
+
+Pay by Bank app (PBBA) is an additional payment method that is available to all Merchants using the Gateway that have a Pay by Bank app account and an OBN Global Acquiring account.
+
+PBBA, formerly known as Zapp, is an innovative, secure, and fully digital payment option in the UK, built and operated by VocaLink, a Mastercard company. It allows your Customers to pay, in real time, using the banking app on their phone. It's designed to make online checkout easier, whilst using all the security of their bank. Payments work through secure digital tokens, meaning your Customers never reveal any of their financial details when they are shopping.
+
+To use PBBA you will be supplied with a separate PBBA Merchant account that can be grouped with your main Merchant Account using the account mapping facility as documented in the [merchant account mapping](annexes#merchantAccountMapping) section. This allows transactions to be sent using your main Merchant Account and then routed automatically to the PBBA Merchant Account in the same mapping group.
+
+All transactions created with this payment method will appear in the Merchant Management System (MMS) together with the payment method that was used to process the transaction.
+
+PBBA transactions cannot be used for ad-hoc Credentials on File (COF) repeat transactions or for recurring billing.
+
+For more information on how to accept PBBA transactions please contact customer support.
+
+#### Benefits 
+
+- Increased conversion rate through a simple, quick payment process.
+- Secure payment processing in real time.
+- Lower transaction cost compared to card payments.
+- Minimal fraud risk thanks to ‘Request to Pay’ technology.
+- Quick and convenient processing of refunds and disputes.
+- Integration on websites and in mobile apps.
+- Transactions are controlled within the Merchant Management System (MMS) in the same manner as normal card transactions.
+
+#### Limitations
+
+- You will need a PBBA account and OBN Acquiring account.
+- Recurring transactions are not supported.
+- Independent refunds are not supported.
+- Transactions require a browser or mobile device in order to display the PBBA Checkout.
+- Your Customer will need a mobile device in order to display their Banking app.
+- Payment authorisation is not instantaneous and will require additional ‘QUERY’ requests.
+- Only available in the UK.
+- Transactions require a browser or mobile device in order to display the PBBA Checkout.
+- Customers require a mobile device in order to display their Banking app.
+
+### Implementation 
+
+If a transaction is sent to the Hosted Integration using a `merchantID` that is part of a routing group containing a PBBA Merchant, then the Hosted Payment Page will display a Pay by Bank App payment button which, when clicked, will display a Basket Reference Number (BRN) which the Customer can enter into their mobile banking application to complete the payment. When payment has been completed the Hosted Payment Page will display a payment confirmation page in the usual manner.
+
+Only SALE transactions are supported.
+
+Additional information available about the PBBA transaction will be made available in the checkoutDetails response field.
+
+### Request Fields
+
+| Name | mandatory |Description|
+| ----------- | ----------- |----------- |
+|paymentMethod| No |Payment method to be used. Must be pbba.|
+|checkoutOptions| No| Record containing options used to customise the PBBA Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PBBA mandates that certain options are provided.|
+
+### Response Fields 
+
+There are no additional response fields for PBBA. The Hosted Integration will return the [basic response fields](transactiontypes.md/#transactionResponse).
+
+### Checkout Options {#checkoutOptions}
+
+The following options must be sent in the `checkoutOptions` Direct Integration field to customise the Checkout. Unlike other payment methods these options are mandatory and must be sent. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
+
+| Name | Description |
+| ----------- | ----------- |
+|device.type|Consumer device type. This field is mandatory and has no default value.<br></br><br></br> Possible values are:<br></br>  ATM – ATM device <br></br> MOBLPHN – Mobile phone device <br></br> PCLAPTP – PC or Laptop device <br></br> TABLET – tablet device <br></br> OTHERS – other device type|
+|device.os|Consumer device operating system. This field is mandatory and has no default value.<br></br><br></br> Possible values are: <br></br>AND – Android <br></br>IOS – Apple iOS <br></br>WIN – Microsoft Windows <br></br>WINMOB – Microsoft Windows Mobile <br></br>OTHERS – other operating system|
+|browser.userAgent|Content of HTTP User-Agent header received from the Consumer’s device. Maximum 127 characters.|
+|browser.timeZone|Time zone offset in minutes between UTC and the Consumer’s device. The offset is positive if the local time zone is behind UTC and negative if it is ahead.|
+|browser.screenResolution|Screen resolution of the Consumer’s device. Formatted as the height and width separated by a ‘x’. The height and width must be between 1 and 9999 pixels.|
+|browser.acceptEncoding|Content of HTTP Accept-Encoding header received from the Consumer’s device. Maximum of 127 characters.|
+|browser.acceptLanguage|Content of HTTP Accept-Encoding header received from the Consumer’s device. Maximum of 127 characters.|
+
+The `category.name` format of the sub-field name indicates that option’s value is a record called `category` containing a sub-field called `name`.
+
+## SecurePlus Transactions
+
+SecurePlus is available if you have a Planet Merchant Account. It is a secure e-commerce payment solution designed to allow you to accept China UnionPay debit cards via the Planet Acquirer, with a reduced the risk of fraudulent transactions while providing a friction-free payment process for your Customers. SecurePlus divides the online payment process into separate
+authentication and authorisation transaction flows that authenticates the cardholder’s identity before you submit the authorisation request.
+
+To use SecurePlus you will be supplied with a separate Planet Merchant Account that can be grouped with your main Merchant Account using the account mapping facility as documented in the [merchant account mapping](annexes#merchantAccountMapping) section. This allows transactions to be sent using your main Merchant Account and then routed automatically to the Planet Merchant Account in the same mapping group.
+
+When UnionPay debit cards are issued, the Cardholder must register their mobile number with the Issuer. The SMS code authentication works at the time of checkout by submitting the payment details to UnionPay together with the Cardholder’s mobile number. The Issuer verifies the card and registered mobile number and sends an SMS message to the Cardholder’s mobile phone containing a unique 6-digit code. The Cardholder then enters this code into an authentication dialog provided by the Gateway so that it can be sent to UnionPay for verification.
+If approved, the final financial transaction is submitted.
+
+The authentication process is only required for debit cards. To accommodate the use of cards stored in secure online wallet, the card authentication has some built-in flexibility when other
+compensating controls are employed.
+
+SecurePlus transactions will appear in the Merchant Management System (MMS) alongside any card payments and can be captured, cancelled and refunded in the same way as card payments.
+
+SecurePlus transactions can also be used for recurring billing with the SMS authentication not been required on recurring transactions as long as the initial transaction was successfully SMS authenticated.
+
+For more information on how to accept SecurePlus transactions, please contact customer support.
+
+:::tip
+SecurePlus transactions are only available with a Planet Merchant Account.
+::: 
+
+#### Benefits 
+
+- Authorisations are available immediately and returned as part of the transaction.
+- Provides your customers the flexibility of paying using their UnionPay debit card when this is more suitable to them than using other payment methods.
+- Can be implemented with little or no extra integration work if you already support 3-D Secure transactions.
+- There are no extra Gateway costs to use SecurePlus. Your Acquirer may charge to add this onto your business account; however, you may also find that your transaction charges are lower as a result of using 3-D Secure.
+- Fully configurable within the Merchant Management System (MMS).
+
+#### Limitations 
+
+- You will need a Planet Acquiring account, however, such an account can also be used to process all your other card transactions.
+- Only UnionPay debit cards are supported, however, UnionPay credit cards can be accepted without the need for SecurePlus.
+- You must currently provide the Gateway with the Cardholder’s mobile phone number at the time of the transaction. The Hosted Payment Page will prompt the Cardholder for this information if it detects that a UnionPay debit card is being supplied.
+- The Cardholder must have access to their registered mobile phone during the payment process.
+- Transactions require a browser in order to display the Customer SMS code entry dialog.
+
+### Implementation 
+
+If a transaction is sent to the Hosted Integration using a `merchantID` which is part of a routing group containing a Planet Merchant, then the Hosted Payment Page will automatically attempt to collect the Cardholder’s mobile phone number if they detect that a UnionPay debit card has been entered. It will then display the SecurePlus authentication page to allow the Cardholder to enter the received SMS code.
+
+The SecurePlus authentication page is designed and controlled by the Gateway, but you can change the Merchant name and website address that is displayed on the form by sending the
+`merchantName` and/or `merchantWebsite` request fields.
+
+Any `merchantWebsite` must be a fully qualified URL containing at least the scheme and host components.
