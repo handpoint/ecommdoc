@@ -289,3 +289,585 @@ $tran = array (
  ?>
 
  ```
+
+ ## Transaction Types
+
+ ### SALE
+
+ The following example PHP code shows how to launch a batch of **SALE** transactions (3 in total):
+
+```php
+ <?PHP 
+
+ // Merchant signature key --> It will be provided by the Handpoint support team.
+ $key = 'm3rch4nts1gn4tur3k3y';
+
+ // Gateway URL
+ $url = 'https://commerce-api.handpoint.com/batch/';
+
+ // Create a unique multipart boundary
+ $boundary = uniqid();
+
+ // Requests
+ $reqs = array(
+ array(
+    'merchantID' => 155928,
+    'action' => 'SALE',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 1001,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 24,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'SALE',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 2002,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 24,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'SALE',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 3003,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 24,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ );
+
+ // Create the batch parts
+ $parts = array();
+ foreach ($reqs as $req) {
+
+ // Create the signature using the function called below.
+ $req['signature'] = createSignature($req, $key);
+
+ $parts[] =
+ "Content-Id: TX{$req['transactionUnique']}\r\n" .
+ "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"\r\n" .
+ "\r\n" .
+ http_build_query($req);
+ }
+
+ // Join the parts together separated by the boundary string
+ $post = "\r\n--{$boundary}\r\n" . join("\r\n--{$boundary}\r\n", $parts) . "\r\n--{$boundary}--\r\n";
+
+ // Initiate and set curl options to post to the gateway
+ $ch = curl_init($url);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+ curl_setopt($ch, CURLOPT_HEADER, true);
+ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+ 'Content-type: multipart/mixed; charset="UTF-8"; boundary=' . $boundary,
+ 'Content-length: ' . strlen($post),
+));
+
+// Send the request
+$res = curl_exec($ch);
+
+// Normally would process the response here, but for this example just echo it out 
+
+header ('Content-Type: text/plain');
+
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($res, 0, $header_size);
+
+//Shows the Headers information
+echo $header;
+
+
+// Close the connection to the gateway
+curl_close($ch);
+
+// Function to create a message signature
+ function createSignature(array $data, $key) {
+ // Sort by field name
+ ksort($data);
+
+ // Create the URL encoded signature string
+ $ret = http_build_query($data, '', '&');
+
+ // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)
+ $ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+ // Hash the signature string and the key together
+ return hash('SHA512', $ret . $key);
+}
+?>
+```
+
+
+### VERIFY
+
+The following example PHP code shows how to launch a batch of **VERIFY** transactions (3 in total):
+
+```php
+<?PHP 
+
+ // Merchant signature key --> It will be provided by the Handpoint support team.
+ $key = 'm3rch4nts1gn4tur3k3y';
+
+ // Gateway URL
+ $url = 'https://commerce-api.handpoint.com/batch/';
+
+ // Create a unique multipart boundary
+ $boundary = uniqid();
+
+ // Requests
+ $reqs = array(
+ array(
+    'merchantID' => 155928,
+    'action' => 'VERIFY',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 0,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'VERIFY',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 0,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'VERIFY',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 0,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ );
+
+ // Create the batch parts
+ $parts = array();
+ foreach ($reqs as $req) {
+
+ // Create the signature using the function called below.
+ $req['signature'] = createSignature($req, $key);
+
+ $parts[] =
+ "Content-Id: TX{$req['transactionUnique']}\r\n" .
+ "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"\r\n" .
+ "\r\n" .
+ http_build_query($req);
+ }
+
+ // Join the parts together separated by the boundary string
+ $post = "\r\n--{$boundary}\r\n" . join("\r\n--{$boundary}\r\n", $parts) . "\r\n--{$boundary}--\r\n";
+
+ // Initiate and set curl options to post to the gateway
+ $ch = curl_init($url);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+ curl_setopt($ch, CURLOPT_HEADER, true);
+ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+ 'Content-type: multipart/mixed; charset="UTF-8"; boundary=' . $boundary,
+ 'Content-length: ' . strlen($post),
+));
+
+// Send the request
+$res = curl_exec($ch);
+
+// Normally would process the response here, but for this example just echo it out 
+
+header ('Content-Type: text/plain');
+
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($res, 0, $header_size);
+
+//Shows the Headers information
+echo $header;
+
+
+// Close the connection to the gateway
+curl_close($ch);
+
+// Function to create a message signature
+ function createSignature(array $data, $key) {
+ // Sort by field name
+ ksort($data);
+
+ // Create the URL encoded signature string
+ $ret = http_build_query($data, '', '&');
+
+ // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)
+ $ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+ // Hash the signature string and the key together
+ return hash('SHA512', $ret . $key);
+}
+?>
+```
+
+### PREAUTH
+
+The following example PHP code shows how to launch a batch of **PREAUTH** transactions (3 in total):
+
+
+```php
+<?PHP 
+
+ // Merchant signature key --> It will be provided by the Handpoint support team.
+ $key = 'm3rch4nts1gn4tur3k3y';
+
+ // Gateway URL
+ $url = 'https://commerce-api.handpoint.com/batch/';
+
+ // Create a unique multipart boundary
+ $boundary = uniqid();
+
+ // Requests
+ $reqs = array(
+ array(
+    'merchantID' => 155928,
+    'action' => 'PREAUTH',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 100,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'PREAUTH',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 101,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'PREAUTH',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 102,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    ),
+ );
+
+ // Create the batch parts
+ $parts = array();
+ foreach ($reqs as $req) {
+
+ // Create the signature using the function called below.
+ $req['signature'] = createSignature($req, $key);
+
+ $parts[] =
+ "Content-Id: TX{$req['transactionUnique']}\r\n" .
+ "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"\r\n" .
+ "\r\n" .
+ http_build_query($req);
+ }
+
+ // Join the parts together separated by the boundary string
+ $post = "\r\n--{$boundary}\r\n" . join("\r\n--{$boundary}\r\n", $parts) . "\r\n--{$boundary}--\r\n";
+
+ // Initiate and set curl options to post to the gateway
+ $ch = curl_init($url);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+ curl_setopt($ch, CURLOPT_HEADER, true);
+ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+ 'Content-type: multipart/mixed; charset="UTF-8"; boundary=' . $boundary,
+ 'Content-length: ' . strlen($post),
+));
+
+// Send the request
+$res = curl_exec($ch);
+
+// Normally would process the response here, but for this example just echo it out 
+
+header ('Content-Type: text/plain');
+
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($res, 0, $header_size);
+
+//Shows the Headers information
+echo $header;
+
+
+// Close the connection to the gateway
+curl_close($ch);
+
+// Function to create a message signature
+ function createSignature(array $data, $key) {
+ // Sort by field name
+ ksort($data);
+
+ // Create the URL encoded signature string
+ $ret = http_build_query($data, '', '&');
+
+ // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)
+ $ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+ // Hash the signature string and the key together
+ return hash('SHA512', $ret . $key);
+}
+?>
+```
+
+### REFUND
+
+The following example PHP code shows how to launch a batch of **REFUND** transactions (3 in total):
+
+
+```php
+<?PHP 
+
+ // Merchant signature key --> It will be provided by the Handpoint support team.
+ $key = 'm3rch4nts1gn4tur3k3y';
+
+ // Gateway URL
+ $url = 'https://commerce-api.handpoint.com/batch/';
+
+ // Create a unique multipart boundary
+ $boundary = uniqid();
+
+ // Requests
+ $reqs = array(
+ array(
+    'merchantID' => 155928,
+    'action' => 'REFUND',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 1001,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'REFUND',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 1002,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+    ),
+ array(
+    'merchantID' => 155928,
+    'action' => 'REFUND',
+    'type' => 1,
+    'currencyCode' => 826,
+    'countryCode' => 826,
+    'amount' => 1003,
+    'cardNumber' => '4012001037141112',
+    'cardExpiryMonth' => 12,
+    'cardExpiryYear' => 22,
+    'cardCVV' => '083',
+    'customerName' => 'Test Customer',
+    'customerEmail' => 'test@testcustomer.com',
+    'customerAddress' => '16 Test Street',
+    'customerPostCode' => 'TE15 5ST',
+    'orderRef' => 'Test purchase',
+    'transactionUnique' => uniqid(),
+    'threeDSRequired' => 'N',
+    'avscv2CheckRequired' => 'N',
+    'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+    ),
+ );
+
+ // Create the batch parts
+ $parts = array();
+ foreach ($reqs as $req) {
+
+ // Create the signature using the function called below.
+ $req['signature'] = createSignature($req, $key);
+
+ $parts[] =
+ "Content-Id: TX{$req['transactionUnique']}\r\n" .
+ "Content-Type: application/x-www-form-urlencoded; charset=\"UTF-8\"\r\n" .
+ "\r\n" .
+ http_build_query($req);
+ }
+
+ // Join the parts together separated by the boundary string
+ $post = "\r\n--{$boundary}\r\n" . join("\r\n--{$boundary}\r\n", $parts) . "\r\n--{$boundary}--\r\n";
+
+ // Initiate and set curl options to post to the gateway
+ $ch = curl_init($url);
+ curl_setopt($ch, CURLOPT_POST, true);
+ curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+ curl_setopt($ch, CURLOPT_HEADER, true);
+ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+ 'Content-type: multipart/mixed; charset="UTF-8"; boundary=' . $boundary,
+ 'Content-length: ' . strlen($post),
+));
+
+// Send the request
+$res = curl_exec($ch);
+
+// Normally would process the response here, but for this example just echo it out 
+
+header ('Content-Type: text/plain');
+
+$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+$header = substr($res, 0, $header_size);
+
+//Shows the Headers information
+echo $header;
+
+
+
+
+// Close the connection to the gateway
+curl_close($ch);
+
+// Function to create a message signature
+ function createSignature(array $data, $key) {
+ // Sort by field name
+ ksort($data);
+
+ // Create the URL encoded signature string
+ $ret = http_build_query($data, '', '&');
+
+ // Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)
+ $ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+ // Hash the signature string and the key together
+ return hash('SHA512', $ret . $key);
+}
+?>
+```
