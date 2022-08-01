@@ -41,7 +41,7 @@ If you are building a website **facing the cardholder**, for example a webshop t
 
 ## Financial Operations Actions
 
-All requests must specify what action they require the Gateway to perform, using the action request field. 
+All requests must specify what action they require the Gateway to perform, using the `action` request field. 
 
 ### SALE
 

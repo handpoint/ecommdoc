@@ -4,42 +4,59 @@ sidebar_position: 2
 
 # Transaction Types
 
-All requests must specify what action they require the Gateway to perform, using the action request field. 
+## Financial Operations Types
 
-## SALE
+The Gateway supports card not present (CNP) types of transactions, made where the Cardholder does not or cannot physically present the card for your visual examination at the time that an order is placed and payment effected.
+
+The type of transaction required is specified using the `type` request field when performing a new payment transaction.
+
+### E-Commerce (ECOM) {#ecommerce}
+
+E-commerce transactions are supported by the Gateway by using a transaction `type` of `1`. They are designed for you to accept payments via a website, such as a shopping cart payment. E-commerce transactions in the EU region MUST use advance fraud detection, such as 3-D Secure V2.
+
+### Mail Order/Telephone Order (MOTO){#moto}
+
+Mail Order/Telephone Order transactions are supported by the Gateway by using a transaction `type` of `2`. They are designed for you to build your own virtual terminal system to enter remote order details. MOTO transactions cannot use 3-D Secure as the cardholder is not able to perform the challenge.
+
+Your Acquirer may need to enable MOTO capabilities on your main acquiring account, or they provide a separate acquiring account which will be available through its own Gateway Merchant Account.
+
+### How do I choose between MOTO and ECOM? 
+
+If you are building a website **facing the cardholder**, for example a webshop to sell clothes, attraction tickets, pizzas etc. you should use ECOM (1) as a `type` and if you are in the EU region, 3D-Secure must be used as well. If you are building a backend or a website **for the merchant** to be able to process card not present transactions, for example orders received over the phone, where the cardholder will dictate the card number to the merchant, then in this case you should use MOTO (2) as a `type` and the cardholder will be exempt from using 3D-Secure. MOTO (2) should also be used for merchant initiated refunds, for example if a customer calls and wants to get reimbursed for a product.
+
+## Financial Operations Actions
+
+All requests must specify what action they require the Gateway to perform, using the `action` request field.
+
+### SALE
 
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. A successful authorisation will reserve the funds on the Cardholder’s account until the transaction is settled.
 
-The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay).
+The `captureDelay` field can be used to state whether the transaction should be authorised only and settled at a later date. **For more details on delayed capture, refer to the [delayed capture guide](annexes#captureDelay). If `captureDelay` is not used the transaction will be automatically settled at the end of the day.
 
-Take a look at the [SALE](samplecode#using-lightbox-modal) example in our Sample Code.
+### VERIFY 
 
-## VERIFY 
 This will create a new transaction and attempt to verify that the card account exists with the Acquirer. The transaction will result in no transfer of funds and no hold on any funds on the Cardholder’s account. It cannot be captured and will not be settled. The transaction `amount` must always be zero.
 
 This transaction type is the preferred method for validating that the card account exists and is in good standing; however, it cannot be used to validate that it has sufficient funds.
 
-Take a look at the [VERIFY](samplecode#verify) example in our Sample Code.
+### PREAUTH
 
-## PREAUTH
 This will create a new transaction and attempt to seek authorisation for a sale from the Acquirer. If authorisation is approved, then it is immediately voided (where possible) so that no funds are reserved on the Cardholder’s account. The transaction will result in no transfer of funds. It cannot be captured and will not be settled.
 
 This transaction type can be used to check whether funds are available and that the account is valid. However, due to the problem highlighted below, it is recommended that Merchants use the VERIFY action when supported by their Acquirer.
-
-Take a look at the [PREAUTH](samplecode#preauth) example in our Sample Code.
-
 
 :::warning
 If the transaction is to be completed then a new authorisation must be sought using the SALE action. If the PREAUTH authorisation could not be successfully voided, then this will result in the funds’ being authorised twice effectively putting two holds on the amount on the Cardholder’s account and thus requiring twice the amount to be available in the Cardholder’s account. It is therefore recommended only to PREAUTH small amounts, such as £1.00 to check mainly account validity.
 :::
 
-## Transaction Request {#transactionRequest}
+### Transaction Request {#transactionRequest}
 
-For the Hosted payment page integration only a few fields are required (see table below). However, you can customise the appearance of the Hosted Payment Page by sending additional fields in the request.
+For the Hosted payment page integration, only a few fields are required (see table below). However, you can customise the appearance of the Hosted Payment Page by sending additional fields in the request.
 
 You can control which payment methods are displayed and the default or initial value to display in the input fields.
 
-You can also state which fields you require to be mandatory, in which case the payment form may not be submitted until the Cardholder has completed all the mandatory fields. On the standard modal Hosted Payment Page, the mandatory requirement can also control whether the field needs to be displayed. A value of ‘Y’ or ‘N’ means the field must be displayed, ‘Y’ indicates that a value must be supplied, while ‘N’ indicates the value can be blank. Omitting the request field means that the field need not be displayed if the form can provide a better user experience without it.
+You can also state which fields you require to be mandatory, in which case the payment form may not be submitted until the cardholder has completed all the mandatory fields. On the standard modal Hosted Payment Page, the mandatory requirement can also control whether the field needs to be displayed. A value of ‘Y’ or ‘N’ means the field must be displayed, ‘Y’ indicates that a value must be supplied, while ‘N’ indicates the value can be blank. Omitting the request field means that the field need not be displayed if the form can provide a better user experience without it.
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
@@ -90,7 +107,7 @@ You can also state which fields you require to be mandatory, in which case the p
 | formResponsive | No |Request the Hosted Payment Page adjust its layout according to the browser display size etc. (Y or N). |
 | formAllowCancel | No | Request the Hosted Payment Page show a cancel button to allow the payment to be cancelled resulting in a transaction responseCode of 65576 (REQUEST CANCELLED).|
 
-## Transaction Response {#transactionResponse}
+### Transaction Response {#transactionResponse}
 
 The response will contain all the fields sent in the request (minus any `cardNumber` and `cardCVV`) plus the following:
 
