@@ -15,7 +15,7 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 
  Please note that if you are planning to use **Dynamic Currency Conversion (DCC)** or **alternative payment methods** you can easily customise the checkout to offer multiple payment options to the cardholder with little extra work. 
 
- A very important limitation of the Hosted Payment Page integration is that **Google Pay and Apple Pay are NOT supported**. A separate Direct integration or Hosted Payment Fields integration will be required to support those digital wallets. 
+ Two very important limitations of the Hosted Payment Page integration are that **Google & Apple Pay as well as subscription payments are NOT supported**. A separate Direct integration or Hosted Payment Fields integration will be required to support digital wallets and/or recurring payments. 
 
 <div align="center">
 <img src="/img/hosted_payment_page.png"></img>
