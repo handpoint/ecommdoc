@@ -6,16 +6,16 @@ sidebar_position: 1
 
 ## Introduction 
 
-The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using our **Hosted Payment Page**. You can use this method if you **do not want to collect and store cardholder data**.
+The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using the Handpoint **Hosted Payment Page**. You can use this method if you **do not want to collect and store cardholder data**.
 
 The Hosted integration works by redirecting the customer to our Gateway’s Hosted Payment Page, which will collect the Customer’s payment details and process the payment before redirecting the customer back to a page on your website, letting you know the payment outcome. **This is the quickest path to integrating with the Gateway**.
-The standard Hosted Payment Page is designed to be shown in a lightbox (modal) over your website and styled with logos and colours to match. Alternatively, you can arrange for fully customised Hosted Payment Pages to be produced that can match your website’s style and layout. These fully customised pages are usually provided using a browser redirect, displaying full-page in the browser, or can be displayed embedded in an iframe on your website.
+The standard Hosted Payment Page is designed to be shown in a lightbox (modal) over your website and styled with logos and colours to match. Alternatively, we can also offer fully customised Hosted Payment Pages that can match your website’s style and layout. These fully customised pages are usually provided using a browser redirect, displaying full-page in the browser, or can be displayed embedded in an iframe on your website.
 
 By using the hosted payment page integration, **you are kept out of the EMV 3D-Secure flow** which allows you to keep the integration very simple without any added complexity.
 
- Please note that if you are planning on using **Dynamic Currency Conversion (DCC)** or **alternative payment methods** then the Hosted Payment Page allows you to have the cardholder pay in their own currency with very little extra work. 
+ Please note that if you are planning to use **Dynamic Currency Conversion (DCC)** or **alternative payment methods** you can easily customise the checkout to offer multiple payment options to the cardholder with little extra work. 
 
- A very important limitation of the Hosted Payment Page integration is that **Google Pay and Apple Pay are NOT supported**. A separate Direct integration will be required to support those digital wallets. 
+ A very important limitation of the Hosted Payment Page integration is that **Google Pay and Apple Pay are NOT supported**. A separate Direct integration or Hosted Payment Fields integration will be required to support those digital wallets. 
 
 <div align="center">
 <img src="/img/hosted_payment_page.png"></img>
@@ -32,18 +32,19 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
 - You are kept out of the EMV 3D-Secure flow.
 - This is the quickest path to integration with the Gateway.
 - Supporting dynamic currency conversion requires minimal work. 
-- Supporting alternative payment methods (Paypal, Amazon Pay, Pay by bank etc.) requires less effort than a Direct or Hosted Payment Fields integration. 
+- Supporting alternative payment methods (Paypal, Amazon Pay, Pay by bank etc.) requires less effort than for a Direct or Hosted Payment Fields integration. 
+- You can easily save credentials on file (by using the Handpoint Gateway Wallet) and allow customers to pay with their saved cards for future purchases. 
 
 ## Limitations 
 - The payment page itself isn't fully customisable. 
-- If you want to support recurring payments or allow your merchants to charge for services using credentials on file you will also need to carry out a direct integration along with the Hosted Payment Page integration. 
-- With a Hosted Payment Page integration you are limited to the following transaction types : SALE, VERIFY, PREAUTH. If you want to support the REFUND, CANCEL and QUERY transaction types, you will also need to carry out a direct integration.  
-- As mentioned above, the Hosted Payment Page integration does not support Google Pay and Apple Pay.
+- If you want to support recurring payments (subscriptions) you will need to carry out a separate direct integration or hosted payment fields integration.
+- With a Hosted Payment Page integration you are limited to the following transaction types : SALE, VERIFY, PREAUTH. If you want to support the REFUND, CANCEL and QUERY transaction types, you will need to carry out a separate direct integration or hosted payment fields integration.
+- The Hosted Payment Page integration does not support Google Pay and Apple Pay.
 
 
 ## Security and Compliance 
 
-If you use Hosted Payment Pages with the Hosted Integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
+If you use the hosted payment page integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
 
 The Gateway will make transaction details available for a maximum period of 13 months. Your acquirer may hold information for a different period of time.
 
@@ -58,11 +59,11 @@ You will need the following information to integrate with the Gateway which will
 
  You will be provided with unique production and test Merchant Account IDs during the onboarding process. You will also be provided with the integration URL. 
 
-All requests must specify which merchant account they are for, using the merchantID request field. In addition to this, the following security measures can be used:
+All requests must specify which merchant account they are for, using the `merchantID` request field. In addition to this, the following security measures can be used:
 
 ### Password authentication
 
-A password can be configured for each Merchant Account. This password must then be sent in the merchantPwd field in each request. If an incorrect password is received by the Gateway, then the transaction will be aborted and an error response is returned.
+A password can be configured for each Merchant Account. This password must then be sent in the `merchantPwd` field in each request. If an incorrect password is received by the Gateway, then the transaction will be aborted and an error response is returned.
 
 :::warning 
 Use of a password is discouraged in any integration where the transaction is posted from a form in the client browser as the password may appear in plain text in code.
@@ -115,13 +116,13 @@ All request fields will be returned in the response and a merchant may add custo
 
 ## Redirect URL {#redirectUrl}
 
-The `redirectURL` request field is mandatory and used to provide the URL of a webpage on your server.
+The `redirectURL` request field is **mandatory** and used to provide the URL of a webpage on your server.
 
 For the Hosted Integration, the Customers browser will load this URL when the Hosted Payment Page has completed and can be used to continue the payment journey on your website. The URL will be loaded using a HTTP POST request containing transaction response data allowing you to tailor the journey depending on the outcome of the transaction.
 
 The `redirectURL` must be a fully qualified URL, containing at least the scheme and host components.
 
-**It is strongly recommended that the response data sent to the `redirectURL` be used to display a payment confirmation page only and not used to update your backend systems. The Customer may close their browser before the redirection happens resulting in you never receiving this data. Please use the callbackURL if you need to update your backend systems.**
+**It is strongly recommended that the response data sent to the `redirectURL` be used to display a payment confirmation page only and not used to update your backend systems. The Customer may close their browser before the redirection happens resulting in you never receiving this data. Please use the `callbackURL` if you need to update your backend systems.**
 
 
 ## Callback URL {#callbackUrl}

@@ -4,6 +4,166 @@ sidebar_position: 2
 
 # Sample Code
 
+## Hosted Payment Page - Integration methods 
+
+### Sample Code - Embed the hosted payment page in an iFrame
+
+The following example code shows how to embed the hosted payment page as an iFrame into your website. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+|Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
+
+Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
+
+<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
+### Sample Code - Embed the hosted payment page in a Lightbox (modal) over your website
+
+The following example code shows how to embed the hosted payment page in a lightbox (modal) over your website. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+| Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/17/embedded/html,result/dark/" allowFullScreen={true} allowpaymentrequest="true" frameBorder="0"></iframe>
+
+
+<br/>
+<br/>
+
+### Sample Code - Redirect the user to a fully separate hosted payment page
+
+The following example code shows how to redirect the user to a secure hosted payment page running on the Handpoint servers. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+|Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
+
+## Hosted Payment Page - Transaction Types
+
+All requests must specify the action to be performed, using the `action` request field.
+
+### Sample Code - SALE
+
+This `form` will start a new SALE transaction (10.01 GBP) and attempt to seek authorisation from the card issuer. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+| Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+```html
+<!--form example of SALE (Amount:10,01GBP)-->
+
+<form id="paynow" name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
+      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+      <input type="hidden" name="action" value="SALE" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+      <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
+      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+      <input type="hidden" name="signature" value="6cdc7f1b2b457ad63261837e9fb7fb96530b4aa37a703717a926e58739f809c64f28d2f5f31563b1ac022b04ea94c34b6e375cf8370362cd5179bda12d2f76fd" />
+      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+      <input type="submit" value="Pay Now">
+</form>
+```
+
+<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/22/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+ 
+
+### Sample Code - VERIFY
+
+This `form` will start a new VERIFY transaction (0.00GBP) and attempt to verify that the card account exists. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+| Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+```html
+<!--form example of VERIFY-->
+
+<form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
+      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+      <input type="hidden" name="action" value="VERIFY" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+      <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
+      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+      <input type="hidden" name="signature" value="63f917d6031480d5a5dfce926a767c6982ee93135bfd1e488113046be98d3db9ff3270aa3a4a25bc76bf61b83618449d532c464bb42166705a27cf26547716ca" />
+      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+      <input type="submit" value="Verify Card">
+</form>
+```            
+
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+### Sample Code - PREAUTH
+
+This `form` will create a new PREAUTH transaction (1.01GBP) and attempt to seek authorisation from the card issuer. If the authorisation is approved, then it is immediately voided so that no funds are reserved on the Cardholder’s account. You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+| Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+```html
+<!--form example of PREAUTH (1,01GBP)-->
+
+<form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
+    <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+    <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+    <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+    <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+    <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+    <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
+    <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+    <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+    <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+    <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+    <input type="hidden" name="signature" value="f4f7b0c893d846d09efd2edfc3cbb21ab0c4248e35da0a8ae8cd8634273e4d10f53ca2fa5502508058319ce49adef9cd329d4bc781896e0d9db41a19e6ddac2d" />
+    <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+    <input type="submit" value="Pre Authorization (£1,01)">
+</form>
+```
+
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/16/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+
+## Hosted Payment Page - Gateway Wallet 
+
+### Sample code - Processing a transaction and save the card details in a Wallet for future use. 
+
+This example asks the user at the checkout if he wishes to save his card details for future use. 
+
+![Save card details ](/img/CardDetailsWallet.png)
+
+A `walletID` will be generated in the response from the gateway. If this wallet id is sent in the subsequent requests from the cardholder, then the cardholder will be offered to use his saved card at checkout. See the below example on how to use the [wallet id](samplecode.md#hosted-integration-using-gateway-wallet). You can use the following test card details to fill out the payment form: 
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+| Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+### Sample Code - Offering the cardholder to pay with cards saved in the Gateway wallet
+
+Using the **Saved Cards** option at checkout will allow the cardholder to use a previously saved card. A `walletID` needs to be provided in the request for the option to appear at checkout.
+
+The CVV of the stored card is **159**. 
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
 ## Testing 
 
 You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
@@ -288,133 +448,3 @@ $tran = array (
  ?>
 
  ```
-
-## Hosted Payment Page - Integration methods 
-
-### Sample Code - Embed the hosted payment page in an iFrame
-
-The following example code shows how to embed the hosted payment page as an iFrame into your website. You can use any of the [test cards](#testCards) to fill out the payment form. 
-
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
-
-### Sample Code - Embed the hosted payment page in a Lightbox (modal) over your website
-
-The following example code shows how to embed the hosted payment page in a lightbox (modal) over your website. You can use any of the [test cards](#testCards) to fill out the payment form. 
-
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/17/embedded/html,result/dark/" allowFullScreen={true} allowpaymentrequest="true" frameBorder="0"></iframe>
-
-
-<br/>
-<br/>
-
-### Sample Code - Redirect the user to a fully separate hosted payment page
-
-The following example code shows how to redirect the user to a secure hosted payment page running on the Handpoint servers. You can use any of the [test cards](#testCards) to fill out the payment form. 
-
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
-
-
-## Hosted Payment Page - Transaction Types
-
-All requests must specify the action to be performed, using the `action` request field.
-
-### Sample Code - SALE
-
-This `form` will start a new SALE transaction (10.01 GBP) and attempt to seek authorisation from the card issuer. 
-
-```html
-<!--form example of SALE (Amount:10,01GBP)-->
-
-<form id="paynow" name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-      <input type="hidden" name="action" value="SALE" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-      <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
-      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-      <input type="hidden" name="signature" value="6cdc7f1b2b457ad63261837e9fb7fb96530b4aa37a703717a926e58739f809c64f28d2f5f31563b1ac022b04ea94c34b6e375cf8370362cd5179bda12d2f76fd" />
-      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-      <input type="submit" value="Pay Now">
-</form>
-```
-
-<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/22/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
- 
-
-### Sample Code - VERIFY
-
-This `form` will start a new VERIFY transaction (0.00GBP) and attempt to verify that the card account exists. 
-
-```html
-<!--form example of VERIFY-->
-
-<form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-      <input type="hidden" name="action" value="VERIFY" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-      <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
-      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-      <input type="hidden" name="signature" value="63f917d6031480d5a5dfce926a767c6982ee93135bfd1e488113046be98d3db9ff3270aa3a4a25bc76bf61b83618449d532c464bb42166705a27cf26547716ca" />
-      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-      <input type="submit" value="Verify Card">
-</form>
-```            
-
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-
-### Sample Code - PREAUTH
-
-This `form` will create a new PREAUTH transaction (1.01GBP) and attempt to seek authorisation from the card issuer. If the authorisation is approved, then it is immediately voided so that no funds are reserved on the Cardholder’s account. 
-
-```html
-<!--form example of PREAUTH (1,01GBP)-->
-
-<form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-    <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-    <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-    <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-    <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-    <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-    <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
-    <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-    <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-    <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-    <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-    <input type="hidden" name="signature" value="f4f7b0c893d846d09efd2edfc3cbb21ab0c4248e35da0a8ae8cd8634273e4d10f53ca2fa5502508058319ce49adef9cd329d4bc781896e0d9db41a19e6ddac2d" />
-    <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-    <input type="submit" value="Pre Authorization (£1,01)">
-</form>
-```
-
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/16/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-
-
-## Hosted Payment Page - Gateway Wallet 
-
-### Sample code - Processing a transaction and save the card details in a Wallet for future use. 
-
-This example asks the user at the checkout if he wishes to save his card details for future use. 
-
-![Save card details ](/img/CardDetailsWallet.png)
-
-A `walletID` will be generated in the response from the gateway. If this wallet id is sent in the subsequent requests from the cardholder, then the cardholder will be offered to use his saved card at checkout. See the below example on how to [use the wallet id](samplecode.md#hosted-integration-using-gateway-wallet)
-
-
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-
-### Sample Code - Offering the cardholder to pay with cards saved in the Gateway wallet
-
-Using the **Saved Cards** option at checkout will allow the cardholder to use a previously saved card. A `walletID` needs to be provided in the request for the option to appear at checkout.
-
-The CVV of the stored card is **159**. 
-
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
