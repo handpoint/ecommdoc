@@ -26,7 +26,8 @@ The following example code shows how to embed the hosted payment page in a light
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/17/embedded/html,result/dark/" allowFullScreen={true} allowpaymentrequest="true" frameBorder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/27/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
 
 <br/>
@@ -40,7 +41,8 @@ The following example code shows how to redirect the user to a secure hosted pay
 | ----------- | ----------- | ----------- | ----------- |
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
 
 ## Hosted Payment Page - Transaction Types
