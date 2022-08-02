@@ -16,7 +16,9 @@ The following example code shows how to embed the hosted payment page as an iFra
 
 Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
 
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<!-- <iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe> -->
+
+<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
 ### Sample Code - Embed the hosted payment page in a Lightbox (modal) over your website
 
@@ -27,7 +29,7 @@ The following example code shows how to embed the hosted payment page in a light
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/27/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/34/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 <br/>
@@ -42,7 +44,13 @@ The following example code shows how to redirect the user to a secure hosted pay
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<!-- <iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/34/embedded/html,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe> -->
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/39/embedded/html,result/?fontColor=FFFFFF&bodyColor=FFFFFF&menuColor=000000" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+
 
 
 ## Hosted Payment Page - Transaction Types
