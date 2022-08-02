@@ -183,7 +183,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- |----------- |
 |paymentMethod| <span class="badge badge--primary">Yes</span>|Payment method to be used with PPRO (eg ppro.astropay, ppro.alipay, etc.).Refer to the [Payment Method Tag](#pproPaymentMethodTag) section.|
 |checkoutRedirectURL|<span class="badge badge--primary">Yes</span>|URL on Merchant’s server to return to when the Alternative Payment Method’s Checkout is closed.|
-|checkoutOptions|No|Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
+|checkoutOptions|No|Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#pproCheckoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
 
 
 ### Payment Response 
@@ -312,7 +312,7 @@ If you know of a payment method that is not on this list or the payment method c
 |webpay|Webpay|
 |yellowpay|Yellow Pay|
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#pproCheckoutOptions}
 
 The following options may be set in the `checkoutOptions` field to customise the Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -404,7 +404,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- | ----------- |
 | paymentMethod | <span class="badge badge--primary">Yes</span> | Must contain the value ‘paypal’ in lower case letters only.|
 | checkoutRedirectURL | <span class="badge badge--primary">Yes</span>  | URL on Merchant’s server to return to when the PayPal Checkout is closed.|
-| checkoutOptions | No | Record containing options used to customise the PayPal Checkout. See the [checkout options](#checkoutOptions) section.|
+| checkoutOptions | No | Record containing options used to customise the PayPal Checkout. See the [checkout options](#paypalCheckoutOptions) section.|
 
 #### Response Fields
 
@@ -452,7 +452,7 @@ You can choose to obtain the Checkout details before actually sending the transa
 
 Note: this stage can be repeated multiple times by including the `checkoutOnly` field with a value of ‘Y’ each time. To complete the transaction, the final request must not contain the `checkoutOnly` field or it must not have a value of ‘Y’.
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#paypalCheckoutOptions}
 
 The following options may be set in the `checkoutOptions` field to customise the PayPal Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -743,7 +743,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- | ----------- |
 | paymentMethod | <span class="badge badge--primary">Yes</span> | Must contain the value ‘amazonpay’ in lower case letters only.|
 | checkoutRedirectURL | No  | Reserved for future use.|
-| checkoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#checkoutOptions) section.|
+| checkoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#amazonPayCheckoutOptions) section.|
 
 #### Response Fields
 
@@ -792,7 +792,7 @@ You can choose to obtain the Checkout details before actually sending the transa
 
 Note: this stage can be repeated multiple times by including the `checkoutOnly` field with a value of ‘Y’ each time. To complete the transaction, the final request must not contain the `checkoutOnly` field or it must not have a value of ‘Y’.
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#AmazonPayCheckoutOptions}
 
 The following options may be set in the `checkoutOptions` field to customise the Amazon Pay Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -908,7 +908,7 @@ To determine when payment has completed you may periodically poll the Gateway us
 | Name | mandatory |Description|
 | ----------- | ----------- |----------- |
 |paymentMethod| <span class="badge badge--primary">Yes</span>|Payment method to be used. Must be pbba.|
-|checkoutOptions| No| Record containing options used to customise the PBBA Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PBBA mandates that certain options are provided.|
+|checkoutOptions| No| Record containing options used to customise the PBBA Checkout. See the [checkout options](#pbbaCheckoutOptions) section. Whilst the Gateway does not see this field as mandatory, PBBA mandates that certain options are provided.|
 
 #### Response Fields
 
@@ -918,7 +918,7 @@ These fields will be returned in addition to the request fields above and the [b
 | ----------- | ----------- |----------- |
 |checkoutDetails| <span class="badge badge--primary">Yes</span>|Record containing values made available by the PBBA Checkout. Refer to the [checkout details](#checkoutDetails) section.|
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#pbbaCheckoutOptions}
 
 The following options must be sent in the `checkoutOptions` Direct Integration field to customise the Checkout. Unlike other payment methods these options are mandatory and must be sent. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 

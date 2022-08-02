@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ## PPRO Transactions (APMs)
 
-PPRO is an additional payment method that is available to all Merchants using the Gateway that have a PPRO account.
+PPRO is an additional payment method that is available to all merchants using the Gateway that have a PPRO account.
 
 To use PPRO you will be supplied with a separate PPRO Merchant account that can be grouped with your main Merchant Account using the account mapping facility as documented in the [merchant account mapping](annexes#merchantAccountMapping) section. This allows transactions to be sent using your main Merchant Account and then routed automatically to the PPRO Merchant Account in the same mapping group.
 
@@ -37,7 +37,7 @@ For more information on how to accept PPRO transactions please contact customer 
 
 ### Implementation 
 
-If a transaction is sent to the Hosted Integration using a `merchantID` which is part of a routing group containing a PPRO Merchant Account, then the Hosted Payment Page will show alternative payment method (APM) buttons for each payment method listed in the `allowedPaymentMethods` field. When clicked on the Hosted Payment Page may request further details from the Customer before opening the APM Checkout allowing the Customer to pay using that APM.
+If a transaction is sent to the Hosted Integration using a `merchantID` which is part of a routing group containing a PPRO Merchant Account, then the Hosted Payment Page will show alternative payment method (APM) buttons for each payment method listed in the `allowedPaymentMethods` field. When clicked, the Hosted Payment Page may request further details from the Customer before opening the APM Checkout allowing the Customer to pay using that APM.
 
 To customise the alternative payment methods checkout experience, you may send various options in the `pproCheckoutOptions` field in your initial request.
 
@@ -51,7 +51,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- |----------- |
 |allowedPaymentMethods| <span class="badge badge--primary">Yes</span> |Payment method to be used with PPRO (eg ppro.astropay, ppro.alipay, etc.). Refer to the [Payment Method Tag](#pproPaymentMethodTag) section.|
 |paymentMethod| No |Request the Hosted Payment Page to invoke an alternative payment method on display without the need for the Customer to select it.|
-|pproCheckoutOptions|No||Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
+|pproCheckoutOptions|No||Record containing options used to customise the alternative payment methods Checkout. See the [checkout options](#pproCheckoutOptions) section. Whilst the Gateway does not see this field as mandatory, PPRO may have payment methods that require additional configuration using checkout options.|
 
 
 ### Response Fields
@@ -169,7 +169,7 @@ If you know of a payment method that is not on this list or the payment method c
 |webpay|Webpay|
 |yellowpay|Yellow Pay|
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#pproCheckoutOptions}
 
 The following options may be set in the `pproCheckoutOptions` field to customise the Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -247,7 +247,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- | ----------- |
 | paymentMethod | No | Must contain the value ‘paypal’ in lower case letters only. |
 | checkoutRedirectURL | No | URL on Merchant’s server to return to when the PayPal Checkout is closed.|
-| payPalCheckoutOptions | No | Record containing options used to customise the PayPal Checkout. See the [checkout options](#checkoutOptions) section.|
+| payPalCheckoutOptions | No | Record containing options used to customise the PayPal Checkout. See the [checkout options](#paypalCheckoutOptions) section.|
 
 
 ### Response Fields
@@ -264,7 +264,7 @@ These fields will be returned, in addition to the request fields above and the [
 | customerXXXX | No | Customer details if provided by the PayPal Checkout. The response will include the Customer/billing address details if provided by the PayPal Checkout. |
 | deliveryXXXX | No | Delivery details if provided by the PayPal Checkout.The response will include the delivery address details if provided by the PayPal Checkout.|
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#paypalCheckoutOptions}
 
 The following options may be set in the `payPalCheckoutOptions` field to customise the PayPal Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -545,7 +545,7 @@ These fields should be sent in addition to the [basic request fields](transactio
 | ----------- | ----------- | ----------- |
 | paymentMethod | No| Must contain the value ‘amazonpay’ in lower case letters only.|
 | checkoutRedirectURL | No | Reserved for future use.|
-| amazonPayCheckoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#checkoutOptions) section.|
+| amazonPayCheckoutOptions | No | Record containing options used to customise the Amazon Pay Checkout. See the [checkout options](#amazonPayCheckoutOptions) section.|
 
 
 ### Response Fields
@@ -564,7 +564,7 @@ These fields will be returned, in addition to the request fields above and the [
 | receiverXXXX | No |Buyer details if provided by Amazon Pay. Amazon Pay will usually provide the buyer’s name, postcode and email only, which are returned in the `receiverName`, `receiverPostcode` and `receiverEmail` fields accordingly|
 
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#amazonPayCheckoutOptions}
 
 The following options may be set in the `amazonPayCheckoutOptions` field to customise the Amazon Pay Checkout. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
@@ -673,13 +673,13 @@ Additional information available about the PBBA transaction will be made availab
 | Name | mandatory |Description|
 | ----------- | ----------- |----------- |
 |paymentMethod| No |Payment method to be used. Must be pbba.|
-|checkoutOptions| No| Record containing options used to customise the PBBA Checkout. See the [checkout options](#checkoutOptions) section. Whilst the Gateway does not see this field as mandatory, PBBA mandates that certain options are provided.|
+|checkoutOptions| No| Record containing options used to customise the PBBA Checkout. See the [checkout options](#pbbaCheckoutOptions) section. Whilst the Gateway does not see this field as mandatory, PBBA mandates that certain options are provided.|
 
 ### Response Fields 
 
 There are no additional response fields for PBBA. The Hosted Integration will return the [basic response fields](transactiontypes.md/#transactionResponse).
 
-### Checkout Options {#checkoutOptions}
+### Checkout Options {#pbbaCheckoutOptions}
 
 The following options must be sent in the `checkoutOptions` Direct Integration field to customise the Checkout. Unlike other payment methods these options are mandatory and must be sent. The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
 
