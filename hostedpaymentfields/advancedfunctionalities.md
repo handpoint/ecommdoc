@@ -6,7 +6,7 @@ sidebar_position: 7
 
 ## AVS/CV2 Checking
 
-AVS and CV2 fraud checking is available on all card transactions processed by the Gateway where supported by the Acquirer.
+AVS and CV2 fraud checking is available on all card transactions processed by the Gateway where supported by the Acquirer. **AVS/CV2 Checking is enabled on all merchant accounts by default, it can be disabled on a case by case basis.**
 
 These fraud prevention checks are performed by the Acquirer while authorising the transaction. You can choose how to act on the outcome of the check (or even to ignore them altogether).
 
