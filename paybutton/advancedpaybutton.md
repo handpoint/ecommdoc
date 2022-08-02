@@ -1,17 +1,10 @@
 ---
-sidebar_position: 1
-id: paybutton
-
+sidebar_position: 2
 ---
 
-# Creating a Pay Button
+# Advanced Pay Button Integration
 
-The advanced integration method requires knowledge of server-side scripting languages, such as PHP, ASP, Java, etc.
-It will allow you to have full control over what information is passed to our gateway via the Pay Button and use the full list of [hosted integration](/docs/overview) fields.
-
-## Overview
-
-Creating a [Custom Pay Button](customPayButton.md), it will allow you to have full control over what information is passed to our gateway and use the full list of hosted integration fields outlined in our Hosted Guide. Check our [Sample Code](#sample-code-request)!
+Creating a custom pay button allows you to have full control over what information is passed to the Handpoint gateway. You can leverage any of the [hosted integration fields](/docs/transactiontypes#transactionRequest) as part of the pay button integration.
 
 
 ## Pre-Requisites
@@ -20,11 +13,12 @@ Creating a [Custom Pay Button](customPayButton.md), it will allow you to have fu
 | ----------- | ----------- |
 | Merchant Account ID | Your unique Merchant Account ID. You should have received these details when your account was set up. |
 | Hosted Integration URL | Your unique URL to use the Hosted Integration. |
-| Signature | Provided with account setup details. |
+| Signature |Hash used to sign the transaction request. See the [signature calculation](/docs/samplecode#signatureCalculation) section for information on how to create the hash.|
 
 ## Gateway Request
 
 To create the button the details should be URL encoded Name=Value fields separated by ‘&’ characters (refer to RFC 1738 and the application/x-wwwform- urlencoded media type).
+
 This is then base64 encoded with all padding characters (=) stripped and the following characters +, / replaced with – and _ respectively.
 
 This string is then appended to the gateway URL via a GET parameter called fields to give the final link replacing the {base 64 encoded string} above.
@@ -37,7 +31,7 @@ This string is then appended to the gateway URL via a GET parameter called field
 | merchantID | <span class="badge badge--primary">Yes</span> | The six-digit id provided to you during set-up, e.g. `123456` For testing, please use ‘TEST’ |
 | amount | <span class="badge badge--primary">Yes</span> | The amount of the transaction in minor currency. For the UK this is in pence, e.g. £10.99 is sent as 1099. Numeric values only – no decimal points or currency symbols. |
 | action| <span class="badge badge--primary">Yes</span> | The action of the transaction. Values are: [SALE](/docs/transactiontypes#sale), [VERIFY](/docs/transactiontypes#verify) and [PREAUTH](/docs/transactiontypes#preauth).|
-| type | <span class="badge badge--primary">Yes</span> | The type of transaction. Passed as a single digit. Possible values are: <br></br> **1** – E-commerce (ECOM)<br></br> **2** - Mail Order/Telephone Order (MOTO) <br></br> **3** – Point of Sale: Card Keyed.|
+| type | <span class="badge badge--primary">Yes</span> | The type of transaction. Passed as a single digit. Possible values are: <br></br> **1** – E-commerce (ECOM)<br></br> **2** - Mail Order/Telephone Order (MOTO)|
 | redirectURL  | <span class="badge badge--primary">Yes</span> | The URL to which the customer will be redirected after the transaction with the transaction result sent via POST. We recommend the integration also contain a **callbackURL** to ensure the transaction details are sent to the website in case the cardholder’s browser fails to redirect them. |
 | countrycode | <span class="badge badge--primary">Yes</span> | Merchant's Location. Valid ISO-3166 alpha or numeric code, e.g. 826 for U.K. |
 | currencyCode | <span class="badge badge--primary">Yes</span> | Transaction Currency. Valid ISO-3166 alpha or numeric code, e.g. 826 for U.K. |
@@ -65,8 +59,8 @@ $req = array(
     'amount' => 1099, //Either major currency units includes a single decimal point such as ’10.99'. 
                       //Minor currency units contains no decimal points such as ‘1099
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
-    'type' => 1, //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) 
-    'redirectURL' => 'https://www.handpoint.com', //Hosted form will redirect the Customer’s browser after the transaction has been completed.
+    'type' => 1, //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO)
+    'redirectURL' => 'https://www.handpoint.com', //The payment form will redirect the Customer’s browser to this URL after the transaction has been completed.
     'countryCode' => 826, //ISO 3-letter country code. 826 -> United Kingdom
     'currencyCode' => 826 //ISO 3-letter currency code. 826 -> GBP
 );

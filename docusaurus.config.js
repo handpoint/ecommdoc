@@ -153,16 +153,17 @@ const config = {
           },
           {
             type: 'doc',
-            docId: 'Overview',
+            docId: 'overview',
             docsPluginId: 'batchintegration',
             position: 'left',
             label: 'Batch Integration',
           },
           {
-            to: '/paybutton/paybutton',
+            type: 'doc',
+            docId: 'basicpaybutton',
+            docsPluginId: 'paybutton',
             position: 'left',
             label: 'Pay By Link',
-
           },
           {
             to: '/shoppingcarts/shoppingcarts',
