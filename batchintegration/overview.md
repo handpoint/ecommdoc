@@ -2,6 +2,8 @@
 sidebar_position: 1
 id: Overview
 ---
+# Overview 
+
 ## Introduction 
 
 The Batch Integration is an enhancement to the Direct Integration, allowing you to send multiple transactions in a single request and monitor their status. This is useful if you wish to capture multiple transactions or collect multiple payments – for example, collecting subscription charges or loan repayments.
