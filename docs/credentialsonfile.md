@@ -2,28 +2,25 @@
 sidebar_position: 4
 ---
 
-# Credentials on file & Recurring Transactions
+# Credentials on file
 
-## Credentials on File 
+## Stored Credentials
 
-You may need to repeat a payment or perform a new payment using payment details previously requested from the Customer and stored by either yourself or the Gateway. These payment details could be stored in previous transaction or in the Gateway wallet. These repeat payments could be one off payments, scheduled recurring payments, or repeats due to authorisation problems or industry requirements. All must be correctly flagged to allow the payment network to process them.
+The stored details, or credentials, are termed Credentials on File (COF) and refer to any payment details (including, but not limited to, an account number or payment token) that the consumer has authorised you to store to perform future transactions. **For Hosted Payment Page integrations, card details can be saved and reused by the cardholder for a future transaction. In this case the cardholder won't need to type in his card number or expiry date again but he will always need to type in the CVV of the card.**
 
-The stored details, or credentials, are termed Credentials on File (COF) and refer to any payment details (including, but not limited to, an account number or payment token) that the Consumer has authorised you to store to perform future transactions without the need for them to enter their payment details again.
+These transactions must always be identified with the reason for storing or using the stored credentials and who initiated the transaction – the Consumer (CIT) or the Merchant (MIT).  
 
-These transactions must always be identified with the reason for storing or using the stored credentials and who initiated the transaction – the Consumer (CIT) or the Merchant (MIT).
-
-You may store the credentials and send them with the future transaction, or you may store the details in the [Gateway’s Wallet](#gatewayWallet) or by taking advantage of the [payment tokenisation](#paymentTokenisation) feature of the Gateway. Either way you must tell the Gateway of your intentions, it will not assume that just because you have asked, for example, to store credentials in the Wallet that those are legitimate stored credentials and follow all the requirements laid out below.
+You may store the details in the [Gateway’s Wallet](#gatewayWallet) or by taking advantage of the [payment tokenisation](#paymentTokenisation) feature of the Gateway. Either way you must tell the Gateway of your intentions, it will not assume that just because you have asked, for example, to store credentials in the Wallet that those are legitimate stored credentials and follow all the requirements laid out below.
 
 If you store credentials on file, then you must:
 - Disclose to consumers how those credentials will be used.
 - Obtain consumers’ consent to store the credentials.
 - Notify consumers when any changes are made to the terms of use.
 - Inform the card issuer via a transaction that payment credentials are now stored on file.
-- Identify transactions with appropriate `rtAgreementType` when using stored credentials. • Perform a PREAUTH, SALE or VERIFY transaction during the initial credential setup.
+- Identify transactions with appropriate `rtAgreementType` when using stored credentials. 
+- Perform a PREAUTH, SALE or VERIFY transaction during the initial credential setup.
 
-Note: Credentials stored to complete a single transaction (or a single purchase) for a Consumer, including multiple authorisations related to that particular transaction or future refunds are not considered stored credentials and can be stored and used without following the above rules.
-
-Note: A new recurring transaction will be a clone of the cross-referenced transaction, including any stored credentials details except for any new data provided in the new transaction. If the new transaction provided different payment details, then any stored credentials in the cross-referenced transaction cannot be used. The `cloneFields` request field can also be used to control which fields in the cross-referenced transaction are used in the repeat transaction (refer to [Transaction Cloning](annexes#transactionCloning)).
+Note: Credentials stored to complete a single transaction (or a single purchase) for a consumer, including multiple authorisations related to that particular transaction or future refunds are not considered stored credentials and can be stored and used without following the above rules.
 
 ### Consumer Initiated Transactions (CIT)
 
@@ -32,26 +29,35 @@ Consumer Initiated Transactions (CIT) are any transaction where the Consumer is 
 **A Consumer Initiated Transaction is one whose action field is one of PREAUTH, SALE or VERIFY and whose type is one of 1 (ECOM) or 2 (MOTO).**
 
 To indicate that the card details are to be stored as, or were stored as, Credentials on File then send the `rtAgreementType` field as one of the following values:
+
 - cardonfile – card details stored as Credential on File
-- recurring – initial payment as the start of a recurring payment agreement.
-- instalment – initial payment as the start of an instalment payment agreement.
+- ~~recurring – initial payment as the start of a recurring payment agreement.~~
+- ~~instalment – initial payment as the start of an instalment payment agreement.~~
 
-If the card details are cloned from an existing transaction or loaded from a Gateway Wallet which also stored the Credentials on File, then the transaction will be flagged as subsequent use of stored credentials rather than first use of them.
+:::warning
+ `recurring` and `instalment` are not supported for Hosted Payment Page integrations. To support recurring or instalment payments you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.
+:::
 
-If the transaction is the first in a recurring or instalment sequence then the optional `rtSequenceCount` field can be used to specify how many transactions will be taken in total, with a value greater than 1, and any optional `rtSequenceNumber` field specifying which transaction it is in the sequence will be expected to have a value of 0.
 
 ### Merchant Initiated Transactions (MIT) {#mit}
 
-Merchant Initiated Transactions (MIT) are any transaction where you have performed the transaction without the active participation of the Consumer. This would normally always be as a follow-up to a previous Consumer Initiated Transaction (CIT). The Gateway can be instructed to take Merchant Initiated recurring transactions automatically, according to a pre-determined schedule. Merchant Initiated Transactions are broken down in to two categories as follows.
+Merchant Initiated Transactions (MIT) are any transaction where you have performed the transaction without the active participation of the Consumer. This would normally always be as a follow-up to a previous Consumer Initiated Transaction (CIT). The Gateway can be instructed to take Merchant Initiated recurring transactions automatically, according to a pre-determined schedule. 
+
+:::warning
+ Merchant initiated transactions without the participation of the cardholder are not supported for Hosted Payment Page integrations. Even if MOTO (mail order / telephone order) can be used and card details can be saved on file, the Hosted payment page will always, at a minimum, require the cardholder to input the CVV of his card. To support recurring, instalment or unscheduled payments where the cardholder is **not involved at all**, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.
+:::
+
+
+Merchant Initiated Transactions are broken down in to two categories as follows.
 
 #### Standing Instruction MITs 
 
 Merchant Initiated Transactions defined under this category are performed to address pre-agreed standing instructions from the Consumer for the provision of goods or services.
 
 The following transaction types are standing instructions transactions:
-- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment.
-- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription.
-- Unscheduled Credential on File (UCOF): A transaction using a stored credential for a fixed or variable amount that does not occur on a scheduled or regularly occurring transaction date, where the Consumer has provided consent for the merchant to initiate one or more future transactions. An example of such a transaction is an account auto-top up transaction.
+- Instalment Payments: A transaction in a series of transactions that use a stored credential and that represent Consumer agreement for the merchant to initiate one or more future transactions over a period for a single purchase of goods or services. An example of such a transaction is a higher purchase repayment. **Not supported by the Hosted Payment Page integration method. To support recurring payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.**
+- Recurring Payments: A transaction in a series of transactions that use a stored credential and that are processed at fixed, regular intervals (not to exceed one year between transactions), representing Consumer agreement for the merchant to initiate future transactions for the purchase of goods or services provided at regular intervals. An example of such a transaction is a gym membership subscription. **Not supported by the Hosted Payment Page integration method. To support instalment payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.**
+- Unscheduled Credential on File (UCOF): A transaction using a stored credential for a fixed or variable amount that does not occur on a scheduled or regularly occurring transaction date, where the Consumer has provided consent for the merchant to initiate one or more future transactions. An example of such a transaction is an account auto-top up transaction. **Partially supported by the Hosted Payment Page integration method. For Hosted Payment Pages, the cardholder will always need to provide the CVV of the card when processing an unscheduled payment. To support unscheduled payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.**
 
 The Gateway classifies the first two types of instalment and recurring payments as Continuous Authority (CA) payments and the third type as a normal Cardholder not present payments. Different Acquirers may use different classifications, but the Gateway will handle this and send the classification expected by the Acquirer.
 
@@ -73,16 +79,19 @@ The following transaction types are industry specific transactions:
 **A Merchant Initiated Transaction is one whose action field is one of PREAUTH, SALE or VERIFY and whose type is one of 2 (MOTO) or 9 (CA) depending on the category.**
 
 To indicate the type of MIT, send the `rtAgreementType` field as one of the following values:
-- recurring – subsequent payment as the start of a recurring payment agreement (CA).
-- instalment – subsequent payment as the start of an instalment payment agreement (CA).
-- unscheduled – subsequent payment not to a fixed schedule (MOTO)
-- incremental – subsequent payment to increment initial amount authorised (MOTO)
-- resubmission – subsequent payment due to failed initial payment (MOTO)
-- reauthorisation – subsequent payment to refresh expired initial payment (MOTO)
-- delayedcharges – subsequent payment for additional charges (MOTO)
-- noshow – subsequent payment as penalty for missed reservation (MOTO)
+- **~~recurring – subsequent payment as the start of a recurring payment agreement (CA).~~** Not supported by the Hosted Payment Page integration method. To support recurring payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.
+- **~~instalment – subsequent payment as the start of an instalment payment agreement (CA).~~** Not supported by the Hosted Payment Page integration method. To support instalment payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.
+- **unscheduled – subsequent payment not to a fixed schedule (MOTO)** 
+- **incremental – subsequent payment to increment initial amount authorised (MOTO)** - Reserved for future use.
+- **resubmission – subsequent payment due to failed initial payment (MOTO)** 
+- **reauthorisation – subsequent payment to refresh expired initial payment (MOTO)** 
+- **delayedcharges – subsequent payment for additional charges (MOTO)** 
+- **noshow – subsequent payment as penalty for missed reservation (MOTO)** 
 
-In addition, the optional `rtSequenceCount` field can be used to specify how many transactions will be taken in total, with a value greater than 1, and the optional rtSequenceNumber field can be used to specify which transaction this is in the sequence, with a value greater than 0.
+:::warning 
+`unscheduled`, `resubmission`, `reauthorisation`, `delayedcharges` and `noshow` are only partially supported by the Hosted Payment Page integration method. For Hosted Payment Pages, the cardholder will always need to provide the CVV of the card when processing those types of payments. To support payments where the cardholder is not involved at all, you will need to carry a separate Direct Integration or an Hosted Payment Fields Integration.
+::: 
+
 
 The `xref` of the initial Consumer Initiated Transaction, or previous Merchant Initiated Transaction must be provided as follows:
 - For standing order MITs the initial authorisation must have been a successful Consumer Initiated Transaction with Credentials on File. This MIT will be a subsequent use of those Credentials on File. For recurring and instalment MITs the initial authorisation must have used the same `rtAgreementType`. The xref can be to the previous MIT in which case the Gateway will follow the chain of transactions back to the initial CIT. An xref is only valid for 13 months and so there cannot be longer between recurring payments, however the Card Scheme or Acquirer may impose a shorter period.
@@ -90,15 +99,14 @@ The `xref` of the initial Consumer Initiated Transaction, or previous Merchant I
 - For industry practice MITs the initial authorisation must be successful (apart from for a resubmission) but need not have Credentials on File. For example, it may not be known at the time of the initial authorisation that the MIT would be required and so the initial authorisation would not necessarily have stored the Credentials on File. This is an example of when an industry practice Merchant Initiated Transaction does not require a stored credential
 Note: For compatibility with existing practices, Instalment Payments and Recurring Payments MITs use Continuous Authority (CA) type transactions while other MITs Mail Order/Telephone Order (MOTO) type transactions. This use of MOTO is different to its use with a Consumer Initiated Transaction (CIT).
 
+
 ### Request Fields 
 
 | Name      | Mandatory | Description |
 | ----------- | ----------- | ----------- |
 | xref | <span class="badge badge--primary">Yes</span> | Reference to initial CIT or previous MIT transaction.|
-| type | <span class="badge badge--primary">Yes</span> | The type of transaction.<br></br><br></br> Possible values are:<br></br> 1 – E-commerce (ECOM) (CIT).<br></br> 2 – Mail Order/Telephone Order (MOTO (CIT).<br></br> 9 – Continuous Authority (CA) (MIT).<br></br> <br></br> Required differentiate between initial and subsequent recurring or instalment transaction.|
-| rtAgreementType | <span class="badge badge--primary">Yes</span> | Consumer/Merchant agreement type.<br></br><br></br> Possible values are: <br></br>cardonfile – credential storage agreed (CIT/MIT).<br></br> recurring – recurring type agreed (CIT/MIT). <br></br>instalment – instalment type agreed (CIT/MIT).<br></br> unscheduled – ad hoc COF payment (MIT). <br></br>incremental – authorisation amount increment (MIT). <br></br>resubmission – failed authorisation retry (MIT).<br></br> reauthorisation – expired authorisation refresh (MIT). <br></br>delayedcharges – post authorisation charges (MIT).<br></br> noshow – missed reservation penalty (MIT).<br></br><br></br>Not required on the initial transaction for a subsequent Industry-Specific Business Practice MIT to be used. <br></br><br></br>MIT type incremental is not currently supported but reserved for future use.|
-| rtSequenceCount | No | Number of transactions in a recurring sequence if known. <br></br><br></br>Mandatory for some Acquirers, its use is highly recommended with recurring transactions.|
-| rtSequenceNumber | No | Transaction number in a recurring sequence if known.|
+| type | <span class="badge badge--primary">Yes</span> | The type of transaction.<br></br><br></br> Possible values are:<br></br> 1 – E-commerce (ECOM) (CIT).<br></br> 2 – Mail Order/Telephone Order (MOTO (CIT).<br></br> <br></br> Required differentiate between initial and subsequent recurring or instalment transaction.|
+| rtAgreementType | <span class="badge badge--primary">Yes</span> | Consumer/Merchant agreement type.<br></br><br></br> Possible values are: <br></br>cardonfile – credential storage agreed (CIT/MIT).<br></br> unscheduled – ad hoc COF payment (MIT). <br></br>incremental – authorisation amount increment (MIT) - reserved for future use <br></br>resubmission – failed authorisation retry (MIT).<br></br> reauthorisation – expired authorisation refresh (MIT). <br></br>delayedcharges – post authorisation charges (MIT).<br></br> noshow – missed reservation penalty (MIT).<br></br><br></br>Not required on the initial transaction for a subsequent Industry-Specific Business Practice MIT to be used.|
 | initiator | No | Indicate who initiated the transaction.<br></br><br></br> Possible values are: <br></br>consumer – consumer initiated (CIT) <br></br>merchant – merchant initiated (MIT)<br></br><br></br> If not provided the Gateway will attempt to determine the initiator from the other request values.|
 
 For backwards compatibility, the Gateway will try to automatically identify if a transaction is CIT or MIT from the values provided for the `action`, `type` and `rtAgreementType` fields.
@@ -118,85 +126,13 @@ The `initiator` field will be returned in the response with either the value pas
 | Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.| CIT | ECOMMERCE | initial or subsequent |Required| consumer | 1 | instalment | Optional for cloning or using previous stored card  |
 | Cardholder provides their card details to sign up to a subscription via mail or telephone to the Merchant. | CIT | MOTO | initial or subsequent | Exempt |consumer | 2 | recurring | Optional for cloning or using previous stored card  |
 | Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant. | CIT | MOTO | initial or subsequent | Exempt |  consumer | 2 | instalment |Optional for cloning or using previous stored card|
-| Merchant/Gateway takes an automatic subscription payment at the interval agreed to by the Cardholder. | MIT | Continuous Authority | Subsequent | Exempt | merchant | 9 | recurring  | Reference to initial or previous recurring payment |
-| Merchant/Gateway makes an automatic instalment payment at the interval agreed to by the Cardholder. | MIT | Continuous Authority | Subsequent |Exempt | merchant | 9 | instalment  | Reference to initial or previous instalment payment |
-| Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details. | MIT | MOTO | Subsequent  | Exempt | merchant | 2 | unscheduled | Reference to transaction that initially stored the card |
-| Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder. | MIT | MOTO | N/A  | Exempt | merchant | 2 | resubmission | Reference to initial payment that was declined |
-| Merchant reauthorises a payment when the completion or fulfilment of the original order or service extends beyond the authorization validity limit set by the Card Scheme. | MIT | MOTO | N/A | Exempt | merchant | 2 | reauthorisation | Reference to payment that is to be reauthorised |
-| Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
-| Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |
-
-## Recurring Transaction Agreements {#recurringtransactionagreements}
-
-A Recurring Transaction Agreement (RTA) is used to request that the Gateway should perform repeat payments on your behalf, using pre-agreed amounts and schedules.
-
-An RTA can be configured easily and quickly, using the Merchant Management System (MMS). An RTA can also be set up while performing the initial transaction request, by including the integration [RTA request fields](#rtaRequestFields). The RTA is only set up in the transaction results in a successful payment authorisation.
-The initial transaction should be either SALE or VERIFY transaction and the `rtAgreementType` field should be provided to indicate whether the transactions are part of a recurring or instalment.
-
-Merchants who use this system to implement billing or subscription type payments must use recurring or instalment type Continuous Authority (CA) transactions to comply with Card Payment Scheme practices. Your Acquirer may refuse to accept the recurring transactions if they are not subject to an agreement between yourself and your Customer.
-
-The maximum period between recurring transactions is 13 months, however individual Acquirers may impose a shorter period.
-
-Refer to the [Credentials on File](credentialsonfile) section for more information on the different types of repeat or recurring transactions.
-
-### Scheduling
-
-There are two different types of scheduling available when requesting the Gateway to take recurring transactions automatically on the Merchant’s behalf. In addition, a start date can be provided to allow for a recurring subscription with an initial free trial period.
-
-#### Fixed Scheduling 
-
-Fixed scheduling causes the subsequent transaction to be taken at fixed intervals of time and for fixed amounts. A different initial date and amount or final date and amount can be provided for use when the agreed payment term or amount doesn’t exactly divide by the fixed time intervals.
-
-Fixed scheduling is specified by providing an `rtScheduleType` field with a value of ‘fixed’ and providing the `rtCycleDuration`, `rtCycleAmount` and `rtCycleCount` fields to define the interval at which transactions should be taken and the number of transactions to take.
-
-An `rtCycleCount` field value of 0 can be provided to indicate that transactions should be taken ad-infinitum until the RTA is stopped.
-
-#### Variable Scheduling {#variableScheduling}
-
-Variable scheduling causes the subsequent transaction to be taken on prespecified dates and for prespecified amounts.
-
-Variable scheduling is specified by providing an `rtScheduleType` field with a value of ‘variable’ and providing the `rtSchedule` field with a value containing an array of one or more schedule records.
-
-Each schedule record must contain the following fields:
-
-| Name      | Mandatory | Description |
-| ----------- | ----------- | ----------- |
-| date | <span class="badge badge--primary">Yes</span> | Date on which to take a payment.|
-| amount | <span class="badge badge--primary">Yes</span> | Amount to take on the provided date.|
-
-The schedule records should be passed in a sequential array of records, either as nested records or serialised records as described in the [format guide](overview#fieldFormats). The record field names are case sensitive.
-
-### Request Fields {#rtaRequestFields}
-
-| Name      | Mandatory | Description |
-| ----------- | ----------- | ----------- |
-| rtName | No| Free format short name for the agreement.|
-| rtDescription | No| Free format longer description for the agreement.|
-| rtPolicyRef | No| Merchant Policy Reference Number (MPRN).|
-| rtAgreementType | No| Recurring transaction agreement type. Indicates the type of Continuous Payment Authority or Repeat Billing agreement made with the Cardholder.<br></br><br></br> Possible values are:<br></br> recurring – recurring type CPA agreed.<br></br> instalment – instalment type CPA agreed.|
-| rtMerchantID | No| Merchant Account ID to use for the recurring transactions (defaults to merchantID).|
-| rtStartDate | No| Start date of agreement (defaults to date received).|
-| rtScheduleType | No| Schedule type. <br></br><br></br>Possible values are: <br></br>fixed – fixed interval schedule (default). <br></br>variable – variable interval schedule.|
-| rtSchedule | <span class="badge badge--primary">Yes</span>| Nested array or serialised string containing payment schedule information as per the [variable scheduling](#variableScheduling) section.<br></br><br></br>For use with variable schedules only.|
-| rtInitialDate | No| Date of initial payment (defaults to `rtStartDate`).<br></br><br></br>For use with fixed schedules only.|
-| rtInitialAmount | No| Amount of initial payment (defaults to `rtCycleAmount`).<br></br><br></br>For use with fixed schedules only.|
-| rtFinalDate | No| Date of final payment.<br></br><br></br>For use with fixed schedules only.|
-| rtFinalAmount | No| Amount of final payment (defaults to `rtCycleAmount`).<br></br><br></br>For use with fixed schedules only.|
-| rtCycleAmount | No| Amount per cycle (defaults to `amount`).<br></br><br></br>For use with fixed schedules only.|
-| rtCycleDuration | <span class="badge badge--primary">Yes</span>| Length of each cycle in `rtCycleDurationUnit` units.<br></br><br></br>For use with fixed schedules only.|
-| rtCycleDurationUnit | <span class="badge badge--primary">Yes</span>| Cycle duration unit. One of: day, week, month or year.<br></br><br></br>For use with fixed schedules only.|
-| rtCycleCount | <span class="badge badge--primary">Yes</span>| Number of cycles to repeat (zero to repeat forever).<br></br><br></br>For use with fixed schedules only.|
-| rtMerchantData | No| Free format Merchant data field.|
-| rtCloneFields | No| Fields to clone from one recurring transaction to the next. Refer to [Transaction Cloning](annexes#transactionCloning)|
-
-### Response Fields
-
-| Name      | Returned | Description |
-| ----------- | ----------- | ----------- |
-| rtID | Always| Recurring Transaction Agreement ID.|
-| rtResponseCode | Always| Result of setting up RT Agreement.Refer to [Response Codes](annexes#responseCodes) for details. |
-| rtResponseMessage | Always| Description of above response code.|
-
+| ~~Merchant/Gateway takes an automatic subscription payment at the interval agreed to by the Cardholder.~~ | ~~MIT~~ | ~~Continuous Authority~~ | ~~Subsequent~~ | ~~Exempt~~ | ~~merchant~~ | ~~9~~ | ~~recurring~~  | ~~Reference to initial or previous recurring payment~~ |
+| ~~Merchant/Gateway makes an automatic instalment payment at the interval agreed to by the Cardholder.~~ | ~~MIT~~ | ~~Continuous Authority~~ | ~~Subsequent~~ |~~Exempt~~ | ~~merchant~~ | ~~9~~| ~~instalment~~  | ~~Reference to initial or previous instalment payment~~ |
+| Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details. **Partially supported by the Hosted Payment Page integration method.** | MIT | MOTO | Subsequent  | Exempt | merchant | 2 | unscheduled | Reference to transaction that initially stored the card |
+| Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder. **Partially supported by the Hosted Payment Page integration method.**  | MIT | MOTO | N/A  | Exempt | merchant | 2 | resubmission | Reference to initial payment that was declined |
+| Merchant reauthorises a payment when the completion or fulfilment of the original order or service extends beyond the authorization validity limit set by the Card Scheme. **Partially supported by the Hosted Payment Page integration method.**  | MIT | MOTO | N/A | Exempt | merchant | 2 | reauthorisation | Reference to payment that is to be reauthorised |
+| Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. **Partially supported by the Hosted Payment Page integration method.**  | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
+| Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. **Partially supported by the Hosted Payment Page integration method.**  | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |
 
 ## Gateway Wallet {#gatewayWallet}
 
@@ -282,19 +218,13 @@ Failure to store any of the details in the Wallet will be reported using the app
 
 All new transactions stored by the Gateway are assigned a unique reference number that is referred to as the cross reference and returned in the `xref` response field. This cross reference is displayed on the Merchant Management System (MMS) and used whenever a reference to a previous transaction is required.
 
-The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. This is usually for management actions such as CANCEL or CAPTURE.
-
-The cross reference can also be sent with new transactions such as PREAUTH, SALE, and REFUND actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](annexes#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request is a Continuous Authority transaction, refer to the [continuous authority](transactiontypes#continuousAuthority) section.
-
-The use of cross references to perform repeat transactions is referred to as Payment Tokenisation and should not be confused with Card Tokenisation which is a separate service offered by the Gateway.
-
-Refer to the [credentials on file](credentialsonfile) section for details on how to instruct the Gateway to repeat a payment automatically.
+The cross reference can be sent as part of a transaction request, in the `xref` request field, to tell the Gateway to perform an action on an existing transaction. The cross reference can also be sent with new transactions such as PREAUTH and SALE actions, to request that the Gateway uses the values from the existing transaction if they have not been specified in the new request. For more information on how the existing values are used, please refer to the [transaction cloning](annexes#transactionCloning) section. This allows an existing transaction to be effectively repeated without you needing to know the original card number. The only exception to this is the card’s security code (CVV) which the Gateway cannot store, due to PCI DSS restrictions. Accordingly, it will have to be supplied in the new request (unless the new request.
 
 The Gateway will make transaction details available for a maximum period of 13 months, after this time the `xref` to the transaction will be invalid. The card number will be available during this time, but you may request that it is removed sooner. Once the card number has been removed the `xref` can no longer be used to provide the number to a future a transaction.
 
 The way each action handles any supplied `xref` is as follows:
 
-### PREAUTH, SALE, REFUND, VERIFY requests
+### PREAUTH, SALE, VERIFY requests
 
 These requests will always create a new transaction.
 
@@ -304,33 +234,7 @@ The request is expected to contain any transaction information required.
 
 The `xref` will only be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
 
-### REFUND_SALE requests
-
-These requests will always create a new transaction.
-
-The `xref` field can be provided to reference an existing transaction that is going to be refunded. This existing transaction will be marked as have been fully or partially refunded and the amounts will be tallied to ensure that you cannot refund more than the original amount of this existing transaction. If the existing transaction cannot be found, then an error will be returned and recorded against the new transaction.
-
-The request is expected to contain any transaction information required.
-
-The `xref` will not only be used to find the transaction to be refunded: additionally, that transaction will be used to complete any missing card and order details, relieving you from having to store card details and reducing your PCI requirements.
-
-### CANCEL or CAPTURE requests
-
-These requests will always modify an existing transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be modified to the desired state. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information any attempt to send any new transaction information will result in an error. The exception is that a CAPTURE request can send in a new lesser `amount` field when a lesser amount, than originally authorised, must be settled.
-
-### QUERY requests
-
-These requests will not create or modify any transaction.
-
-The `xref` field must be provided to reference an existing transaction, which will be returned as if it had just been performed. If the existing transaction cannot be found, then an error is returned but no record of the error will be recorded against any transaction.
-
-The request must not contain any new transaction information and any attempt to send any new transaction information will result in an error.
-
-### SALE or REFUND Referred Authorisation requests
+### SALE Referred Authorisation requests
 
 These will always create a new transaction.
 

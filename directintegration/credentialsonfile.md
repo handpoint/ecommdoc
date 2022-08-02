@@ -19,7 +19,8 @@ If you store credentials on file, then you must:
 - Obtain consumers’ consent to store the credentials.
 - Notify consumers when any changes are made to the terms of use.
 - Inform the card issuer via a transaction that payment credentials are now stored on file.
-- Identify transactions with appropriate `rtAgreementType` when using stored credentials. • Perform a PREAUTH, SALE or VERIFY transaction during the initial credential setup.
+- Identify transactions with appropriate `rtAgreementType` when using stored credentials.
+- Perform a PREAUTH, SALE or VERIFY transaction during the initial credential setup.
 
 Note: Credentials stored to complete a single transaction (or a single purchase) for a Consumer, including multiple authorisations related to that particular transaction or future refunds are not considered stored credentials and can be stored and used without following the above rules.
 

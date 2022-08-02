@@ -51,7 +51,7 @@ The 3-D Secure preferences can be configured per Merchant Account. These prefere
 ## 3DS Benefits 
 - The results are available immediately and returned as part of the transaction.
 - The checks can be managed independently allowing you the utmost control over how the results are used.
-- The checks can be configured to decline the transaction automatically, where required..
+- The checks can be configured to decline the transaction automatically, where required.
 - There are no extra Gateway costs for using 3-D Secure. Your Acquirer may charge to add this onto your business account; however, you may also find that your transaction charges are lower as a result of using 3-D Secure.
 - Fully configurable for each merchant account. 
 
@@ -107,7 +107,7 @@ These fields will be returned in addition to the [basic response fields](transac
 | threeDSResponseCode |Always |A numeric code providing the specific outcome of the 3-D Secure processing stage. Check threeDSResponseMessage for more details of any error that occurred. Refer to [Response Codes](annexes#responseCodes) for more details.|
 | threeDSResponseMessage |Always |Any error message relating to the outcome of the 3-D Secure processing stage.|
 
-## Cardholder Information
+### Cardholder Information
 In the case of a frictionless flow, the card Issuer may sometimes wish to provide a message to the Cardholder. In this case, the `threeDSResponseMessage` will start with the text ‘Cardholder Info: ‘ and be followed by the message from the card Issuer.
 
 ## 3DS Options {#3dsOptions}
@@ -117,7 +117,7 @@ The following options may be sent in the `threeDSOptions` field to provide addit
 Some additional information will be automatically provided by the Gateway from standard integration fields unless overridden by providing the associated option. The standard integration field associated with each option is shown in brackets below the options field name. The standard integration field should be used rather than the option, apart from the very rare circumstances where the two must have different values.
 
 :::tip
-A few additional information values, such as the Cardholder’s browser details need to be provided. for the Hosted Payment Page integration, the gateway will automatically provide those values. Passing information in the field `threeDSOptions` is fully optional. 
+For the Hosted Payment Page integration, the gateway will automatically provide the values marked as mandatory below. Passing information in the field `threeDSOptions` is fully optional. 
 :::
 
 The options must be formatted using the record or serialised record formats detailed in the [format guide](overview#fieldFormats).
@@ -213,7 +213,7 @@ The options must be formatted using the record or serialised record formats deta
 
 ## 3-D Secure Authentication Data {#3dSecureAuthenticationData}
 
-The 3-D Secure system uses various data fields to report the authentication status of the Cardholder. Each 3-D Secure version may use slightly different terminology for the fields and have slightly different values but for ease of use the Gateway uses the terminology and values as described in this appendix.
+The 3-D Secure system uses various data fields to report the authentication status of the Cardholder. Each 3-D Secure version may use slightly different terminology for the fields and have slightly different values but for ease of use the Gateway uses the terminology and values as described below.
 
 The field’s values would normally be populated by the Gateway’s 3DS Server component (The 3DS Server is the Gateway/Merchant component that provides the interface with the 3DS Directory Server), however you may choose to use your own 3DS Server component and provide the values.
 
@@ -342,13 +342,11 @@ However, the bank has the right to refuse any requested exemption and decline th
 
 Card details collected via mail or over the phone (MOTO) fall outside of the scope of SCA and do not require authentication. You can flag such payments by passing a value of ‘2’ in the `type` request field.
 
-#### Merchant Initiated Transactions (including recurring transactions)
+#### Merchant Initiated Transactions 
 
 Payments made with saved cards when the Customer is not present in the payment flow may qualify as [Merchant Initiated Transactions](credentialsonfile). These payments fall outside of the scope of SCA however it is still up to the bank to decide whether authentication is needed for the payment.
 
-The initial payment that saved the card will still need to have obtained SCA or be exempt and agreement must be obtained from the Customer to charge their card at a later point.
-
-You can flag such payments by passing a value of ‘9’ (Continuous Authority) in the `type` request field or using an `rtAgreementType` that signifies the transaction as being Merchant Initiated.
+You can flag such payments by using an `rtAgreementType` that signifies the transaction as being Merchant Initiated.
 
 #### Low Value Exemption 
 

@@ -135,5 +135,5 @@ The response will contain all the fields sent in the request (minus any `cardNum
 | cardIssuerCountryCode | Always | Card issuing country’s ISO-3166 2-letter code (when known). |
 
 Undocumented fields may be returned at the Gateways discretion but should not be relied upon.
-The acquirerResponseXXXX fields are dependent on the Acquirer in use and are supplied for additional information only.
-The response is also POSTed to any URL provided by optional callbackURL.
+The `acquirerResponseXXXX` fields are dependent on the Acquirer in use and are supplied for additional information only.
+The response is also POSTed to any URL provided by optional `callbackURL`.
