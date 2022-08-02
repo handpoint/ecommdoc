@@ -122,11 +122,11 @@ If you are experiencing these errors, then we recommend you consider the followi
 
 ## Redirect URL {#redirectUrl}
 
-The `redirectURL` request field is used to provide the URL of a webpage on your server. Unfortunately this is NOT supported for batch integrations.
+The `redirectURL` request field is used to provide the URL of a webpage on your server. This field is NOT supported for batch integrations.
 
 ## Callback URL {#callbackUrl}
 
-The `callbackURL` request field allows you to request that the Gateway sends a copy of the response to an alternative URL. Unfortunately this is NOT supported for batch integrations.
+The `callbackURL` request field allows you to request that the Gateway sends a copy of the response to an alternative URL. This field is NOT supported for batch integrations.
 
 ## Field Formats {#fieldFormats}
 
