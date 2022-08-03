@@ -5,20 +5,17 @@ id: shoppingcarts
 
 # Shopping Carts
 
-A shopping cart is a fundamental part of a retailer’s online store that empowers the online shopping experience. It is software that allows website visitors to purchase a product or service from an eCommerce interface. 
+A shopping cart is a fundamental part of a merchant online store. Shopping cart providers plug into ecommerce platforms and allow website visitors to purchase a product or service. 
 
 ## eCommerce Modules
 
 
-Handpoint integrates directly with all major shopping carts. The best shopping cart software offer a seamless online retail experience for customers, allowing them to easily order and pay for products directly from your website.
-Shopping cart software can simplify complex processes in a user-friendly interface that enables even people with no technical background to oversee an entire ecommerce operation
+Handpoint integrates directly with all major shopping carts. Shopping carts offer a seamless online retail experience for customers, allowing them to easily order and pay for products directly from your merchants website. Using a shopping cart software can simplify complex processes in a user-friendly interface that enables people with no technical background to oversee an entire ecommerce operation.
 
-Shopping Cart software is therefore essential when it comes to selling online, and is often effectively a short-hand term for an ecommerce platform.
-
-Not sure where to start? Don't worry! We are going to provide you with a list of Shopping Carts to add to the b2b marketplace or eCommerce website.
+Use Handpoint's versatility to unlock your market with our modules below:
 
 <div  style={{
-        textAlign: 'center'
+        textAlign: "center"
       }}>
 <div class="container">
 
@@ -346,9 +343,9 @@ Not sure where to start? Don't worry! We are going to provide you with a list of
 
 ## 3rd Party Modules
 
-This is where third-party modules can come in handy, helping to fill the gap between general site needs and the unique, individual needs of your company.  
+These modules are not developed by Handpoint.
 
-These modules are not developed by Handpoint. For support, please contact the module developers directly.
+For support, please contact the module developers directly. 
 
 <div  style={{
         textAlign: 'center'
@@ -505,5 +502,8 @@ These modules are not developed by Handpoint. For support, please contact the mo
    </div>
 </div>
 </div>
+<br></br>
 
+Please Note. The modules listed above are for reference only.
 
+Use of these modules is under GPU General Public Licence. Handpoint provides no warranty and accepts no liability for the use of these modules. Handpoint expects and advises full end to end testing to take place before any module is utilised in a live environment. If a GPL licence is not right for your project, then please contact us with your preferred licence. Our integration team will provide the module under a different licence, provided it covers the aspects of the GPL we require.
