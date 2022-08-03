@@ -5,7 +5,26 @@ import styles from './styles.module.css';
 
 export default function IntegrationPaths() {
   return (
-    <section>
+    <div className="handpointGradient">
+       <div
+        style={{
+          textAlign: 'center',
+          display: 'block',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+          width: '100%'
+        }}>
+       <div class='container'>
+      <div class="row">
+      <div class="col col--12">
+        <br></br>
+        <h1>Integration Paths</h1>
+        </div>
+        </div>
+        </div>
+      </div>
       <div className="container">
         <div className="row">
           {FeatureListCol4.map((props, idx) => (
@@ -13,7 +32,7 @@ export default function IntegrationPaths() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

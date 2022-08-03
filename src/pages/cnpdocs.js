@@ -28,10 +28,7 @@ export default function Home() {
       <Header />
       <main>
         <InfoTabs/>
-        <SectionHeader />
         <IntegrationPaths />
-        <GatewayIntegrationGuide />
-        <PayByLink />
         <SampleCode/>
         <MobileSdks/> 
         <ShoppingCarts/>
@@ -44,7 +41,7 @@ export default function Home() {
 
   function Header() {
     return (
-      <div class="headercnp"
+      <div class="handpointGradient"
         style={{
           textAlign: 'center',
           display: 'block',
@@ -69,112 +66,24 @@ export default function Home() {
     var scroller = Scroll.scroller;
   
     return (
-      <ul class="pills pills--block"  style={{padding: '20px'}}>
+      <div class="handpointGradient">
+      <ul class="pills pills--block"  style={{paddingLeft: '50px',paddingRight: '50px', margin:'0px'}}>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('integrationsElement', { smooth: true, offset: -50 })} >Integration Paths</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('directHostedIntegrationElement', { smooth: true, offset: -50 })} >Direct & Hosted Integration</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('payByLinkElement', { smooth: true, offset: -50 })}>Pay By Link</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('sampleCodeElement', { smooth: true, offset: -50 })}>Sample Code</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('mobileSDKsElement', { smooth: true, offset: -50 })}>Mobile SDKs</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('shoppingCartsElement', { smooth: true, offset: -50 })}>Shopping Carts</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('technicalIntegrationElement', { smooth: true, offset: -50 })}>Technical Integration Lifecycle</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('termsConditionsElement', { smooth: true, offset: -150 })}>Terms & Conditions</li>
       </ul>
+      </div>
     );
   }
 
 
-  function SectionHeader() {
-    return (
-      <Element name="integrationsElement">
-        <div style={{
-          textAlign: 'center',
-          display: 'block',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%'
-        }}>
-        <br></br>
-        <h1 >Integration Paths</h1>
-      </div>
-      </Element>
-    );
-  }
-
-  function GatewayIntegrationGuide() {
-    return (
-      <Element name="directHostedIntegrationElement">
-      <div
-      style={{
-        backgroundColor: ' #e9ecef',
-        textAlign: 'center',
-        display: 'block',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '20px',
-        width: '100%'
-      }}>
-     <div class='container'>
-      <div class="row">
-      <div class="col col--12">
-        <br></br>
-        <h2 style={{
-
-        }} >Direct & Hosted Integration Documentation</h2>
-        <p style={{
-
-        }} >This guide provides the information required to integrate with our Gateway and gives basic examples of code for doing so.
-          It is expected that you have some experience in server-side scripting with languages such as PHP or ASP.</p>
-
-        <div>
-          <a class="button button--primary indexButtons" href="/docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
-        </div>
-        </div>
-        </div>
-        </div>
-      </div>
-      </Element>
-    );
-  }
-
-
-  function PayByLink() {
-    return (
-      <Element name="payByLinkElement">
-      <div
-      style={{
-        textAlign: 'center',
-        display: 'block',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '20px',
-        width: '100%'
-      }}>
-      <div class='container'>
-      <div class="row">
-      <div class="col col--12">
-        <br></br>
-        <h2>Pay By Link Documentation</h2>
-        <p>
-        The Pay By Link integration allows you to have full control over what information is passed to the Handpoint gateway via the Pay Button functionality.
-        It uses the full list of hosted integration fields outlined in the above Gateway Integration Guide.
-        </p>
-        <div >
-          <a class="button button--primary indexButtons" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Integration Guide</a>
-        </div>
-      </div>
-      </div>
-      </div> 
-      </div>
-      </Element>
-    );
-  }
-
-  function MobileSdks() {
+function MobileSdks() {
     return (
       <Element name="mobileSDKsElement">
-      <div style={{
+      <div class="handpointGradient" style={{
         textAlign: 'center',
         display: 'block',
         height: '100%',
@@ -928,7 +837,7 @@ export default function Home() {
   function TechnicalIntegrationLifecycle() {
   return (
 <Element name="technicalIntegrationElement">
-<div style={{
+<div class="handpointGradient" style={{
       textAlign: 'center',
       display: 'block',
       height: '100%',

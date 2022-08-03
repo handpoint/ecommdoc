@@ -28,10 +28,7 @@ export default function Home() {
       <Header />
       <main>
         <InfoTabs/>
-        <SectionHeader />
         <IntegrationPaths />
-        <GatewayIntegrationGuide />
-        <PayByLink />
         <SampleCode/>
         <MobileSdks/> 
         <ShoppingCarts/>
@@ -44,9 +41,8 @@ export default function Home() {
 
   function Header() {
     return (
-      <div
+      <div class="handpointGradient"
         style={{
-          backgroundColor: ' #25365D',
           textAlign: 'center',
           display: 'block',
           height: '250px',
@@ -55,10 +51,10 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <a href="/"><img src="/img/handpoint-logo-hvitt.svg" alt="Logo" width="260px"/></a>
+        <a href="/"><img src="https://handpoint.com/wp-content/uploads/2022/05/Logo.svg" alt="Logo" width="260px"/></a>
         <br></br>
         <h2 style={{
-          color: 'white'
+          color: '#25365d'
         }} >Integrate online payments into your software</h2>
       </div>
     );
@@ -70,116 +66,24 @@ export default function Home() {
     var scroller = Scroll.scroller;
   
     return (
-      <ul class="pills pills--block"  style={{padding: '20px'}}>
+      <div class="handpointGradient">
+      <ul class="pills pills--block"  style={{paddingLeft: '50px',paddingRight: '50px', margin:'0px'}}>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('integrationsElement', { smooth: true, offset: -50 })} >Integration Paths</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('directHostedIntegrationElement', { smooth: true, offset: -50 })} >Direct & Hosted Integration</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('payByLinkElement', { smooth: true, offset: -50 })}>Pay By Link</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('sampleCodeElement', { smooth: true, offset: -50 })}>Sample Code</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('mobileSDKsElement', { smooth: true, offset: -50 })}>Mobile SDKs</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('shoppingCartsElement', { smooth: true, offset: -50 })}>Shopping Carts</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('technicalIntegrationElement', { smooth: true, offset: -50 })}>Technical Integration Lifecycle</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('termsConditionsElement', { smooth: true, offset: -150 })}>Terms & Conditions</li>
       </ul>
+      </div>
     );
   }
 
 
-  function SectionHeader() {
-    return (
-      <Element name="integrationsElement">
-        <div style={{
-          textAlign: 'center',
-          display: 'block',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%'
-        }}>
-        <br></br>
-        <h1 >Integration Paths</h1>
-      </div>
-      </Element>
-    );
-  }
-
-  function GatewayIntegrationGuide() {
-    return (
-      <Element name="directHostedIntegrationElement">
-      <div
-      style={{
-        backgroundColor: ' #e9ecef',
-        textAlign: 'center',
-        display: 'block',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '20px',
-        width: '100%'
-      }}>
-     <div class='container'>
-      <div class="row">
-      <div class="col col--12">
-        <br></br>
-        <h2 style={{
-
-        }} >Direct & Hosted Integration Documentation</h2>
-        <p style={{
-
-        }} >This guide provides the information required to integrate with our Gateway and gives basic examples of code for doing so.
-          It is expected that you have some experience in server-side scripting with languages such as PHP or ASP.</p>
-
-        <div>
-          <a class="button button--primary" href="/docs/GatewayIntegrationGuide-V3.0.pdf" download="IntegrationGuideHandpoint">Download the latest Gateway Integration Guide</a>
-        </div>
-        </div>
-        </div>
-        </div>
-      </div>
-      </Element>
-    );
-  }
-
-
-  function PayByLink() {
-    return (
-      <Element name="payByLinkElement">
-      <div
-      style={{
-        textAlign: 'center',
-        display: 'block',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '20px',
-        width: '100%'
-      }}>
-      <div class='container'>
-      <div class="row">
-      <div class="col col--12">
-        <br></br>
-        <h2 style={{
-
-        }} >Pay By Link Documentation</h2>
-        <p style={{
-
-        }} >
-        The Pay By Link integration allows you to have full control over what information is passed to the Handpoint gateway via the Pay Button functionality.
-        It uses the full list of hosted integration fields outlined in the above Gateway Integration Guide.
-        </p>
-        <div class="card__footer">
-          <a class="button button--primary" href="/docs/PayButtonHandpoint.pdf" download="PayButtonHandpoint">Download the latest Pay Button Integration Guide</a>
-        </div>
-      </div>
-      </div>
-      </div> 
-      </div>
-      </Element>
-    );
-  }
-
-  function MobileSdks() {
+function MobileSdks() {
     return (
       <Element name="mobileSDKsElement">
-      <div style={{
+      <div class="handpointGradient" style={{
         textAlign: 'center',
         display: 'block',
         height: '100%',
@@ -201,15 +105,15 @@ export default function Home() {
 
        <div class="container">
         <div class="row">
-          <div class="col col--6">
+          <div class="col col--6 integrationOptions">
             <div class="card-demo">
               <div class="card" style={{ height: '180px',backgroundColor: ' #e9ecef'}}>
                 <div class="card__header">
                   <h3>Android</h3>
                 </div>
                 <div class="card__body">
-                  <img
-                    src="https://cardstream.com/wp-content/uploads/2019/01/android_ico-1.png"
+                  <img style={{ height: '50px' }}
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/1022px-Android_robot.svg.png?20180121030125"
                     alt="Image alt text"
                     title="Android" />
                 </div>
@@ -219,15 +123,15 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div class="col col--6">
+          <div class="col col--6 integrationOptions">
             <div class="card-demo" >
             <div class="card" style={{ height: '180px', backgroundColor: ' #e9ecef'}}>
                 <div class="card__header">
                   <h3>iOS</h3>
                 </div>
                 <div class="card__body">
-                  <img
-                    src="https://cardstream.com/wp-content/uploads/2019/01/apple_ico-1.png"
+                  <img style={{ height: '50px' }}
+                    src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png"
                     alt="Image alt text"
                     title="iOS" />
                 </div>
@@ -271,7 +175,7 @@ export default function Home() {
 
       <div class="container">
         <div class="row">
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo">
                <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -291,7 +195,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -311,7 +215,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -332,7 +236,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -356,7 +260,7 @@ export default function Home() {
         <br/>
 
         <div class="row">
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -376,7 +280,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -396,7 +300,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -416,7 +320,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -440,7 +344,7 @@ export default function Home() {
         <br/>
 
         <div class="row">
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -460,7 +364,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -480,7 +384,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -500,7 +404,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -524,7 +428,7 @@ export default function Home() {
         <br/>
 
         <div class="row">
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -544,7 +448,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -564,7 +468,7 @@ export default function Home() {
                 </div>
               </div>
           </div>
-          <div class="col col--3">
+          <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -594,7 +498,7 @@ export default function Home() {
 
       <div class="container">
         <div class="row">
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -612,7 +516,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -630,7 +534,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -648,7 +552,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -669,7 +573,7 @@ export default function Home() {
         </div>
         <br/>
         <div class="row">
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -687,7 +591,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -705,7 +609,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card"  style={{ height: '180px'}}>
                     <div class="card__header">
@@ -723,7 +627,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px' }}>
                     <div class="card__header">
@@ -773,7 +677,7 @@ export default function Home() {
 
         <div class="container">
         <div class="row">
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -791,7 +695,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -809,7 +713,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -827,7 +731,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -848,7 +752,7 @@ export default function Home() {
         </div>
         <br/>
         <div class="row">
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo">
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -866,7 +770,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -884,7 +788,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -902,7 +806,7 @@ export default function Home() {
                   </div>
               </div>
             </div>
-            <div class="col col--3">
+            <div class="col col--3 integrationOptions">
               <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
@@ -933,26 +837,25 @@ export default function Home() {
   function TechnicalIntegrationLifecycle() {
   return (
 <Element name="technicalIntegrationElement">
-<div style={{
+<div class="handpointGradient" style={{
       textAlign: 'center',
       display: 'block',
       height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: '20px',
       width: '100%'
     }}>
   <div class="container">
     <div class="row">
       <div class="col col--12" >
-        <div>
-          <h2>Technical Integration Lifecycle</h2>
-          <p>Please contact <a target="_blank" href="mailto:sales@handpoint.io">sales@handpoint.io</a> to kickstart an integration process.
+        <div >
+          <h2 style={{paddingTop: '20px'}}>Technical Integration Lifecycle</h2>
+          <p >Please contact <a target="_blank" href="mailto:sales@handpoint.com">sales@handpoint.com</a> to kickstart an integration process.
             Once the integration starts you will get a dedicated slack channel with the Handpoint developers to address any issues that might arise.
             Once the integration is ready, the Handpoint team will certify the solution by running a set of standard tests to make sure the integration is robust and ready for Go Live.
             The Handpoint team will then closely follow the first pilot merchants to make sure the solution is ready to scale.</p>
           <div align="center">
-            <img style={{ width:'65%', height:'auto'}} src="/img/ecomm-technical-integration-lifecycle.png" alt="Technical integration lifecycle"></img>
+            <img class="imagesSize"  src="/img/ecomm-technical-integration-lifecycle.png" alt="Technical integration lifecycle"></img>
           </div>
         </div>
       </div>
