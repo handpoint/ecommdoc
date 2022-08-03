@@ -16,9 +16,11 @@ The following example code shows how to embed the hosted payment page as an iFra
 
 Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
 
-<!-- <iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe> -->
+<!-- <iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe> -->
+
+<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/31/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Embed the hosted payment page in a Lightbox (modal) over your website
 
@@ -29,7 +31,8 @@ The following example code shows how to embed the hosted payment page in a light
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/34/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/44/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 <br/>
@@ -44,11 +47,9 @@ The following example code shows how to redirect the user to a secure hosted pay
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
 
-<!-- <iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/39/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameBorder="0"></iframe>
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/34/embedded/html,result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe> -->
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/39/embedded/html,result/?fontColor=FFFFFF&bodyColor=FFFFFF&menuColor=000000" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 
@@ -69,23 +70,25 @@ This `form` will start a new SALE transaction (10.01 GBP) and attempt to seek au
 <!--form example of SALE (Amount:10,01GBP)-->
 
 <form id="paynow" name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-      <input type="hidden" name="action" value="SALE" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-      <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
-      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-      <input type="hidden" name="signature" value="6cdc7f1b2b457ad63261837e9fb7fb96530b4aa37a703717a926e58739f809c64f28d2f5f31563b1ac022b04ea94c34b6e375cf8370362cd5179bda12d2f76fd" />
-      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-      <input type="submit" value="Pay Now">
+          <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+          <input type="hidden" name="action" value="SALE" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+          <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+          <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+          <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+          <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
+          <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+          <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+          <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
+          <input type="hidden" name="signature" value="b836dcbc14e00cfbd16b6281d1de18040a64c5d23b8fb886f0221c370e85d809632f79daa991aacfe581ed5a5c8d9dae60e7e1a10810eca9a62b484587de5344" />
+          <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+          <input type="submit" value="Pay Now">
 </form>
 ```
 
-<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/22/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+
+<iframe width="100%" height="550" src="//jsfiddle.net/Handpoint/zt9bdxof/24/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
  
 
 ### Sample Code - VERIFY
@@ -100,23 +103,26 @@ This `form` will start a new VERIFY transaction (0.00GBP) and attempt to verify 
 <!--form example of VERIFY-->
 
 <form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-      <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-      <input type="hidden" name="action" value="VERIFY" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-      <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-      <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-      <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-      <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
-      <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-      <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-      <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-      <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-      <input type="hidden" name="signature" value="63f917d6031480d5a5dfce926a767c6982ee93135bfd1e488113046be98d3db9ff3270aa3a4a25bc76bf61b83618449d532c464bb42166705a27cf26547716ca" />
-      <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-      <input type="submit" value="Verify Card">
+          <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+          <input type="hidden" name="action" value="VERIFY" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+          <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+          <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+          <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+          <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
+          <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+          <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+          <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
+          <input type="hidden" name="signature" value="1ad5a0e4f928f6118315a16b1162b974549b6996c37d70be2f156ab2554cee75b0e3c1c110e5bffd7d1c2253a2f23174991150ca82fa96c5ff7009560c3631d4" />
+          <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+          <input type="submit" value="Verify Card">
 </form>
 ```            
 
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/3q86ypo0/22/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - PREAUTH
 
@@ -130,23 +136,24 @@ This `form` will create a new PREAUTH transaction (1.01GBP) and attempt to seek 
 <!--form example of PREAUTH (1,01GBP)-->
 
 <form name="payment-form" method="post" action="https://commerce-api.handpoint.com/hosted/modal/" data-hostedforms-modal>
-    <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
-    <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
-    <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
-    <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
-    <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
-    <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
-    <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-    <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
-    <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
-    <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
-    <input type="hidden" name="signature" value="f4f7b0c893d846d09efd2edfc3cbb21ab0c4248e35da0a8ae8cd8634273e4d10f53ca2fa5502508058319ce49adef9cd329d4bc781896e0d9db41a19e6ddac2d" />
-    <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
-    <input type="submit" value="Pre Authorization (£1,01)">
+          <input type="hidden" name="merchantID" value="155928" /> <!-- merchantID will be provided by the Handpoint Support team -->
+          <input type="hidden" name="action" value="PREAUTH" /> <!-- action could be SALE, VERIFY or PREAUTH -->
+          <input type="hidden" name="type" value="1" /> <!-- 1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA) -->
+          <input type="hidden" name="currencyCode" value="826" /> <!-- ISO 3-letter currency code. 826-> GBP -->
+          <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
+          <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
+          <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
+          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
+          <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
+          <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
+          <input type="hidden" name="signature" value="6b8373a440b28e3b7c9aacf7ed578ec64f29882a92f36bb0280ee36345942af9f57ffa8c166c5bbd86920f2a9fd752b30ec002db5690147861fdabac0fe2287a" />
+          <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
+          <input type="submit" value="Pre Authorization (£1,01)">
 </form>
 ```
 
-<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/16/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/Handpoint/th3a8L54/21/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 ## Hosted Payment Page - Gateway Wallet 
