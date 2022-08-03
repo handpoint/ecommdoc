@@ -5,24 +5,22 @@ id: mobilesdks
 
 # Mobile SDKs
 
-The Handpoint Android and iOS SDKs provide you with all the tools required to embed online payments in your mobile application.
-
-Handpoint SDKs allow merchants to accept secure payments in a native mobile app. Our SDKs allow customers to save cards in the mobile app and store the tokenised cards for future payments, creating a seamless payment journey. Integrate secure in-app payments with our Android or iOS SDKs below.
+The Handpoint Android and iOS SDKs provide you with all the tools required to embed payments in your mobile application. The SDKs allow merchants to accept secure payments in a native iOS or Android application. Our SDKs also allow customers to save cards in the mobile app for future payments (using tokenisation to be kept of PCI scope), creating a seamless payment journey. 
 
 
 ### Android
-The [Android SDK repository](https://github.com/handpoint/online-payments-SDK-Android) contains a working sample SDK written in Java to show how the Online Payment Gateway can be integrated within Android applications which can help you understand how the SDK is best used. 
 
-This example will help you understand the global flow when creating payment using the Android SDK.
+The [Android SDK](https://github.com/handpoint/online-payments-SDK-Android) is an SDK written in Java, showing how the online payment gateway can be integrated within Android applications.
 
-The project requires a minimum operating system of 4.0.4 to function and to build the project, you require Android Studio 2.1+ 
+The project requires a device using Android 5 or above to work properly, you will also need Android Studio 2.1+ to build the code. 
+
 There is only one dependency that may be required to be included for this SDK and that is the "**payment**" dependency but this may be already included. If this is the case, you may need to just synchronize the Gradle Build first.
 
 
 ### iOS
-The [iOS SDK repository](https://github.com/handpoint/online-payments-SDK-iOS) contains a working sample SDK written in Swift to show how the Online Payment Gateway can be integrated within iOS applications. 
+The [iOS SDK](https://github.com/handpoint/online-payments-SDK-iOS) is an SDK written in Swift, showing how the online payment gateway can be integrated within iOS applications. 
 
-CryptoSwift must be included as a Framework dependency. We have provided CryptoSwift v0.7.2 as part of our SDK however as part of good practice we encourage you to rebuild CryptoSwift and our iOS SDK before use.
+CryptoSwift must be included as a Framework dependency. We have provided CryptoSwift v0.7.2 as part of our SDK but as a good practice we encourage you to rebuild CryptoSwift and our iOS SDK before use.
 
 
 
