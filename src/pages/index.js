@@ -25,15 +25,24 @@ export default function Home() {
     <Layout
       title={` Online Docs`}
       description="documentation for online payments">
-      <Header />
+      
+      
       <main>
+        <div class="handpointGradient">
+        <Header />
+        </div>
+        <div class="gettingStarted">
         <InfoTabs/>
         <IntegrationPaths />
+        </div>
         <SampleCode/>
+        <div class="gettingStarted">
         <MobileSdks/> 
+        </div>
         <ShoppingCarts/>
         <TechnicalIntegrationLifecycle/>
         <TermsAndConditions/>
+        
       </main>
     </Layout>
   );
@@ -41,7 +50,7 @@ export default function Home() {
 
   function Header() {
     return (
-      <div class="handpointGradient"
+      <div
         style={{
           textAlign: 'center',
           display: 'block',
@@ -66,13 +75,13 @@ export default function Home() {
     var scroller = Scroll.scroller;
   
     return (
-      <div class="handpointGradient">
+      <div>
       <ul class="pills pills--block"  style={{paddingLeft: '50px',paddingRight: '50px', margin:'0px'}}>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('integrationsElement', { smooth: true, offset: -50 })} >Integration Paths</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('sampleCodeElement', { smooth: true, offset: -50 })}>Sample Code</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('mobileSDKsElement', { smooth: true, offset: -50 })}>Mobile SDKs</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('shoppingCartsElement', { smooth: true, offset: -50 })}>Shopping Carts</li>
-        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('technicalIntegrationElement', { smooth: true, offset: -50 })}>Technical Integration Lifecycle</li>
+        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('integrationsElement', { smooth: true, offset: -150 })} >Integration Paths</li>
+        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('sampleCodeElement', { smooth: true, offset: -150 })}>Sample Code</li>
+        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('mobileSDKsElement', { smooth: true, offset: -150 })}>Mobile SDKs</li>
+        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('shoppingCartsElement', { smooth: true, offset: -150 })}>Shopping Carts</li>
+        <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('technicalIntegrationElement', { smooth: true, offset: -150 })}>Technical Integration Lifecycle</li>
         <li class="pills__item pills__item--active" onClick={() => scroller.scrollTo('termsConditionsElement', { smooth: true, offset: -150 })}>Terms & Conditions</li>
       </ul>
       </div>
@@ -83,7 +92,7 @@ export default function Home() {
 function MobileSdks() {
     return (
       <Element name="mobileSDKsElement">
-      <div class="handpointGradient" style={{
+      <div style={{
         textAlign: 'center',
         display: 'block',
         height: '100%',
@@ -837,7 +846,7 @@ function MobileSdks() {
   function TechnicalIntegrationLifecycle() {
   return (
 <Element name="technicalIntegrationElement">
-<div class="handpointGradient" style={{
+<div style={{
       textAlign: 'center',
       display: 'block',
       height: '100%',

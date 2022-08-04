@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 
 export default function IntegrationPaths() {
   return (
-    <div className="handpointGradient">
+    <div>
        <div
         style={{
           textAlign: 'center',

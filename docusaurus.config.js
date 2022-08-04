@@ -132,10 +132,16 @@ const config = {
         logo: {
           alt: 'My Site Logo',
           src: '/img/handpoint-logo-hvitt.svg',
-          width: 175,
+          width: 75,
           href: 'https://developer.handpoint.io/',
         },
         items: [
+          {
+            className: 'navbar-statuspage-icon',
+            href: 'https://status.handpoint.io',
+            position: 'right',
+            'aria-label': 'Status Page',
+          },
           {
             to: 'cnpdocs',
             label: 'Getting Started',

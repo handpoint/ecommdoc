@@ -17,17 +17,15 @@
   --ifm-navbar-search-input-icon-color:white;
       
   
-
   /* Color for links*/ 
   --ifm-link-color:#0074CC;
   --ifm-code-font-size: 80%;
+
 
   /* Navbar */
   --ifm-navbar-background-color: #25365D;
   --ifm-navbar-link-color: #fdfdfd;
   --ifm-navbar-sidebar:30px;
-
-
 
 
   /* Footer */
@@ -78,6 +76,10 @@ html[data-theme='dark'] {
 
 
 /* SearchBar  */
+.navbar__search.button{
+  color: white;
+  }
+
 .navbar__search{
   width:135px;
 }
@@ -118,7 +120,7 @@ html[data-theme='dark'] {
 }
 
 .navbar__item {
-  font-size: 11px;
+  font-size: 9.5px;
 }
 
 @media only screen and (min-width: 1650px) {
@@ -136,10 +138,12 @@ html[data-theme='dark'] {
   height: 35px;
   
   display: flex;
+  background-image: url('/img/monitor.svg');
   background-repeat: no-repeat;
   background-position: center;
   
 }
+
 
 .padding--lg {
   padding: 2rem !important;
@@ -150,14 +154,44 @@ html[data-theme='dark'] {
   display: inline-block;
 }
 
-@media only screen and (max-width: 600px) {
+.gettingStarted {  
+  display: block;
+  justify-content: center;
+  font-size: 15px;
+  margin-top: 25px;
+  width: 80%;
+  margin-left:150px;
+}
+
+.card-image{
+
+  max-width:45%;
+  max-height:auto;
+
+}
+
+.card-image-larger{
+
+  max-width:65%;
+  max-height:auto;
+
+}
+
+.imagesSize {
+  max-width: 65%;
+  height: auto;
+}
+
+@media only screen and (max-width: 996px) {
   .gettingStarted {
     display: block;
     justify-content: center;
     font-size: 15px;
     margin-top: 25px;
-    width: 80%;
+    width: auto;
     margin-left:10px;
+    margin-right:10px;
+    
   }
 }
 
@@ -173,18 +207,12 @@ html[data-theme='dark'] {
 }
 
 @media screen and (max-width: 996px) {
-  .indexButtons {
-    font-size: 10px;
-    width: 100%;
-    
+  .handpointOptions {
+    margin: 5px;
+    flex-direction: column;
   }
 }
 
-@media screen and (max-width: 996px) {
-  br {
-    display: none; /* hide the BR tag for wider screens (i.e. disable the line break) */
-  }
-}
 
 @media screen and (max-width: 996px) {
   .integrationOptions {
@@ -193,11 +221,19 @@ html[data-theme='dark'] {
 }
 
 
-.imagesSize {
-  max-width: 65%;
-  height: auto;
+@media screen and (max-width: 996px) {
+  br {
+    display: none; /* hide the BR tag for wider screens (i.e. disable the line break) */
+  }
 }
 
+@media screen and (max-width: 996px) {
+  .indexButtons {
+    font-size: 9px;
+    width: 99%;
+    
+  }
+}
 
 @media screen and (max-width: 996px) {
   .imagesSize {
