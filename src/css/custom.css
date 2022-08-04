@@ -29,6 +29,7 @@
 
 
 
+
   /* Footer */
   --ifm-footer-background-color: #25365D !important;
   --ifm-footer-link-color : #fdfdfd;
@@ -67,7 +68,7 @@ html[data-theme='dark'] {
   --ifm-color-primary: #e97d29;
   --ifm-footer-background-color: #25365D !important;
   --ifm-navbar-sidebar-width: 80vw;
-  --ifm-navbar-search-input-icon-color:white;
+  
  
   /* --ifm-color-primary-dark: #5a91ea; */
 
@@ -75,17 +76,19 @@ html[data-theme='dark'] {
   
 }
 
-.navbar__search.button{
-color: white;
-}
+
+/* SearchBar  */
 .navbar__search{
-  width:130px;
+  width:135px;
 }
+
 .navbar__search-input {
-  width: 125px;
-  
-  
+  width: 140px;
 }
+
+
+
+
 /* Modifies the Sidebar (effect on the left side) */
 .theme-doc-sidebar-item-link .menu__link--active {
   border-left-width: 4px;

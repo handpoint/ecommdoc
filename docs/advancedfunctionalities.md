@@ -204,7 +204,7 @@ These fields must be sent with every new transaction; however, they can be clone
 | isoID | No | Your ISO identifier as assigned by the Scheme.|
 | subMerchantID | No | Unique identifier assigned to this Sub Merchant.|
 | merchantXXXX | No | Sub Merchant details as documented in the [merchant request fields](advanceddata#merchantRequestFields).|
-| statementNarrativeX | No | Statement details as documented in [dynamic descriptor](billingdescriptor#dynamicDescriptor).|
+| statementNarrativeX | No | Statement details as documented in [dynamic descriptor](advancedfunctionalities.md#dynamicDescriptor).|
 
 Some of the above fields marked as optional might be mandatory depending on the acquirer you are working with. 
 

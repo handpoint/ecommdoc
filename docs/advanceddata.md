@@ -22,7 +22,7 @@ Only the description, quantity, and amount of the first six line item details ar
 
 ### Purchase Orders
 
-These fields together with other advanced fields, as detailed in [Custom Data](customdata), can be used to send full information relating to a purchase order and related invoice indicating types; quantities; and agreed prices for products or services. Details on the supplier; shipping; delivery can also be included.
+These fields together with other advanced fields, as detailed in [Custom Data](advanceddata.md#custom-data), can be used to send full information relating to a purchase order and related invoice indicating types; quantities; and agreed prices for products or services. Details on the supplier; shipping; delivery can also be included.
 
 At present, this information is not sent to the Acquirer, unless needed, but future enhancements to the Gateway may include sending such information as Level 2 or 3 Purchasing data as defined by the relevant Card Schemes.
 

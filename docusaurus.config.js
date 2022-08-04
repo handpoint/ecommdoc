@@ -15,6 +15,14 @@ const config = {
   organizationName: 'handpoint', // Usually your GitHub org/user name.
   projectName: 'ecommdoc', // Usually your repo name.
 
+  themes:[ 
+    ['@easyops-cn/docusaurus-search-local',
+     {indexBlog:false, 
+      indexPages:false,
+      indexDocs:true,
+      docsDir:['docs','directintegration','paybutton','shoppingcarts','hostedpaymentfields','batchintegration','mobilesdks'],
+      docsRouteBasePath:['docs','directintegration','paybutton','shoppingcarts','hostedpaymentfields','batchintegration','mobilesdks']}]],
+
   presets: [
     [
       'classic',
