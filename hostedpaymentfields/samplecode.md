@@ -5,6 +5,16 @@ sidebar_position: 2
 
 # Sample Code
 
+## Sample Code - Hosted Payment Fields
+
+
+| Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
+| ----------- | ----------- | ----------- | ----------- |
+|Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
+
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/3h98fekp/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
 ## Testing 
 
 You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.

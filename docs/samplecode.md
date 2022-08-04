@@ -47,7 +47,8 @@ The following example code shows how to redirect the user to a secure hosted pay
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/39/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameBorder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/46/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameborder="0"></iframe>
 
 
 
@@ -180,7 +181,7 @@ Using the **Saved Cards** option at checkout will allow the cardholder to use a 
 
 The CVV of the stored card is **159**. 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/20/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
 
 ## Testing 
 
