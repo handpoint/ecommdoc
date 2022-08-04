@@ -115,10 +115,11 @@ const config = {
     ({
       colorMode: {
         defaultMode: 'light',
-        disableSwitch: true,
+        disableSwitch: false,
         respectPrefersColorScheme: false,
       },
       navbar: {
+        style: 'dark',
         title: '',
         logo: {
           alt: 'My Site Logo',
