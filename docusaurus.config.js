@@ -277,7 +277,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Handpoint`,
       },
       prism: {
-        additionalLanguages: ['php'],
+        additionalLanguages: ['php','groovy'],
         theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
       },

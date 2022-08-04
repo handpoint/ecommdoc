@@ -14,7 +14,18 @@ The [Android SDK](https://github.com/handpoint/online-payments-SDK-Android) is a
 
 The project requires a device using Android 5 or above to work properly, you will also need Android Studio 2.1+ to build the code. 
 
-There is only one dependency that may be required to be included for this SDK and that is the "**payment**" dependency but this may be already included. If this is the case, you may need to just synchronize the Gradle Build first.
+There is only one dependency that may be required to be included for this SDK and that is the `payment` module. In the [Android SDK](https://github.com/handpoint/online-payments-SDK-Android) code, there is an example app which in turn uses the `payment` module/dependency, the code of the `payment` module is also found.
+
+To make use of the SDK (`payment` module) in your app, the next lines must be included in the `build.gradle` file of the app:
+
+```groovy
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //payment dependency
+    implementation project(':payment')
+}
+```
 
 
 ### iOS
