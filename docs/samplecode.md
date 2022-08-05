@@ -187,7 +187,7 @@ The CVV of the stored card is **159**.
 
 ## Hosted Payment Page - Credentials on File
 
-### Sample Code - **1**.
+### Sample Code - **CIT - 1**.
 
  1 - Cardholder opts to store their card details on Merchant's website.
 
@@ -199,7 +199,7 @@ The CVV of the stored card is **159**.
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/1j0u7wLh/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
-### Sample Code - **2**.
+### Sample Code - **CIT - 2**.
 
 5 - Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.
 
@@ -207,11 +207,11 @@ The CVV of the stored card is **159**.
 
 7 - Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant.
 
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/6/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+### Sample Code - **MIT - 1**.
+
 8 - Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details.
-
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/2/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-
-### Sample Code - **3**.
 
 9 - Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder.
 
@@ -221,7 +221,7 @@ The CVV of the stored card is **159**.
 
 12 - Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy.
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/pvqfL6rb/6/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/pvqfL6rb/9/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 
 ## Testing 
