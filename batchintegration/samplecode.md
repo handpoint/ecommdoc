@@ -14,8 +14,8 @@ sidebar_position: 2
 ```php
  <?PHP 
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- $key = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key
+ $key = '3obzOxdqw6e1u';
 
  // Gateway URL
  $url = 'https://commerce-api.handpoint.com/batch/';
@@ -159,7 +159,7 @@ The following example PHP code shows how to launch a batch of **VERIFY** transac
 <?PHP 
 
  // Merchant signature key --> It will be provided by the Handpoint support team.
- $key = 'm3rch4nts1gn4tur3k3y';
+ $key = '3obzOxdqw6e1u';
 
  // Gateway URL
  $url = 'https://commerce-api.handpoint.com/batch/';
@@ -303,7 +303,7 @@ The following example PHP code shows how to launch a batch of **PREAUTH** transa
 <?PHP 
 
  // Merchant signature key --> It will be provided by the Handpoint support team.
- $key = 'm3rch4nts1gn4tur3k3y';
+ $key = '3obzOxdqw6e1u';
 
  // Gateway URL
  $url = 'https://commerce-api.handpoint.com/batch/';
@@ -446,8 +446,8 @@ The following example PHP code shows how to launch a batch of **REFUND** transac
 ```php
 <?PHP 
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- $key = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key 
+ $key = '3obzOxdqw6e1u';
 
  // Gateway URL
  $url = 'https://commerce-api.handpoint.com/batch/';
@@ -837,7 +837,7 @@ Example of calculating the signature in PHP:
 <?PHP 
 
 //Merchant signature key
-$key = 'm3rch4nts1gn4tur3k3y';
+$key = '3obzOxdqw6e1u';
 
 
 //Request Information
