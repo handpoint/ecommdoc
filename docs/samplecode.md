@@ -16,11 +16,8 @@ The following example code shows how to embed the hosted payment page as an iFra
 
 Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
 
-<!-- <iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/12/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="700" src="//jsfiddle.net/Handpoint/xg0dptsw/41/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/19/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe> -->
-
-<iframe width="100%" height="750" src="//jsfiddle.net/Handpoint/xg0dptsw/31/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Embed the hosted payment page in a Lightbox (modal) over your website
 
