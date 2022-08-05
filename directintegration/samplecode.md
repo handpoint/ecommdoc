@@ -1231,7 +1231,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'walletID' => '1437476',
 
  // The following fields are mandatory for 3DS v2
- 'remoteAddress' => '193.177.214.98',
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
  'threeDSRedirectURL' => $pageUrl . '&acs=1',
 
  // The following field allows options to be passed for 3DS v2
@@ -1486,7 +1486,2159 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 ?>
 
 ```
+## Credentials on File
 
+### (CIT) - Cardholder opts to store their card details on Merchant's website.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 1,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'cardonfile',
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (CIT) - Cardholder opts to store their card details provided to Merchant via mail or telephone.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'cardonfile',
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (CIT) - Cardholder pays using a card they previously stored on the Merchant's website.
+
+```php
+
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 1,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'cardonfile',
+ 'xref' => '22080513FY16RN16LM97FXX',
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+
+```
+
+### (CIT) - Cardholder provides their card details to sign up to a subscription on the Merchant's website.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 1,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'recurring',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (CIT) - Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.
+
+```php
+
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 1,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'instalment',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (CIT) - Cardholder provides their card details to sign up to a subscription via mail or telephone to the Merchant.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'recurring',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (CIT) - Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'instalment',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant/Gateway takes an automatic subscription payment at the interval agreed to by the Cardholder.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 9,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'recurring',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant/Gateway makes an automatic instalment payment at the interval agreed to by the Cardholder.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 9,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'instalment',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'unscheduled',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'resubmission',
+ 'xref' => '22080513NJ17MZ11RJ34QFT',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant reauthorises a payment when the completion or fulfilment of the original order or service extends beyond the authorization validity limit set by the Card Scheme.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'reauthorisation',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+### (MIT) - Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'delayedcharges',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+
+
+### (MIT) - Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy.
+
+```php
+<?PHP
+
+require('gateway.php');
+
+use \P3\SDK\Gateway;
+
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
+
+ // Handpoint Gateway URL
+ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+
+ // Setup PHP session as use it to store data between 3DS steps
+ if (isset($_GET['sid'])) {
+ session_id($_GET['sid']);
+ }
+
+ session_start(); 
+ // Compose current page URL (removing any sid and acs parameters)
+ $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+
+ // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+ $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
+ 
+ // If ACS response into the IFRAME then redirect back to parent window
+ if (!empty($_GET['acs'])) {
+ echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
+ exit();
+ }
+
+ if (!isset($_POST['threeDSResponse'])) {
+ // Initial request
+
+ // Gather browser info - can be done at any time prior to the checkout
+ if (!isset($_POST['browserInfo'])) {
+ echo Gateway::collectBrowserInfo();
+ exit();
+ }
+
+ // Direct Request
+ 
+ $req = array(
+ 'merchantID' => 155928,
+ 'action' => 'SALE',
+ 'type' => 2,
+ 'currencyCode' => 826,
+ 'countryCode' => 826,
+ 'amount' => 1999,
+ 'cardNumber' => '5573471234567898',
+ 'cardExpiryMonth' => 12,
+ 'cardExpiryYear' => 24,
+ 'cardCVV' => '159',
+ 'customerName' => 'Handpoint Test Customer',
+ 'customerAddress' => 'Merevale Avenue Leicester',
+ 'customerPostCode' => 'LE10 2BU',
+ 'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'noshow',
+ 'xref' => '22080513FY16RN16LM97FXX',
+ 
+
+
+ // The following fields are mandatory for 3DS v2
+ 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'threeDSRedirectURL' => $pageUrl . '&acs=1',
+
+ // The following field allows options to be passed for 3DS v2
+ // and the values here are for demonstration purposes only
+ 'threeDSOptions' => array(
+      'paymentAccountAge' => '20220601',
+      'paymentAccountAgeIndicator' => '05',
+   ),
+ );
+
+ // Add the browser info as it is mandatory for 3DS v2
+ $req += $_POST['browserInfo'];
+
+ } else {
+
+   $req = array (
+      // The following field are only required for tbe benefit of the SDK 
+      'merchantID' => '155928',
+      'action' => 'SALE',
+      'threeDSRef' => $_SESSION['threeDSRef'],
+      'threeDSResponse' => $_POST['threeDSResponse'],
+    );
+        
+ } 
+
+ try {
+    $res = Gateway::directRequest($req);
+ } catch (\Exception $e) {
+ 
+// You should exit gracefully
+ die('Sorry, the request could not be sent: ' . $e);
+ }
+
+ print $res['responseCode'];
+// Check the response code
+if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
+// Send request to the ACS server displaying response in an IFRAME
+
+ // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
+ $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
+ echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+
+ // Silently POST the 3DS request to the ACS in the IFRAME
+ echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
+
+ 
+
+ // Remember the threeDSRef as need it when the ACS responds
+ $_SESSION['threeDSRef'] = $res['threeDSRef'];
+
+} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+
+ echo "<p>Thank you for your payment.</p>";
+
+   } 
+   else {
+        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+  }
+
+// Render HTML to silently POST data to URL in target brower window 
+function silentPost($url = '?', array $post = null, $target = '_self') { 
+ $url = htmlentities($url);
+ $target = htmlentities($target);
+ $fields = '';
+
+
+ if ($post) {
+ foreach ($post as $name => $value) {
+ $fields .= Gateway::fieldToHtml($name, $value);
+ }
+ }
+
+ $ret = "
+ <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
+ {$fields}
+ <noscript><input type=\"submit\" value=\"Continue\"></noscript
+ </form>
+ <script>
+ window.setTimeout('document.forms.silentPost.submit()', 0);
+ </script>
+ ";
+
+ return $ret;
+}
+
+?>
+```
+ 
 ## Testing 
 
 You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
