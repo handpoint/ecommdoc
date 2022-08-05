@@ -1167,8 +1167,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-// Merchant signature key --> It will be provided by the Handpoint support team.
-Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -1215,23 +1215,23 @@ Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
  'cardExpiryYear' => 24,
  //CVV needs to be provided even for wallet.
  'cardCVV' => '159',
- 'customerName' => 'Test Customer',
- 'customerEmail' => 'example@example.com',
+ 'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'cardonfile',
  //enables wallet system
  'walletEnabled' => 'Y',
-	
+    
  //stores card in a wallet automatically if a transaction went through, wallet id is returned in callback.
  'walletStore' => 'Y',
  
 //Insert walletid below from previous transaction and remove card details (CVV needs to stay).
 //Leave blank if no wallet exists yet. walletID value will be returned in the response.
- 'walletID' => '',
+ 'walletID' => '1437476',
 
  // The following fields are mandatory for 3DS v2
- 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
+ 'remoteAddress' => '193.177.214.98',
  'threeDSRedirectURL' => $pageUrl . '&acs=1',
 
  // The following field allows options to be passed for 3DS v2
@@ -1284,10 +1284,9 @@ if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) {
 
 } else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
 
-  
-
  echo "<p>Thank you for your payment.</p>";
- echo $res['walletID'].' '.'This is your walletID';
+ echo 'This is your walletID'.' '.'=>'.' '.$res['walletID'];
+
    } 
    else {
         echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
@@ -1320,6 +1319,7 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 }
 
 ?>
+
 ```
 
 ### Direct Integration using Gateway Wallet
@@ -1335,8 +1335,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-// Merchant signature key --> It will be provided by the Handpoint support team.
-Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -1377,21 +1377,23 @@ Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
+
  //CVV needs to be provided even for wallet.
  'cardCVV' => '159',
- 'customerName' => 'Test Customer',
- 'customerEmail' => 'example@example.com',
+ 'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
+ 'rtAgreementType' => 'cardonfile',
  //enables wallet system
  'walletEnabled' => 'Y',
-	
- //Stores card in a wallet automatically if a transaction went through, wallet id is returned in callback.
+    
+ //stores card in a wallet automatically if a transaction went through, wallet id is returned in callback.
  'walletStore' => 'Y',
  
- //Insert walletid below from previous transaction and remove card details (CVV needs to stay).
- 'walletID' => '1379824',
+//Insert walletid below from previous transaction and remove card details (CVV needs to stay).
+//Leave blank if no wallet exists yet. walletID value will be returned in the response.
+ 'walletID' => '1437476',
 
  // The following fields are mandatory for 3DS v2
  'remoteAddress' => $_SERVER['REMOTE_ADDR'],
@@ -1447,10 +1449,9 @@ if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) {
 
 } else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
 
-  
-
  echo "<p>Thank you for your payment.</p>";
- echo $res['walletID'].' '.'This is your walletID';
+ echo 'This is your walletID'.' '.'=>'.' '.$res['walletID'];
+
    } 
    else {
         echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
@@ -1483,6 +1484,7 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 }
 
 ?>
+
 ```
 
 ## Testing 

@@ -173,7 +173,7 @@ A `walletID` will be generated in the response from the gateway. If this wallet 
 
 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/23/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/31/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Offering the cardholder to pay with cards saved in the Gateway wallet
 
@@ -181,7 +181,7 @@ Using the **Saved Cards** option at checkout will allow the cardholder to use a 
 
 The CVV of the stored card is **159**. 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/20/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameBorder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ## Testing 
 
