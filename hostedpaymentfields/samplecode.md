@@ -15,6 +15,421 @@ sidebar_position: 2
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/3h98fekp/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
+## Hosted Payment Fields Library
+
+A simple client-side script is available to support the displaying of Hosted Payment Fields in your payment form.
+
+The library is available as a JavaScript script and is based around two classes: the `Form` and `Field` classes. The script is compatible with most modern web browsers.
+
+The script can be loaded directly from our Gateway server as follows:
+
+```javascript
+<script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedfields.min.js"></script>
+```
+
+The script requires the jQuery API, which must be loaded prior to the script.
+
+Hosted Payment Fields are a set of prebuilt JavaScript UI components that can be used by your website’s HTML payment form to collect sensitive payment details without those details touching your server. They provide you with the PCI benefits of using a Hosted Payment Page, while allowing you the ability to design and implement your own payment forms.
+
+There are 6 predefined Hosted Payment Fields available as follows:
+- cardNumber – collects the card number.
+- cardCVV – collects the card cvv.
+- cardExpiryDate – collects the card expiry month and year.
+- cardStartDate – collects the card start/issue month and year.
+- cardIssueNumber – collects the card issue number.
+- cardDetails – collects the card number, expiry date and cvv in a single field.
+
+The ``cardNumber`` field is designed to collect a card number, including an icon used to display the card type. The field will only accept digits and spaces and validate that any entered value is a correctly formatted card number and insert spaces at the correct positions for the card type as the number is typed.
+
+The `cardCVV` field is designed to collect a card CVV. The field will only accept digits and will validate that any entered value is a correctly formatted CVV, taking into account the card type as determined by an associated `cardNumber` field.
+
+The `cardExpiryDate` and `cardStartDate` fields are designed to collect a card expiry date and card issue date respectively. The fields can render as a pair of select controls containing the months and a suitable range of years; or as an input control that will only allow digits to be entered and automatically formatted as a month / year entry. The field will validate that any entered value is a valid month and year combination.
+
+The `cardIssueNumber` field is designed to collect a card issue number. The field will only accept digits and will validate that any entered value is a correctly formatted issue number.
+
+The `cardDetails` field is designed to collect all of the essential card details. It combines the `cardNumber`, `cardExpiryDate` and `cardCVV` fields into a single line compound field design to allow easy entry of the card details and to complement the look of your checkout.
+
+These hosted fields can be used on your payment form alongside any standard HTML form fields, for example, any collecting the Cardholder’s billing or delivery addresses and any other order information you require.
+
+The field type is either: passed as the value of the `type` option the `Field` construction, provided by the HTML element’s meta data; or provided via the HTML element’s type attribute (prefixed with the ‘hostedfield:’ name space).
+
+The following example shows all three approaches to specifying the field type:
+
+```xml
+1. `<input type="hostedfield:cardNumber" name="card-number">`
+2. `<div class="hostedfield" data-hostedfield-type="cardExpiryDate"></div> `
+3. `<input data-hostedfield='{"type":"cardCVV"}'>`
+```
+
+### Library Namespace
+
+To avoid polluting the global namespace, the library extends the global `window` object with a `hostedFields` object containing the following properties:
+- `forms` – array containing all the instantiated Form objects.
+- `classes` – array containing all the instantiable classes.
+    - `form` – `Form` class prototype.
+
+### Form Construction 
+
+The construction method can be used to prepare a HTML FORM for use with Hosted Payment Field components. The method signature is as follows:
+
+`Form(element, options)`
+
+The `element` parameter should be the DOM node of an existing FORM tag.
+
+The `options` parameter should be object containing one of more of the following optional properties:
+- `autoSetup` – boolean indicating whether setup should be handled automatically.
+- `autoSubmit` – boolean indicating whether submission should be handled automatically.
+- `merchantID` – string containing the merchantID the payment request is for.
+- `stylesheet` – string containing DOM selector for any stylesheets to be used.
+- `tokenise` – string/array/object specifying fields whose values should be tokenised.
+- `fields` – object containing field configuration by field type.
+- `locale` – string containing the desired locale.
+- `classes` – object containing names of extra CSS classes to use.
+- `submitOnEnter` – boolean indicating whether the enter key should cause the form to submit.
+- `nativeEvents` – boolean indicating that native browser events should be fired.
+
+Any `options` parameter will be merged with those provided via meta data supplied, using data-hostedfield and/or `data-hostedfield-<option>` attributes; or via existing attributes or properties of the `element`.
+
+The `autoSetup` option can be used to disable the automatic creation of `Field` objects for the FORM child controls by calling the` autoSetup()` method during the `Form` construction. If automatic setup is disabled, then you must manually instantiate `Field` objects and attach them to the `Form` as required, using the `addField()`method. This option or manually calling the `autoSetup()` method minimises the amount of JavaScript you have to write. Automatic operation is good if you don’t need to customise the operation or can’t customise it by reacting to the `Form` or `Field` events. The option defaults to true and cannot be changed once the `Form` has been created.
+
+The `autoSubmit` option can be used to disable the automatic handling of the FORM submission via the `autoSubmit()` method. If automatic submission is disabled, then you must manually retrieve the sensitive payment details by calling `getPaymentDetails()` and include them in the form submission data. This option or manually calling the `autoSubmit()` method minimises the amount of JavaScript you have to write. Automatic operation is good if you don’t need to customise the operation or can’t customise it by reacting to the `Form` or `Field` events. The option defaults to true and cannot be changed once the `Form` has been created.
+
+The `merchantID` option can be used to specify the `merchantID` with which the final `paymentToken` will be used. The option defaults to the value of any child INPUT node whose name is ‘merchantID’ and can be changed at runtime by calling the `setMerchantID()` method or by altering the options using the jQuery `hostedForm()` plugin method.
+
+The `stylesheet` option can be used to specify a DOM selector used to locate stylesheets that should be parsed for styles related to the Hosted Payment Fields. The option defaults to the DOM selector string `‘link.hostedfield[rel=stylesheet], style.hostedfield` and can be changed at runtime by calling the `setStylesheet()` method; or by altering the options using the jQuery `hostedForm()` plugin method.
+
+The `tokenise` option can be used to specify addition FORM controls whose values, as returned by the jQuery.val() method, should be included in the final `paymentToken`.
+The option’s value must be either:
+- A string containing a DOM selector used to select one or more controls.
+- An array containing values used to jQuery.filter() down to one or more controls.
+- An object whose properties are the name of fields to tokenise and whose values are objects containing a selector property used to select a control.
+
+For the first two, the tokenised field’s name will be taken from the controls `data-hostedfield-tokenise` attribute or name attribute. For the third, the name is property name in the tokenise object. If the field’s name is of the format `paymentToken[<name>]`, then only the `<name>`part is used. The option defaults to the DOM selector string `INPUT.hostedfield-tokenise:not(:disabled)`, `INPUT[data-hostedfield-tokenise]:not(:disabled)`, `INPUT[name^="paymentToken["]:not(:disabled)` and cannot be changed once the `Form` has been created.
+
+The `fields` options can be used to specify default options for the different types of Hosted Payment Fields. The option’s value should be an object whose properties are the fields type or the wildcard type ‘any’ and whose values are objects whose properties are the default options for fields of that type. The values can also contain a selector property containing a DOM `selector` that is used during the automatic setup stage to select a FORM’s child element to add as a `Field` of the specified type automatically. The option has no default value and cannot be changed once the `Form` has been created.
+
+The `locale` option can be used to specify the language that should be used by the Hosted Payment Fields attached to this `Form`. The option defaults to the value provided by any lang attribute on the `element` or closest ancestor and cannot be changed once the Form has been created.
+
+The `classes` options can be used to specify additional CSS class names to add in addition to the default classes. The value is an object whose properties are the default class name and whose values are a string containing the additional class name(s) to use. The option has no default and cannot be changed once the `Form` has been created.
+
+The `submitOnEnter` option can be used to specify if pressing the enter key when typing a Field value should cause the `Form` to submit. The option defaults to false and cannot be changed once the `Form` has been created.
+
+The `nativeEvents` option can be used to specify that any associated native event should be fired when a ‘hostedField:’ prefixed `Field` event is fired. For example, when enabled if the ‘hostedfield:mouseover’ event is fired, then the native ‘mouseover’ event is also fired. The option defaults to false and cannot be changed once the Form has been created.
+
+If not explicitly constructed, a `Form` object will be automatically instantiated and attached to the FORM DOM node as soon as any `Field` object is instantiated on a child DOM node.
+
+Example Form construction is as follows:
+
+```javascript
+ var form = new window.hostedFields.classes.Form(document.forms[0],{
+    // Auto setup the form creating all hosted fields (default)
+    autoSetup: true,
+
+    // Auto validate, tokenise and submit the form (default)
+    autoSubmit: true,
+
+    // Additional fields to tokenise
+    tokenise: '.add-to-token',
+
+    // Stylesheet selection
+    stylesheets: '#hostedfield-stylesheet',
+
+    // Optional field configuration (by type)
+    fields: {
+        any: {
+            nativeEvents: true
+        },
+        cardNumber: {
+            selector: $('#form2-card-number'),
+            stylesheet: $('style.hostedform, style.hostedform-card-number')
+        }
+    },
+
+    // Additional CSS classes
+    classes: {
+        invalid: 'error'
+    }
+ }); 
+```
+Or using meta data on the HTML FORM element:
+
+```html
+<form data-hostedfields='{"autoSetup":true,"autoSubmit":true,"tokenise":".add-totoken","stylesheets":"#hostedfieldstylesheet","fields":{"any":{"nativeEvents":true},"cardNumber":{"selector":"#form2-cardnumber","stylesheet":"style.hostedform, style.hostedform-cardnumber"}},"classes":{"invalid":"error"}}' method="post" novalidate="novalidate" lang="en">
+<script>
+var form = new window.hostedFields.classes.Form{document.forms[0]);
+ </script> 
+```
+
+### Form Methods 
+
+The follow methods are made available by the Form class:
+
+`void autoSetup()`
+
+Automatically setup the form by scanning the Form element for child nodes to control as Hosted
+Payment Fields. Child nodes are selected if they:
+- have a type attribute with a hostedfield:`<type>` value (INPUT nodes only).
+- have a data attribute with a hostedfield.`<type>` property.
+- match a DOM selector provided by the fields.`<type>`.selector option.
+If multiple selection criteria are present, then they must all specify the same Field type or an
+exception is thrown.
+
+This method is called during the `Form` construction unless the `autoSetup` option is false.
+
+`void autoSubmit()`
+
+Automatically handles any attempted FORM submission by checking the FORM’s controls are valid by calling the `validate()` method; and then requesting the `paymentToken` using the `getPaymentDetails()` method; and finally adding the token to the forms fields using the `addPaymentToken()` method. Failure to validate or request the payment token will cause the form submission to be stopped.
+
+You can affect the automatic submission stages by listening for events and preventing their
+default actions. 
+
+This method is attached to the FORM submit event during the Form construction unless the `autoSubmit` option is false, or the `autoSubmit` option is null and the `autoSetup` option is false.
+
+If automatic submission is disabled, then you must react to the FORM’s submit event and then
+request the `paymentToken` using the `getPaymentDetails()` method and ensure that the token is sent as part of the form’s data.
+
+`boolean addField(Field f)`
+
+Add a hosted `Field` to the `Form`.
+
+Returns true if successful, false otherwise.
+
+`boolean delField(Field f)`
+
+Remove a hosted `Field` from the `Form`.
+
+Returns true if successful, false otherwise.
+
+`promise validate(boolean submitting)`
+
+Validate all `Field` values on the `Form`, either during submission or not.
+
+Returns a promise that will be resolved when the validation is complete.
+
+`object[] getInvalidElements()`
+
+Get details about all invalid FORM controls (not just invalid hosted `Field` elements).
+
+Returns an array of objects containing the following properties:
+- element – DOM element.
+- message – DOM elements validationMessage property or ‘Invalid value’.
+- label – associated LABEL text.
+- field – Field instance (if DOM element is a hosted Field).
+
+`object getValidationErrors()`
+
+Get the validation errors for all invalid FORM controls (not just invalid hosted `Field` elements).
+
+Returns an object whose properties are the associated labels, names or id of the invalid FORM
+controls and whose values are the error message for that control.
+
+`promise getPaymentDetails(object tokenData, boolean validate)`
+
+Gets the payment details, generating a `paymentToken` containing the hosted Field values; any
+values specified by the `tokenise` option; and any passed `tokenData`. The Form will be
+validated first if required.
+
+Returns a promise that will be resolved when the payment details have been obtained, passing
+the details as an object containing the following properties:
+- success – boolean true if successful, false otherwise.
+- message – string containing message to display if not successful.
+- errors – object containing details about invalid payment data.
+- invalid – object as returned by getValidationErrors() method.
+- paymentToken – string containing generated paymentToken.
+
+`void addPaymentToken(string token)`
+
+Add the payment token as the value of a Form child INPUT whose `name` is ‘paymentToken’,
+creating the control if needed. Any created control will be given a type of ‘hidden’.
+
+`void setMerchantID(string merchantID)`
+
+Set the `merchantID` used by the payment form.
+
+`void setStylesheet(string selector)`
+
+Set the DOM selector used to select the stylesheet(s) used by the `Form`.
+
+`object defaultFieldOptions(string type)`
+
+Get any default field options specified via the `fields` option, resulting from the merger of its
+optional any and `<type>`properties.
+
+Returns an object whose properties are the default options.
+
+`void forceSubmit()`
+
+Forcefully submit the FORM `element` as if a child submit button had been clicked.
+
+`void reset()`
+
+Reset all the `Form`, setting all `Field` values back to their initial values.
+
+`void destroy()`
+
+Destroys the `Form`, reverting its `element` back to its original state.
+
+### Form Events 
+
+The following events may be fired by the `Form` object and you can use these to hook into and
+modify the object’s behaviour:
+
+| Event Name | Description |
+| ----------- | ----------- | 
+| create | Fired when a Form has been created. | 
+| destroy |Fired when a Form has been destroyed.| 
+| presubmit | Fired by the autoSubmit() method prior to handling the submission. You can prevent the handling of the submission and handle it yourself by calling the Events preventDefault() method. | 
+| valid | Fired by the autoSubmit() method if the FORM contains valid data prior to requesting the payment details. You can prevent the continued handling of the submission and handle it yourself by calling the Events preventDefault() method or by invalidating the FORM. | 
+| submit-invalid  | Fired by the autoSubmit() method if the FORM contains invalid data prior to displaying the validity using the DOM reportValidity() method. You can prevent the reportValidity() call and display the validity yourself by calling the Events preventDefault() method.| 
+| submit | Fired by the autoSubmit() method prior to submitting the FORM. You can prevent the FORM from submitting by calling the Events preventDefault() method. | 
+| error |Fired by the autoSubmit() method if an exception is caught prior to displaying the error, using the JavaScript alert() function. You can prevent the alert() call and display the error yourself by calling the Events preventDefault() method.| 
+
+Event names are prefixed with the ‘hostedform:’ namespace not shown in the table.
+
+The `presubmit`, `valid`, `submit-invalid`, `submit` and `error` events fired by the `autoSubmit()`
+method the payload is an object with the following properties:
+- success – boolean false.
+- message – error message if error otherwise null.
+- invalid – result of getValidationErrors() method if Form invalid.
+- submitting – boolean true.
+
+### Field Construction 
+
+The construction method can be used to prepare a HTML INPUT control as a Hosted Payment Field or to create a new field in HTML DIV container. The method signature is as follows:
+
+`Field(element, options)`
+
+The `element` parameter should be the DOM node of an existing INPUT or DIV tag.
+
+The `options` parameter should be object containing one of more of the following optional properties:
+- `type` – string containing the desired field type.
+- `value` – string containing the initial value.
+- `placeholder` – string containing any placeholder text.
+- `style` – string containing any inline CSS styles.
+- `stylesheet` – string containing DOM selector for any stylesheets to be used.
+- `disabled` – boolean indicating if initially disabled.
+- `required` – boolean indicating if the value is required.
+- `readOnly` – boolean indicating if initially read only.
+- `validity` – boolean or string indicating the initial validity.
+- `locale` – string containing the desired locale.
+- `classes` – object containing names of extra CSS classes to use.
+- `submitOnEnter` – boolean indicating if the enter key should cause the form to submit.
+- `nativeEvents` – boolean indicating that native browser events should be fired.
+- `validationMessages` – object containing alternative validation messages.
+    - `required` – string containing validation message to use when a value is required.
+    - `invalid` – string containing validation message to use when a value is invalid.
+- `format` – string containing select option format for date fields.
+- `minYear` – integer containing minimum year (relative to current year) for date fields.
+- `maxYear` – integer containing maximum year (relative to current year) for date fields.
+
+Any `options` parameter will be merged with those provided via meta data supplied using `datahostedfield` and/or `data-hostedfield-<option>` attributes, or via existing attributes or properties of the `element` or provided via the `getDefaultOptions()` method of the parent `Form`.
+
+The `type` option can be used to specify the type of Hosted Payment Field required. It defaults to
+the value provided by any type attribute on the `element` (prefixed with the ‘hostedfield:’
+namespace). The option cannot be changed once the `Field` has been created. Valid types are
+`cardDetails`, `cardNumber`, `cardCVV`, `cardExpiryDate`, `cardStartDate`, `cardIssueNumber`.
+
+The `value` option can be used to specify any initial value that should be used by the `Field`. It
+defaults to the value provided by any value attribute or property on the `element`. Obviously, due
+to the purpose of the Hosted Payment Fields, any initial value is not wise for card number and
+CVV fields. The option can be changed at runtime by calling the `setValue()` method.
+
+The `placeholder` option can be used to specify any initial text that should be used as a placeholder by the `Field`. It defaults to the value provided by any placeholder attribute or property on the `element`. When used with the `CardDetails` type `Field` the placeholder contains three parts separated by a pipe character, the first part contains the `cardNumber` placeholder, the second part contains the `cardExpiry` placeholder, and the third part contains the `cardCVV` placeholder. The option can be changed at runtime by calling the `setPlaceholder()` method or by altering the options using the jQuery hostedForm() plugin method.
+
+The `style` option can be used to specify any initial inline CSS style that should be used by the
+`Field`. It defaults to the value provided by any style attribute or property on the `element`. The
+option can be changed at runtime by calling the `setStyle()` method or by altering the options
+using the jQuery `hostedForm()` plugin method.
+
+The `stylesheet` option can be used to specify a DOM selector used to locate stylesheets that should be parsed for styles related to this `Field`. Refer to section on styling fields. The option can be changed at runtime by calling the `setStylesheet()` method or by altering the options using the jQuery `hostedForm()` plugin method.
+
+The `disabled` option can be used to specify if the `Field` should be initially disabled. It defaults to
+the value provided by any disabled attribute or property on the `element`. The option can be
+changed at runtime by calling the `setDisabled()` method or by altering the options using the
+jQuery `hostedForm()` plugin method.
+
+The `required` option can be used to specify if the `Field` value is required. It defaults to the value
+provided by any required attribute or property on the `element`. The option can be changed at
+runtime by calling the `setRequired()` method or by altering the options using the jQuery
+`hostedForm()` plugin method.
+
+The `readOnly` option can be used to specify if the `Field` should be initially read-only. It defaults to
+the value provided by any readOnly attribute or property on the `element`. The option can be
+changed at runtime by calling the `setReadOnly()` method or by altering the options using the
+jQuery `hostedForm()` plugin method.
+
+The `validity` option can be used to specify if the `Field` should be initially marked as invalid. It
+defaults to the value provided by any validity property on the `element`. The option can be
+changed at runtime by calling the `setValidity()` method or by altering the options using the
+jQuery `hostedForm()` plugin method.
+
+The `locale` option can be used to specify the language that should be used by the Field. It
+defaults to the value provided by any lang attribute or property on the `element` or closest
+ancestor. The option cannot be changed once the `Field` has been created.
+
+The `classes` options can be used to specify additional CSS class names to add in addition to the
+default classes. The value is an object whose properties are the default class name and whose values are a string containing the additional class name(s) to use. This option will be merged with any classes option provided to the Form constructor. The option cannot be changed once the Form has been created.
+
+The `submitOnEnter` option can be used to specify if pressing the enter key when typing the
+`Field` value should cause the Form to submit. The option defaults to false and cannot be changed
+once the Field has been created.
+
+The `nativeEvents` option can be used to specify that any associated native event should be fired
+when a ‘hostedfield:’ prefixed event is fired For example, when enabled if the ‘hostedfield:mouseover’ event is fired then the native ‘mouseover’ event is also fired. The option defaults to false and cannot be changed once the `Field` has been created.
+
+The `validationMessages` option can be used to specify alternative validation messages that
+should be displayed when a value is required or invalid. The option defaults to suitable messages
+depending on the locale and cannot be changed once the `Field` has been created.
+
+The `dropdown` option can be used to specify that a `cardStartDate` or `cardExpiryDate` `Field`
+should be displayed as a pair of select controls to select the month and year, otherwise the month
+and year are entered via a formatted input box instead. The option defaults to false and cannot be
+changed once the `Field` has been created.
+
+The `format` option can be used in conjunction with the `dropdown` option to specify the format used
+to display the month and year in the dropdowns. The month and year parts of the format are
+separated by a pipe character. The option defaults to ‘N – M | Y’ (eg ‘01 – January | 2020’) and
+cannot be changed once the `Field` has been created.
+
+The following formatting characters are understood:
+- n – month number (no zero prefixing).
+- N – month number (zero prefixed to two digits when required).
+- m – short month name (eg Jan, Feb, Mar)
+- M – long month name (eg January, February, March)
+- y – two digit year number.
+- Y – four digit year number.
+
+The `minYear` and `maxYear` options can be used in conjunction with the `dropdown` option to specify
+the minimum and maximum years that are included in the year dropdown. The option defaults to
+minus 20 to zero for a `cardStartDate` `Field` or zero to plus 20 for a `cardExpiryDate` Field and
+cannot be changed once the `Field` has been created.
+
+Example Field construction is as follows:
+
+```javascript
+ var field = new window.hostedFields.classes.Field(document.forms[0].elements[0], {
+    // Field type
+    type: 'cardNumber',
+
+    // Stylesheet selection
+    stylesheets: '#hostedfield-stylesheet',
+
+    // Additional CSS classes
+    classes: {
+        invalid: 'error'
+    }
+ }); 
+```
+
+Or using meta data on the HTML INPUT element:
+
+```html
+<input type="hostedfield:cardNumber" data-hostedfields='{"stylesheet":"style.hostedform, style.hostedform-cardnumber"}},"classes":{"invalid":"error"}}'>
+<script>
+var field = new window.hostedFields.classes.Field(document.forms[0].elements[0]);
+</script> 
+```
+
 ## Gateway Integration Library 
 
 A simple server-side integration library is available to simplify the preparation and transmission of Hosted and Direct Integration requests.

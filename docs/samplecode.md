@@ -220,7 +220,9 @@ The library is available as a JavaScript script and is based around a single cla
 
 The script can be loaded directly from our Gateway server as follows.
 
-`<script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedforms.min.js"></script>`
+```javascript
+<script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedforms.min.js"></script>
+```
 
 If the script detects the presence of the jQuery API, then it will extend the jQuery object with its own plugin method. However, jQuery is not needed in order to use the script.
 
@@ -280,8 +282,11 @@ Destroys the `Form`, reverting its `element` back to its original state.
 If the jQuery API has been loaded into the browser before the script, then it will extend the jQuery object with its own plugin method.
 
 Construction and destruction can then be done as follows:
+
+```php
 `$(element).hostedForm(data);
-$(element).hostedForm(‘destroy’);`
+$(element).hostedForm(‘destroy’);
+```
 
 ## Gateway Integration Library 
 
@@ -396,7 +401,6 @@ The gateway.php file contains the main body of the SDK.
 
 
 ```php
-
 <?php
 
 /**
