@@ -183,6 +183,47 @@ The CVV of the stored card is **159**.
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
+
+
+## Credentials on File
+
+### Sample Code - **1**.
+
+ 1 - Cardholder opts to store their card details on Merchant's website.
+
+ 2 - Cardholder opts to store their card details provided to Merchant via mail or telephone.
+
+ 3 - Cardholder pays using a card they previously stored on the Merchant's website.
+
+ 4 - Cardholder provides their card details to sign up to a subscription on the Merchant's website.
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/1j0u7wLh/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+### Sample Code - **2**.
+
+5 - Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.
+
+6 - Cardholder provides their card details to sign up to a subscription via mail or telephone to the Merchant
+
+7 - Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant.
+
+8 - Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details.
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/2/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+### Sample Code - **3**.
+
+9 - Merchant resubmits a payment where the initial payment was declined due to insufficient funds, but the goods have already been provided to the Cardholder.
+
+10 - Merchant reauthorises a payment when the completion or fulfilment of the original order or service extends beyond the authorization validity limit set by the Card Scheme.
+
+11 - Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed.
+
+12 - Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy.
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/pvqfL6rb/6/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+
 ## Testing 
 
 You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
@@ -433,12 +474,12 @@ Example of calculating the signature in PHP:
 <?PHP 
 
 //Merchant signature key
-$key = 'm3rch4nts1gn4tur3k3y';
+$key = '3obzOxdqw6e1u';
 
 
 //Request Information
 $tran = array (
-'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+'merchantID' => '155928',  //merchantID will be provided by the Handpoint support team
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
     'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
     'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP
