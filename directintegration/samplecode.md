@@ -20,8 +20,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key
+ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -183,8 +183,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key
+ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -335,8 +335,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key
+ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -493,8 +493,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key
+ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
 
  // Handpoint Gateway URL
@@ -651,8 +651,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
- // Merchant signature key --> It will be provided by the Handpoint support team.
- Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+ // Merchant signature key 
+ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -809,8 +809,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-// Merchant signature key --> It will be provided by the Handpoint support team.
-Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+// Merchant signature key 
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -942,8 +942,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-// Merchant signature key --> It will be provided by the Handpoint support team.
-Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+// Merchant signature key 
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -1070,8 +1070,8 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-// Merchant signature key --> It will be provided by the Handpoint support team.
-Gateway::$merchantSecret = 'm3rch4nts1gn4tur3k3y';
+// Merchant signature key
+Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
@@ -1737,12 +1737,12 @@ Example of calculating the signature in PHP:
 <?PHP 
 
 //Merchant signature key
-$key = 'm3rch4nts1gn4tur3k3y';
+$key = '3obzOxdqw6e1u';
 
 
 //Request Information
 $tran = array (
-'merchantID' => '100001',  //merchantID will be provided by the Handpoint support team
+'merchantID' => '155928',  //merchantID will be provided by the Handpoint support team
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
     'type' => '1', //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO), 9 –> Continuous Authority (CA)
     'currencyCode' => '826', //ISO 3-letter currency code. 826 -> GBP

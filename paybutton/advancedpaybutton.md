@@ -51,11 +51,11 @@ The following is an example test request built in PHP.
 $url = 'https://commerce-api.handpoint.com/button/';
 
 //Merchant signature key. It will be provided by the Handpoint support team
-$sigKey = 'm3rch4nts1gn4tur3k3y';
+$sigKey = '3obzOxdqw6e1u';
 
 //Request information
 $req = array(
-    'merchantID' => '000111', //merchantID will be provided by the Handpoint support team
+    'merchantID' => '155928', //merchantID will be provided by the Handpoint support team
     'amount' => 1099, //Either major currency units includes a single decimal point such as ’10.99'. 
                       //Minor currency units contains no decimal points such as ‘1099
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
