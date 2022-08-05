@@ -16,6 +16,12 @@ By using the direct integration **you are involved in the EMV 3D-Secure flow**, 
 
 The Hosted payment fields integration method supports digital wallets like **Google Pay and Apple Pay**. 
 
+Below is an example of what an hosted payment fields integration can look like, the UI is fully in your control, we only take care of swapping the content of the card number and CVV with a token so you are never touching sensitive card data:
+
+<div align="center">
+<img src="/img/hosted-payment-fields.png"></img>
+</div>
+
 
 ## Security and Compliance 
 

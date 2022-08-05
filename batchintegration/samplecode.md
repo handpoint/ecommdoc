@@ -3,7 +3,7 @@ sidebar_position: 2
 
 ---
 
-# Sample Code
+# Sample Code & Examples
 
 ## Transaction Types
 
