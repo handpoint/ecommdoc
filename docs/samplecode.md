@@ -185,7 +185,7 @@ The CVV of the stored card is **159**.
 
 
 
-## Credentials on File
+## Hosted Payment Page - Credentials on File
 
 ### Sample Code - **1**.
 
