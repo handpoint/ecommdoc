@@ -430,6 +430,433 @@ var field = new window.hostedFields.classes.Field(document.forms[0].elements[0])
 </script> 
 ```
 
+### Field Methods 
+
+The following methods are made available by the `Field` class:
+
+`promise validate()`
+
+Validate the `Field` value. This will normally be called automatically when the `Field` loses focus or the form is submitted, or when an invalid value is modified.
+
+Returns a `promise` that will be resolved when the validation is complete.
+
+`boolean isEmpty()`
+
+Check if the `Field` has a value.
+
+Returns true if the field has a value, false otherwise.
+
+`boolean isComplete()`
+
+Check if the `Field` has a complete, but not necessarily valid, value. This is mainly used by compound fields such as `cardDetails`, `cardExpiryDate`, `cardStartDate`, which contain multiple input controls and are deemed complete when all their required input controls have values.
+
+Returns true if the value is complete, false otherwise.
+
+`void setStyle() / string getStyle()`
+
+Set or gets the field’s inline CSS style data.
+
+Returns void when setting, or a CSS style string when getting.
+
+`void setStylesheet(string selector) / string getStylesheet()`
+
+Sets or gets the DOM selector used to select the stylesheet(s) used by the `Field`. When setting, the stylesheets are parsed and applied to the `Field`.
+
+Returns void when setting, or a DOM selector string when getting.
+
+`void setPlaceholder(string text) / string getPlaceholder()`
+
+Sets or gets the placeholder text to be shown when the `Field` has no value.
+
+When used with the `CardDetails` type `Field` the placeholder contains three parts separated by a pipe character, the first part contains the `cardNumber` placeholder, the second part contains the `cardExpiry` placeholder, and the third part contains the `cardCVV` placeholder.
+
+Returns void when setting, or a text string when getting.
+
+`void setDisabled(boolean disabled) / string getDisabled()`
+
+Sets or gets the disabled state of the `Field`. When disabled, the field will be greyed out and not be focusable and thus will not react to any input events.
+
+A disabled `Field` will have the ‘hf-disabled’ class added otherwise the ‘hf-enabled’ class is added.
+
+Returns void when setting, or a boolean representing the state when getting.
+
+`void setRequired(boolean required) / string getRequired()`
+
+Sets or gets the required state of the `Field`. When required, the field will be invalid if it contains no value or a blank value.`
+
+A required `Field` will have the ‘hf-required’ class added otherwise the ‘hf-optional’ class is added.
+
+Returns void when setting, or a boolean representing the state when getting.
+
+`void setReadOnly(boolean read_only) / string getRequired()`
+
+Sets or gets the read-only state of the Field. When read-only, the field will be not be focusable and thus will not react to any input events.
+
+A read-only `Field` will have the ‘hf-readonly’ class added otherwise the ‘hf-readwrite’ class is added.
+
+Returns void when setting, or a boolean representing the state when getting.
+
+`void setFocused(boolean focused)`
+
+Moves the browser’s focus to the `Field`. When focused, the field will react input events.
+
+A focused `Field` will have the ‘hf-focus’ class added otherwise the ‘hf-blur’ class is added.
+
+Returns void when setting, or a boolean representing the state when getting.
+
+`void setValidity(string validity) / string getValidity()`
+
+Sets or gets the validity of the `Field`. When valid, the validity will be true or a blank string. When invalid, the validity will be an error message explaining the reason the value is invalid.
+
+When used with the `CardDetails` type `Field` the error message contains three parts separated by a pipe character, the first part contains the `cardNumber` value, the second part contains the `cardExpiry` value, and the third part contains the `cardCVV` value.
+
+A valid `Field` will have the ‘hf-valid’ and ‘hf-user-valid’ classes added otherwise the ‘hf-invalid’ and ‘hf-user-invalid’ classes are added.
+
+Returns void when setting, or an error message string when getting.
+
+`void setValue() / string getValue()`
+
+Set or gets the `Field` value. Because Hosted Payment Fields are designed for the entry of sensitive payment details, then these methods are not normally used. There is no means to retrieve the actual sensitive data and so any returned value will be an empty string if the field has no value or a single asterisk if the field has a value.
+
+When used with the `CardDetails` type `Field` the value contains three parts separated by a pipe character, the first part contains the `cardNumber` value, the second part contains the `cardExpiry` value, and the third part contains the `cardCVV` value.
+
+Returns void when setting, or a mask string when getting.
+
+`void getState()`
+
+Get the current state of the Field as an object with the following boolean properties:
+- isReady – the Field has been created, initialised and is ready for use.
+- isValid – the value is valid (refer to the setValidity() method).
+- isEmpty – the value is empty (refer to the isEmpty() method).
+- isComplete – the value is complete (refer to the isComplete() method).
+- isDisabled – the value is complete (refer to the setDisabled() method).
+- isRequired – the value is complete (refer to the setRequired() method).
+- isReadOnly – the value is complete (refer to the setReadOnly() method).
+
+Returns an object containing the states.
+
+`void reset()`
+
+Reset Field value back to the initial value.
+
+`void destroy()`
+
+Destroys the `Form`, reverting its element back to its original state.
+
+Note: A field’s options or properties cannot be changed while a field is initialising, that is between construction and firing of the ‘ready’ event. Attempts to change field options or properties before this will be ignored.
+
+### Field Events 
+
+The following events may be fired by the Field object, and you can use these to hook into and modify the object’s behaviour:
+
+| Event Name | Description |
+| ----------- | ----------- | 
+| create | Fired when a Field has been created. | 
+| destroy | Fired when a Field has been destroyed. | 
+| ready | Fired when a Field style is has finished initialising and is ready.| 
+| style |Fired when a Field style is changed. | 
+| autofill | Fired when a Field has a value auto filled by the browser. | 
+| autofillcancel | Fired when a Field has an auto filled value removed. | 
+| valid | Fired when a Field is checked for validity and passes the check. | 
+| invalid | Fired when a Field is checked for validity and fails the check.| 
+| uservalid |Fired when the valid event is fired but only after user interaction has occurred, such as focusing a Field, leaving a Field or attempting to submit a Form. | 
+| userinvalid |Fired when the invalid event is fired but only after user interaction has occurred, such as focusing a Field, leaving a Field or attempting to submit a Form. | 
+| disabled | Fired when a Field changes to disabled. | 
+| enabled | Fired when a Field changes from disabled. | 
+| required | Fired when a Field changes to required. | 
+| optional | Fired when a Field changes from required. | 
+| readonly |Fired when a Field changes to read-only. | 
+| readwrite |Fired when a Field changed from read-only.| 
+| focus | Fired when a Field receives focus. | 
+|blur | Fired when a Field loses focus. | 
+|mouseenter| Fired when a pointing device is moved into the Field. | 
+|mouseleave | Fired when a pointing device is moved out of the Field. | 
+|mouseover| Fired when a pointing device is moved into the Field. | 
+| mouseout| Fired when a pointing device is moved out of the Field. | 
+| mousemove| Fired when a pointing device is moved over the Field.| 
+|keydown |Fired when a key is pressed in the Field. | 
+| keyup |Fired when a key is released in a Field. |
+| keypress |Fired when a key except Shift, Fn, CapsLock is in a pressed position in a Field. |
+| change | Fired when an alteration to the value of a Field is committed by the user.|
+| input | Fired when the value of a Field is changed. |
+
+Event names are prefixed with the ‘hostedfield:’ namespace not shown in the table.
+
+### Field CSS Classes 
+
+The following CSS class names will be added to a `Field` object depending on its state and you can use these to style the object as required:
+
+| Event Name | Description |
+| ----------- | ----------- | 
+| hostedfield | Present on all Field elements. | 
+| hf-autofill | Present when the value was auto filled by the browser. | 
+| hf-invalid | Present when in the invalid state. | 
+| hf-valid | Present when in the valid state. | 
+| hf-user-invalid | Present when in the invalid state and user interaction has occurred, such as focusing a Field, leaving a Field or attempting to submit a Form. | 
+| hf-user-valid | Present when in the valid state and user interaction has occurred, such as focusing a Field, leaving a Field or attempting to submit a Form. | 
+| hf-disabled | Present when in the disabled state. | 
+| hf-enabled | Present when not in the disabled state. | 
+| hf-required | Present when in the required state. | 
+| hf-optional | Present when not in the required state. | 
+| hf-readonly | Present when in the read-only state. | 
+| hf-readwrite | Present when not in the read-only state.| 
+| hf-focus |  Present when in the focused state. | 
+| hf-blur | Present when not in the focused state. | 
+| hf-empty | Present when in the empty state. | 
+| hf-complete | Present when in the complete state. | 
+| hf-hover | Present when a pointing device is over the Field. | 
+| hf-placeholder-shown |  Present when the placeholder text is displayed. | 
+
+In addition to these class names, the `Field` will add any corresponding class names provided by the `classes` option provided when the `Field` is constructed.
+
+For example, if the `Field` is constructed with a classes option as follows `‘{disabled: ‘text-blur text-grey’, enabled: ‘text-normal’}’`, then the ‘text-blur’ and ‘text-grey’ class names will be present whenever the ‘hf-disabled’ class is present and the ‘text-normal’ class name will be present whenever the ‘hf-enabled’ class name is present.
+
+### Field Styling
+
+The Hosted Payment Fields are styled using CSS as normal.
+
+However, styles have to be transferred from your website to the controls served from our website, therefore styles must be isolated and easily identifiable. To aid with identification, all styles intended for a `Field` must contain the ‘hostedfield’ class name in their selector or ‘-hostedfield’ extension on any id in the selector.
+
+As a website may contain lots of stylesheets, a `Field` cannot be expected to parse every stylesheet present on the page and therefore it only parses those selected using the stylesheets construction option or using the `setStylesheet()` method. By default, this is any stylesheet referenced via a `<link>` tag or `<style>` tag with the ‘hostedfield’ class name: ie any HTML node that matches the following DOM selector `‘link.hostedfield[rel=stylesheet], style.hostedfield'`.
+
+CSS styles using the Field state classes, pseudo classes and pseudo elements are supported as follows:
+
+- :focus
+- .hf-focus
+- :hover
+- .hf-hover
+- :enabled
+- .hf-enabled
+- :disabled
+- .hf-disabled
+- :valid
+- .hf-valid
+- :invalid
+- .hf-invalid
+- :user-valid
+- .hf-user-valid
+- :user-invalid
+- .hf-user-invalid
+- :required
+- .hf-required
+- :optional
+- .hf-optional
+- :empty
+- .hf-empty
+- :complete
+- .hf-complete
+- :autofill
+- .hf-autofill
+- :placeholder-shown
+- .hf-placeholder-shown
+- :readonly
+- .hf-readonly
+- :readwrite
+- .hf-readwrite
+- :-webkit-auto-fill
+- .hf-icon
+- ::placeholder
+- ::-moz-placeholder
+- ::-webkit-input-placeholder
+- ::-ms-input-placeholder
+
+The styles can contain any valid CSS rules and will be used to style both the public elements and internal private elements. For security only, styles that relate to the textual representation of the Field are passed to the internal private elements. This includes styles such as colours, font weights and text decorations. At present, it is not possible to specify custom fonts as they would require the font files to be available on our servers.
+
+The following styles can be used to style the Field internal private elements:
+
+- caret-color
+- color
+- cursor
+- direction
+- fill
+- filter
+- font
+- font-family
+- font-feature-settings
+- font-kerning
+- font-language-override
+- font-size
+- font-size-adjust
+- font-smooth
+- font-stretch
+- font-style
+- font-synthesis
+- font-variant
+- font-variant-alternates
+- font-variant-caps
+- font-variant-east-asian
+- font-variant-ligatures
+- font-variant-numeric
+- font-variant-position
+- font-weight
+- letter-spacing
+- line-height
+- stroke
+- text-align
+- text-decoration
+- text-decoration-color
+- text-decoration-line
+- text-decoration-style
+- text-emphasis
+- text-emphasis-color
+- text-emphasis-position
+- text-emphasis-style
+- text-indent
+- text-rendering
+- text-shadow
+- text-transform
+- text-underline-position
+- -moz-osx-font-smoothing
+- -webkit-font-smoothing
+- -webkit-text-fill-color
+
+The ‘.hf-icon’ class name can be used to target the icon sub element in a `cardDetails` `Field`.
+
+Individual controls can be targeted by using DOM ids, which will have a ‘-hostedfield’ extension added to the DOM id of the original `element`.
+
+It is advisable to keep CSS selectors and rules as simple as possible to avoid styling errors caused by a failure to parse and filter the rules.
+
+The following list are the best web safe fonts for use with any ‘font’ or ‘font-family’ style as these fonts should be available on most web browsers:
+
+- Arial (sans-serif)
+- Verdana (sans-serif)
+- Helvetica (sans-serif)
+- Tahoma (sans-serif)
+- Trebuchet MS (sans-serif)
+- Times New Roman (serif)
+- Georgia (serif)
+- Garamond (serif)
+- Courier New (monospace)
+- Brush Script MT (cursive)
+
+#### Example stylesheet :  
+
+```javascript
+ <style class="hostedfield">
+ 	/*
+ 		* Style hosted field internals
+ 		* - only accept font, foreground and background styling
+ 	*/
+
+ 	/* Copy of Bootstrap styles */
+ 	.hostedfield:disabled {
+		 cursor: not-allowed;
+		 background-color: #eee;
+		 opacity: 1;
+ 	}
+
+ 	/* Change text to red when invalid */
+ 	.form-control:invalid,
+	.hostedfield:invalid {
+		 border-color: #a94442 !important;
+		 color: #a94442 !important;
+ 	}
+
+	 /* Change text to light grey when readonly */
+	 .form-control:readonly,
+	 .hostedfield:readonly {
+ 		color: lightgrey !important;
+ 	}
+
+ 	/* Emulate webkit auto fill style */
+	 .form-control.hf-autofill,
+	 .hostedfield.hf-autofill {
+		 background-color: rgb(250, 255, 189) !important;
+		 background-image: none !important;
+		 color: rgb(0, 0, 0) !important;
+ 	}
+
+ 	/* Add pink placeholder */
+ 	.form-control::placeholder,
+ 	.hostedfield::placeholder {
+ 		color: pink;
+ 	}
+
+ 	/* Show hovering over the control */
+ 	.form-control.hf-hover,
+ 	.hostedfield.hf-hover {
+ 		font-style: italic;
+ 	}
+
+ 	/* Style by id (hosted field will have '-hostedfield' appended to the id) */
+ 	#form1-card-details.hostedfield, #form1-card-details-hostedfield {
+ 		color: blue;
+	 }
+
+ </style>
+```
+### jQuery plugin 
+
+The script will extend the jQuery object with its own plugin methods to allow easy access to Form
+and Field objects attached to an element as follows:
+
+```php
+$(element).hostedForm(options);
+$(element).hostedForm(‘instance’);
+$(element).hostedForm(‘options’, options);
+$(element).hostedForm(method, parameters);
+$(element).hostedForm(‘destroy’);
+$(element).hostedField(options);
+$(element).hostedField(‘instance’);
+$(element).hostedField(‘options’, options);
+$(element).hostedField(method, parameters);
+$(element).hostedField(‘destroy’);
+```
+The script will also add a ‘:hostedfield’ pseudo selector allowing Field elements to be selected
+using the following example notation:
+
+```php
+$(‘INPUT:hostedfield’)
+```
+## Example HTTP Request 
+
+### Transaction Request HTTP Headers 
+
+The following HTTP headers are sent for transaction request:
+
+| HTTP Header | Mandatory | Description |
+| ----------- | ----------- | ----------- | 
+| content-type | Y | Content type of the request. This must be ‘application/x-www-formurlencoded’, A charset parameter is optional and any non UTF-8 request will be converted to UTF-8. | 
+
+### Transaction Response HTTP Headers 
+
+The following HTTP headers are received for a transaction response:
+
+| HTTP Header | Description |
+| ----------- | ----------- | 
+| Status | HTTP status header. Possible value are:<br></br>200 – Transaction request processed<br></br>500 – Internal Server Error<br></br>503 – Service Temporarily Unavailable | 
+| content-type | Content type of the response. This will be ‘text/html’| 
+
+### Submission Example
+The following shows an example of a transaction request:
+
+```http
+POST /direct/ HTTP/1.1
+Host: gateway.example.com
+Accept: */*
+Content-Length: 397
+Content-Type: application/x-www-form-urlencoded
+
+merchantID=100001&action=SALE&type=1&currencyCode=826&countryCode=826&amount=680&transactionUnique=5de65b552499
+e&orderRef=Test+Transaction&cardNumber=4929+4212+3460+0821&cardCVV=356&cardExpiryDate=1219&threeDSRequired=N&av
+scv2CheckRequired=N&duplicateDelay=0&signature=06b01e06c8fc761943d676d5f3aa2e9264758fed72e7bcb058a2a35cf23e8e45
+403099537bb0363054d6bc8ea951ce1ad86e582dbf0b435855b9c97507fcf844 
+```
+
+The following shows an example of a transaction response:
+
+```http
+HTTP/1.1 200 OK
+Date: Tue, 01 Jan 2019 09:30:45 GMT
+Server: Apache/2.4.23 (Win64) OpenSSL/1.0.2k-fips PHP/5.4.12
+Vary: Host
+X-Powered-By: PHP/5.4.12
+Content-Length: 2449
+Content-Type: text/html
+
+merchantID=100001&threeDSEnabled=Y&avscv2CheckEnabled=Y&riskCheckEnabled=N&caEnabled=Y&rtsEnabled=Y&cftEnabled=Y&threeDSCheckPref=not+known%2Cnot+checked%2Cauthenticated%2Cattempted+authentication&cv2CheckPref=matched&addressCheckPref=not+known%2Cnot+checked%2Cmatched%2Cpartially+matched&postcodeCheckPref=not+known%2Cnot+checked%2Cmatched%2Cpartially+matched&cardCVVMandatory=Y&riskCheckPref=not+known%3Dfinished%2Cnot+checked%3Ddecline2%2Capprove%3Dcontinue%2Cdecline%3Ddecline1%2Creview%3Ddecline2%2Cescalate%3Dfinished&notifyEmail=an.operator%40merchant.com&customerReceiptsRequired=Y&merchantCategoryCode=6013&surchargeEnabled=Y&surchargeRequired=N&surchargeRules%5B0%5D%5BcardType%5D=CC&surchargeRules%5B0%5D%5Bsurcharge%5D=10.1235&surchargeRules%5B1%5D%5BcardType%5D=CC&surchargeRules%5B1%5D%5Bcurrency%5D=GBP&surchargeRules%5B1%5D%5Bsurcharge%5D=2.5000&surchargeRules%5B2%5D%5BcardType%5D=VC&surchargeRules%5B2%5D%5Bsurcharge%5D=3.5000&surchargeRules%5B3%5D%5BcardType%5D=VC&surchargeRules%5B3%5D%5Bcurrency%5D=GBP&surchargeRules%5B3%5D%5Bsurcharge%5D=4.5000&surchargeRules%5B4%5D%5BcardType%5D=DD&surchargeRules%5B4%5D%5Bsurcharge%5D=5.5000&action=SALE&type=1¤cyCode=826&countryCode=826&amount=680&transactionUnique=5de65b552499e&orderRef=Test+Transaction&cardExpiryDate=1219&threeDSRequired=N&avscv2CheckRequired=N&duplicateDelay=0&requestID=5de65b562496f&responseCode=0&responseMessage=AUTHCODE%3A347414&state=captured&requestMerchantID=100001&processMerchantID=100001&paymentMethod=card&cardType=Visa+Credit&cardTypeCode=VC&cardScheme=Visa+&cardSchemeCode=VC&cardIssuer=BARCLAYS+BANK+PLC&cardIssuerCountry=United+Kingdom&cardIssuerCountryCode=GBR&cardFlags=8323072&cardNumberMask=492942%2A%2A%2A%2A%2A%2A0821&cardNumberValid=Y&xref=19120312NG55CM51QH35JRL&cardExpiryMonth=12&cardExpiryYear=19&authorisationCode=347414&transactionID=10018201&responseStatus=0×tamp=2019-12-03+12%3A55%3A52&amountApproved=680&amountReceived=680&amountRetained=680&avscv2ResponseCode=244100&avscv2ResponseMessage=SECURITY+CODE+MATCH+ONLY&avscv2AuthEntity=merchant+host&cv2Check=matched&addressCheck=not+matched&postcodeCheck=not+matched&notifyEmailResponseCode=0&notifyEmailResponseMessage=Email+successfully+queued&vcsResponseCode=0&vcsResponseMessage=Success+-+no+velocity+check+rules+applied&currencyExponent=2&signature=e5c65e5d0340e0ec0de8782affcb6caba2e4d202a6873a1677ddbf6415cb1dd52cc597e43c758b233afd121367d300a57d0faade7abf6b4b88a1a1b974e55d33 
+```
+
 ## Gateway Integration Library 
 
 A simple server-side integration library is available to simplify the preparation and transmission of Hosted and Direct Integration requests.

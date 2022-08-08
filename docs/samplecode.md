@@ -176,7 +176,7 @@ The CVV of the stored card is **159**.
 
 ## Hosted Payment Page - Credentials on File
 
-### Sample Code - **CIT - 1**.
+### Sample Code - CIT - 1
 
  1 - Cardholder opts to store their card details on Merchant's website.
 
@@ -188,7 +188,7 @@ The CVV of the stored card is **159**.
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/1j0u7wLh/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
-### Sample Code - **CIT - 2**.
+### Sample Code - CIT - 2
 
 5 - Cardholder provides their card details when agreeing to purchase by instalments on the Merchant's website.
 
@@ -198,7 +198,7 @@ The CVV of the stored card is **159**.
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/6/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
-### Sample Code - **MIT - 1**.
+### Sample Code - MIT - 1
 
 8 - Merchant makes an unscheduled transaction, such as an account top-up, as previously agreed with the Cardholder when they stored their card details.
 
@@ -287,6 +287,63 @@ Construction and destruction can then be done as follows:
 `$(element).hostedForm(data);
 $(element).hostedForm(‘destroy’);
 ```
+
+## Example HTTP Request
+
+### Transaction Request HTTP Headers 
+
+The following HTTP headers are sent for transaction request:
+
+| HTTP Header | Mandatory | Description |
+| ----------- | ----------- | ----------- | 
+| content-type | Y | Content type of the request. This must be ‘application/x-www-formurlencoded’, A charset parameter is optional and any non UTF-8 request will be converted to UTF-8. | 
+
+### Transaction Response HTTP Headers 
+
+The following HTTP headers are received for a transaction response:
+
+| HTTP Header | Description |
+| ----------- | ----------- | 
+| Status | HTTP status header. Possible value are:<br></br>200 – Transaction request processed<br></br>500 – Internal Server Error<br></br>503 – Service Temporarily Unavailable | 
+| content-type | Content type of the response. This will be ‘application/x-www-form-urlencoded’| 
+
+### Submission Example
+
+The following shows an example of a transaction request:
+
+```http
+HTTP/1.1 200 OK
+POST /hosted/ HTTP/1.1
+Host: commerce-api.handpoint.com
+Accept: */*
+Content-Length: 314
+Content-Type: application/x-www-form-urlencoded
+
+merchantID=100001&action=SALE&type=1&currencyCode=826&countryCode=826&amount=680&transactionUnique=5de651c7c537
+9&orderRef=Test+Transaction&redirectURL=https%3A%2F%2Fmyshop.com&signature=ba12b0766a3412782448f154be15e8f61eea
+390387b1b23d4688c82c9f28f81df593de5890426546cca365943cc7b5c4897c9721b663a0e17680e1e796f1ad55 
+```
+
+The following shows an example of a transaction response:
+
+
+```http
+HTTP/1.1 200 OK
+Date: Tue, 01 Jan 2019 09:30:45 GMT
+Server: Apache/2.4.23 (Win64) OpenSSL/1.0.2k-fips PHP/5.4.12
+Vary: Host
+X-Powered-By: PHP/5.4.12
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Content-Length: 4129
+ Content-Type: text/html
+
+ <!DOCTYPE html>
+ <html>
+ --- Hosted Payment Page HTML Removed ---
+ </html> 
+ ```
 
 ## Gateway Integration Library 
 

@@ -587,6 +587,156 @@ curl_close($ch);
 ?>
 ```
 
+## Example HTTP Request 
+
+### Submission Request HTTP Headers
+
+The following HTTP headers are sent for batch submission request:
+
+| HTTP Header | Mandatory | Description |
+| ----------- | ----------- |----------- |
+| content-type  | Y | Content type of the batch request. This must be ‘multipart/mixed’ and contain a boundary parameter to separate each transaction request. A charset parameter is optional and any none UTF-8 request will be converted to UTF-8. |  
+| content-encoding | N | Optional content encoding applied to the request. The value should be a comma separated list of one or more: x-gzip, gzip, base64. |  
+| authorization | N |  Optional username and password to authenticate the submitter. |  
+
+The following HTTP headers are sent on each individual part request:
+
+| HTTP Header | Mandatory | Description |
+| ----------- | ----------- |----------- |
+| content-type  | Y |  Content type of the individual request. This must be ‘application/xwww-form-urlencoded’, A charset parameter is optional and any none UTF-8 request will be converted to UTF-8. |  
+| content-encoding | N | Optional content encoding applied to the request. The value should be a comma separated list of one or more: x-gzip, gzip, base64. |  
+| content-id | N |  Optional identifier for each individual transaction with the batch. The Gateway will return this identifier in the submission response. If not sent, the Gateway will generate a unique identifier for each transaction. |  
+
+
+### Submission Response HTTP Headers {#submissionResponse}
+
+The following HTTP headers are received for batch submission response:
+
+| HTTP Header | Description |
+| ----------- | ----------- | 
+| status | HTTP status header. Possible value are:<br></br>200 – Batch submission status response ok<br></br>201 – Batch submission received and stored<br></br>400 – Batch submission invalid<br></br>401 – Unauthorised (none or incorrect credentials)<br></br>405 – HTTP method was not POST/PUT or GET<br></br>500 – Internal Gateway error | 
+| location | URL to use to monitor the status of the batch. A unique batch reference number will be provided in the URL in the format: XXXX-XXXX-XXXX-XXXX (eg 1A23-B4C5-DEF6-G7HI). This reference number is used to request information about the status of a batch via HTTP GET requests to the URL endpoint | 
+| x-p3-token  | If user authentication was sent in the initial request, this header will contain a token that can be used for future requests for the status of the batch instead of having to use a username/password.| 
+| content-type  | Content type of the HTTP batch request. This will be ‘multipart/mixed’ and contain a boundary parameter to separate each transaction request. | 
+
+The following HTTP headers are received on each individual part response:
+
+| HTTP Header | Description |
+| ----------- | ----------- | 
+| content-type  | Content type of the individual request. This will be ‘application/x-www-formurlencoded’, A charset parameter is optional and any none UTF-8 request will be converted to UTF-8. | 
+| content-id  | The content ID sent in the initial request. If no content-id header was sent, the Gateway will return a unique content ID per transaction. | 
+| x-transaction-id | The Gateway transaction ID. This will be empty if the transaction is currently pending in this stage. | 
+| x-transaction-response | A message containing the current status of the transaction.Possible value are:<br></br>skipped – insufficient permissions to view transaction<br></br>pending – queued for processing<br></br>success – (Response Message)<br></br>failure – (Response Message) | 
+
+### Status Request HTTP Headers
+
+The following HTTP headers are used during a batch status request:
+
+| HTTP Header | Mandatory | Description |
+| ----------- | ----------- | ----------- | 
+| authorization | Y | Mandatory username and password to authenticate the submitter | 
+
+### Status Response HTTP Headers
+
+The batch status response is identical to the [submission status response](#submissionResponse).
+
+### Submission Example
+
+The following shows an example of a batch submission request:
+
+```http 
+ PUT /batch/?validate=0 HTTP/1.1
+ Authorization: Basic bmljay50dXJuZXI6dGVzdGluZzI=
+ Host: gateway.example.com
+ Accept: */*
+ Content-type: multipart/mixed; charset=UTF-8; boundary=5de63a42507a9
+ Content-length: 1404
+
+ --5de63a42507a9
+ Content-Id: TX5de63a42507ac
+ Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+
+merchantID=100001&action=SALE&type=1&currencyCode=826&countryCode=826&amount=680&transactionUnique=5de63a42507a
+c&orderRef=Test+Transaction&cardNumber=4929+4212+3460+0821&cardExpiryDate=1219&duplicateDelay=0&signature=3cd68
+6fdd40449ef33534baa62732c95fc127ff591fae3b5b611ccb38573ad921d199396e27cffd14faa4f46df8dde310252920fd1b33607b029
+b9b6ff669e2b
+
+ --5de63a42507a9
+ Content-Id: TX5de63a42af062
+ Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+
+merchantID=100001&action=SALE&type=1&currencyCode=826&countryCode=826&amount=681&transactionUnique=5de63a42af06
+2&orderRef=Test+Transaction&cardNumber=4929+4212+3460+0821&cardExpiryDate=1219&duplicateDelay=0&signature=55f41
+1d40954be7f7089e84fe489438f09fc1b37c0964e46b0fab8bdcb44e13ed3ea11b9deb9da89a6d7b45133709a126bd3581f6329bf888b83
+231184597231
+
+ --5de63a42507a9
+ Content-Id: TX5de63a42ca9cd
+ Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+
+merchantID=100001&action=SALE&type=1&currencyCode=826&countryCode=826&amount=682&transactionUnique=5de63a42ca9c
+d&orderRef=Test+Transaction&cardNumber=4929+4212+3460+0821&cardExpiryDate=1219&duplicateDelay=0&signature=c2962
+66cb9bc8082957c700da9651d98add176dd8bd62eb3b7098566c7d8e23a3426b776de815e99149c6681978b1addedac762339563732d8a4
+49b6cca3a3c2
+
+ --5de63a42507a9-- 
+```
+
+The following shows an example of a batch submission response:
+
+```http 
+HTTP/1.1 201 Created
+Date: Tue, 01 Jan 2019 09:30:45 GMT
+Server: Apache/2.4.23 (Win64) OpenSSL/1.0.2k-fips PHP/5.4.12
+X-Powered-By: PHP/5.4.12
+x-p3-token: YTo1OntzOjc6InZlcnNpb24iO3M6ODoiUDNUSy8yLjAiO3M6NzoicHVycG9zZSI7czo0OiJhdXRoIjtzOjc6ImNyZWF0b3IiO3M
+6NToiQkFUQ0giO3M6NzoiY3JlYXRlZCI7aToxNTc1MzY5Mjg1O3M6NzoiZXhwaXJlcyI7aToxNTc1MzcyODg1O30.czozOiI2MjkiOw.zdfxxXY
+tC2Wc4yyk-lEos-wZ99pEJtPGYpXR4KCiWW_56nmOysarOaMucrWPIt-NzwFzgq3-7u4Ud6uYkQcWBQ
+Location: /batch/2D6D-AC2C-BF55-2A8C
+Content-disposition: attachment; filename="batch-2D6D-AC2C-BF55-2A8C"
+Content-Length: 1857
+Content-Type: multipart/mixed; charset=UTF-8; boundary=5de63a5c1a071
+
+Transaction 'TX5de63a42507ac' - pending - queued for processing
+Transaction 'TX5de63a42af062' - pending - queued for processing
+Transaction 'TX5de63a42ca9cd' - pending - queued for processing
+
+--5de63a5c1a071
+Content-Id: TX5de63a42507ac
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Transaction-ID:
+X-Transaction-Response: pending - queued for processing
+
+merchantID=100001&action=SALE&type=1¤cyCode=826&countryCode=826&amount=680&transactionUnique=5de63a42507ac&orde
+rRef=Test+Transaction&cardNumber=492942%2A%2A%2A%2A%2A%2A0821&cardExpiryDate=1219&duplicateDelay=0&signature=03
+84bbf6ca0fc153e1e27a0cfc51f3b1cd1c2cff7a49aa4e9439bba38262183e9ac7d156f218eba1ef8d04f9e6a7fa6fbc9c2b3ab990c70e0
+6dc7c6923e5b27b
+
+--5de63a5c1a071
+Content-Id: TX5de63a42af062
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Transaction-ID:
+X-Transaction-Response: pending - queued for processing
+
+merchantID=100001&action=SALE&type=1¤cyCode=826&countryCode=826&amount=681&transactionUnique=5de63a42af062&orde
+rRef=Test+Transaction&cardNumber=492942%2A%2A%2A%2A%2A%2A0821&cardExpiryDate=1219&duplicateDelay=0&signature=1e
+13e23c2b90a30f4403d604ac20302b5504b886b0b5c9ace0764fc8d966d120f5a1beca975805292780c22953b4e6ca71f67f499804f19d2
+718518463a598c4
+
+--5de63a5c1a071
+Content-Id: TX5de63a42ca9cd
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+X-Transaction-ID:
+X-Transaction-Response: pending - queued for processing
+
+merchantID=100001&action=SALE&type=1¤cyCode=826&countryCode=826&amount=682&transactionUnique=5de63a42ca9cd&orde
+rRef=Test+Transaction&cardNumber=492942%2A%2A%2A%2A%2A%2A0821&cardExpiryDate=1219&duplicateDelay=0&signature=c4
+56aa211f8e3e568a40051bfd38406be02566fcd72d3bb1547f4d43e75db1d069eaa4158aa035337cac084633df945a13471db6b1a3fcd6c
+0749626d9bc0044
+
+--5de63a5c1a071-- 
+```
+
 ## Testing 
 
 You will be provided with unique test Merchant Account IDs during the onboarding process. Refer to the [authentication](overview#authentication) section for the list of required parameters. Test Merchant Accounts are connected to a Simulator and not to an actual Acquirer. The Simulator will emulate the function of an Acquirer and provide simulated responses and authorisation codes.
