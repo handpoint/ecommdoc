@@ -208,7 +208,7 @@ To support 3-D Secure, you must pass the `threeDSRedirectURL` field in the initi
 
 You must also provide details about the Cardholder’s device, using the fields documented in [device information fields](advanceddata#deviceInformationFields) or using the associated options in the `threeDSOptions` field. You may also use the `threeDSOptions` field to pass additional information about the transaction and Cardholder, which can help the Issuer decide on whether a challenge is required.
 
-If the Gateway determines that the transaction is eligible, it will respond with a responseCode of 65802 (3DS AUTHENTICATION REQUIRED) and included in the response will be a `threeDSRef` field, a `threeDSReqest` field and a `threeDSURL` field.
+If the Gateway determines that the transaction is eligible, it will respond with a responseCode of 65802 (3DS AUTHENTICATION REQUIRED) and included in the response will be a `threeDSRef` field, a `threeDSRequest` field and a `threeDSURL` field.
 
 The `threeDSRequest` field is a record whose name/value properties must be sent, using a HTTP POST request, to the 3-D Secure Access Control Server (ACS) at the URL provided by the `threeDSURL` field. This is usually achieved via means of a hidden HTML input fields in a form rendered within an IFRAME displayed on the Cardholder’s browser and then submitted using JavaScript. The IFRAME must be of sufficient size to display the challenge screen, however, if the `threeDSRequest` contains a `threeDSMethodData` component, then the challenge is invisible, and a small hidden IFRAME can be used instead.
 You must store the value of the `threeDSRef` field for use in the continuation request.
@@ -274,7 +274,7 @@ These fields will be returned in addition to the [3D secure request fields](#ini
 | Name      | Returned | Description |
 | ----------- | ----------- | ----------- |
 | threeDSEnabled | Always | Is 3DS enabled for this Merchant Account?<br></br><br></br> Possible values are:<br></br> N – Merchant Account is not enabled.<br></br> Y – Merchant Account is enabled.|
-| threeDSPolicy | 3DS Policy used. Refer to [SCA using 3-D Secure](#scaUsing3dSecure) for more details.|
+| threeDSPolicy | If 3DS enabled| 3DS Policy used. Refer to [SCA using 3-D Secure](#scaUsing3dSecure) for more details.|
 | threeDSVETimestamp | If 3DS enabled| The time the card was checked for 3DS enrolment, and any initial challenge determined.|
 | threeDSEnrolled | If 3DS enabled| The 3DS enrolment status for the credit card. Refer to [3-D Secure Authentication Data](#3dSecureAuthenticationData) for details. <br></br> <br></br> Possible values are:<br></br>  Y – Enrolled. <br></br> N – Not enrolled.<br></br>  U – Unable to verify if enrolled.<br></br> E – Error verifying enrolment.|
 | threeDSRef | If 3DS enabled| Value to return in the continuation request.|
