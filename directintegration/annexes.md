@@ -652,8 +652,8 @@ The original Acquirer authorisation response code may not be numeric and informa
 |931 (N3) |Cash service not available|
 |932 (N4)| Cashback request exceeds issuer limit|
 |933 (N5) |Resubmitted transaction over max days limit|
-|934 (N7) |Decline for CVV2 failure|
-|935 (N8)| Transaction amount greater than pre-authorised approved a|
+|935 (N7) |Decline for CVV2 failure|
+|936 (N8)| Transaction amount greater than pre-authorised approved amount|
 |1002 (P2)| Invalid biller information|
 |1005 (P5)| PIN Change/Unblock request declined|
 |1006 (P6)| Unsafe PIN|
