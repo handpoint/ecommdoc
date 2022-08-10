@@ -859,7 +859,7 @@ function MobileSdks() {
       <div class="col col--12" >
         <div>
           <h2 style={{paddingTop: '20px'}}>Technical Integration Lifecycle</h2>
-          <p >Please contact <a target="_blank" href="mailto:sales@handpoint.com">sales@handpoint.com</a> to kickstart an integration process.
+          <p>Please contact <a target="_blank" href="mailto:sales@handpoint.com">sales@handpoint.com</a> to kickstart an integration process.
             Once the integration starts you will get a dedicated slack channel with the Handpoint developers to address any issues that might arise.
             Once the integration is ready, the Handpoint team will certify the solution by running a set of standard tests to make sure the integration is robust and ready for Go Live.
             The Handpoint team will then closely follow the first pilot merchants to make sure the solution is ready to scale.</p>
