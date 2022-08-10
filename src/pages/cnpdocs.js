@@ -857,7 +857,7 @@ function MobileSdks() {
   <div class="container">
     <div class="row">
       <div class="col col--12" >
-        <div >
+        <div>
           <h2 style={{paddingTop: '20px'}}>Technical Integration Lifecycle</h2>
           <p >Please contact <a target="_blank" href="mailto:sales@handpoint.com">sales@handpoint.com</a> to kickstart an integration process.
             Once the integration starts you will get a dedicated slack channel with the Handpoint developers to address any issues that might arise.
