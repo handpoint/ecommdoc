@@ -133,12 +133,12 @@ const config = {
           alt: 'My Site Logo',
           src: '/img/handpoint-logo-hvitt.svg',
           width: 75,
-          href: 'https://developer.handpoint.io/',
+          href: 'https://developer.handpoint.com/',
         },
         items: [
           {
             className: 'navbar-statuspage-icon',
-            href: 'https://status.handpoint.io',
+            href: 'https://status.handpoint.com',
             position: 'right',
             'aria-label': 'Status Page',
           },
@@ -209,7 +209,7 @@ const config = {
             items: [
               {
                 label: 'In-Person Payments Docs',
-                href: 'https://developer.handpoint.io/cpdocs/index.html',
+                href: 'https://developer.handpoint.com/cpdocs/index.html',
               },
               {
                 label: 'Online Payments Docs',
@@ -258,7 +258,7 @@ const config = {
               // },
               {
                 label: 'Handpoint Status Page',
-                href: 'https://status.handpoint.io',
+                href: 'https://status.handpoint.com',
               },
               {
                 label: 'FAQ',
