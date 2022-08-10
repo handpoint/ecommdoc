@@ -1,50 +1,22 @@
 ---
 sidebar_position: 1
+id: overview
 ---
 
 # Overview
 
-## Introduction 
+## Introduction
 
-The Hosted Integration method makes it easy to add secure payment processing to your e-commerce business, using the Handpoint **Hosted Payment Page**. You can use this method if you **do not want to collect and store cardholder data**.
+The Direct Integration works by allowing you to keep the customer on your system throughout the checkout process, collecting the customer’s payment details on your own secure server before sending the collected data to our Gateway for processing. This allows you to provide a smoother, more complete checkout process to the Customer.
+In addition to basic sales processing, the Direct Integration can be used to perform other actions such as refunds and cancellations, which can provide a more advanced integration with our Gateway.
 
-The Hosted integration works by redirecting the customer to our Gateway’s Hosted Payment Page, which will collect the Customer’s payment details and process the payment before redirecting the customer back to a page on your website, letting you know the payment outcome. **This is the quickest path to integrating with the Gateway**.
-The standard Hosted Payment Page is designed to be shown in a lightbox (modal) over your website and styled with logos and colours to match. Alternatively, we can also offer fully customised Hosted Payment Pages that can match your website’s style and layout. These fully customised pages are usually provided using a browser redirect, displaying full-page in the browser, or can be displayed embedded in an iframe on your website.
+By using the direct integration **you are involved in the EMV 3D-Secure flow**, adding a layer of complexity to the integration but giving you more control over the checkout process.
 
-By using the hosted payment page integration, **you are kept out of the EMV 3D-Secure flow** which allows you to keep the integration very simple without any added complexity.
-
- Please note that if you are planning to use **Dynamic Currency Conversion (DCC)** or **alternative payment methods** you can easily customise the checkout to offer multiple payment options to the cardholder with little extra work. 
-
- Two very important limitations of the Hosted Payment Page integration are that **Google & Apple Pay as well as subscription payments are NOT supported**. A separate Direct integration or Hosted Payment Fields integration will be required to support digital wallets and/or recurring payments. 
-
-<div align="center">
-<img src="/img/hosted_payment_page.png"></img>
-</div>
-<div align="center">
- <img src="/img/hosted_payment_page_modal.png"></img>
-</div>
-
-
-
-
-## Benefits
-- You are kept out of PCI scope. 
-- You are kept out of the EMV 3D-Secure flow.
-- This is the quickest path to integration with the Gateway.
-- Supporting dynamic currency conversion requires minimal work. 
-- Supporting alternative payment methods (Paypal, Amazon Pay, Pay by bank etc.) requires less effort than for a Direct or Hosted Payment Fields integration. 
-- You can easily save credentials on file (by using the Handpoint Gateway Wallet) and allow customers to pay with their saved cards for future purchases. 
-
-## Limitations 
-- The payment page itself isn't fully customisable. 
-- If you want to support recurring payments (subscriptions) you will need to carry out a separate direct integration or hosted payment fields integration.
-- With a Hosted Payment Page integration you are limited to the following transaction types : SALE, VERIFY, PREAUTH. If you want to support the REFUND, CANCEL and QUERY transaction types, you will need to carry out a separate direct integration or hosted payment fields integration.
-- The Hosted Payment Page integration does not support Google Pay and Apple Pay.
-
+The Direct Integration method supports Digital Wallets like **Google Pay and Apple Pay**. 
 
 ## Security and Compliance 
 
-If you use the hosted payment page integration then your webserver does not need an SSL certificate and you require the **lowest level of PCI DSS compliance**.
+If your website collects and/or stores sensitive Cardholder data, such as the card number (PAN) or card security code (CVV/CV2), then your webserver must have an SSL certificate and serve all payment forms using HTTPS. You will also need a higher level of PCI DSS compliance and complete a PCI validation form annually. 
 
 The Gateway will make transaction details available for a maximum period of 13 months. Your acquirer may hold information for a different period of time.
 
@@ -55,15 +27,15 @@ You will need the following information to integrate with the Gateway which will
 | Name      | Description |
 | ----------- | ----------- |
 | Merchant Account ID | Your unique Merchant Account ID. |
-| Hosted Integration URL | Your unique URL to use the Hosted Integration. |
+| Direct Integration URL | Your unique URL to use the Direct Integration. |
 
  You will be provided with unique production and test Merchant Account IDs during the onboarding process. You will also be provided with the integration URL. 
 
-All requests must specify which merchant account they are for, using the `merchantID` request field. In addition to this, the following security measures can be used:
+All requests must specify which merchant account they are for, using the merchantID request field. In addition to this, the following security measures can be used:
 
 ### Password authentication
 
-A password can be configured for each Merchant Account. This password must then be sent in the `merchantPwd` field in each request. If an incorrect password is received by the Gateway, then the transaction will be aborted and an error response is returned.
+A password can be configured for each Merchant Account. This password must then be sent in the merchantPwd field in each request. If an incorrect password is received by the Gateway, then the transaction will be aborted and an error response is returned.
 
 :::warning 
 Use of a password is discouraged in any integration where the transaction is posted from a form in the client browser as the password may appear in plain text in code.
@@ -105,25 +77,36 @@ The response will use the same URL encoding and return the request fields in add
 
 **The Gateway may add new request and response fields at any time and so your integration must take care not to send request fields that may conflict with future Gateway fields and be able to ignore response fields which it doesn’t yet understand.**
 
-## Hosted HTTP Requests 
+## Direct HTTP Requests {#directHttpRequests}
 
-When using the Hosted Integration, the request must be sent from the Customer’s web browser as the response will be a HTML Hosted Payment Page (HPP), used to collect the Customer’s details. The format of the request is designed so that it can be sent using a standard HTML form with the data in hidden form fields. The browser will then automatically encode the request correctly according to `application/x-www-form-urlencoded` format.
+When using the Direct Integration, the response will be received in the same URL encoded format, unless a `redirectURL` field is provided.
 
-When the Hosted Payment Page has been completed and the payment processed, the Customer’s browser will be automatically redirected to the URL provided via the `redirectURL` field. The response will be returned to this page in `application/x-www-form-urlencoded` format, using a HTTP POST request.
+If a `redirectURL` field is provided, then the response will be a HTML page designed to redirect a browser to the URL provided, using a HTTP POST request containing the response. This allows you to collect the cardholder’s payment details on your own server, using a HTML form which POSTs to the Direct Integration, which then effectively POSTs the results back to this URL your webserver, where you can display the transaction outcome.
 
-All request fields will be returned in the response and a merchant may add custom request fields. If the request contains a field that is also intended as a response field, then any incoming request value will be overwritten by the correct response value.
+All request fields will be returned in the response and a Merchant may add custom request fields. If the request contains a field that is also intended as a response field,
+then any incoming request value will be overwritten by the correct response value.
 
+## Handling Errors 
+
+When the Gateway is uncontactable due to a communications error, or problem with the internet connection, you may receive a HTTP status code in the 500 to 599 range. In this situation, you may want to retry the transaction. If you do choose to retry a transaction, then we recommend that you perform a limited number of attempts with an increasing delay between each attempt.
+
+If the Gateway is unavailable during a scheduled maintenance period, you will receive a HTTP status code of 503 ‘Service Temporarily Unavailable’. In this situation, you should retry the transaction after the scheduled maintenance period has expired. You will be notified of the times and durations of any such scheduled maintenance periods in advance, by email, and given a time when transactions can be reattempted.
+
+If you are experiencing these errors, then we recommend you consider the following steps as appropriate for the integration method being used:
+- Ensure the request is being sent to HTTPS and not HTTP. HTTP is not supported and is not redirected.
+- Send transactions sequentially rather than concurrently.
+- Configure your integration code with try/catch loops around individual transactions to determine whether they were successful or not and retry if required, based on the return code or HTTP status returned.
+- Configure the integration so that if one transaction fails, the entire batch does not stop at that point – ie log the failure to be checked and then skip to the next transaction rather than stopping entirely.
 
 ## Redirect URL {#redirectUrl}
 
-The `redirectURL` request field is **mandatory** and used to provide the URL of a webpage on your server.
+The `redirectURL` request field is used to provide the URL of a webpage on your server.
 
-For the Hosted Integration, the Customers browser will load this URL when the Hosted Payment Page has completed and can be used to continue the payment journey on your website. The URL will be loaded using a HTTP POST request containing transaction response data allowing you to tailor the journey depending on the outcome of the transaction.
+For the Direct Integration, this allows you to collect the Customer’s payment details on your own server using a HTML form that you design, but which POSTs directly to the Gateway rather than your own server and thus not exposing any sensitive card data to your server. The Gateway will respond to the HTML form submission with a request to Customer’s browser to redirect to this URL allowing you to continue the payment journey on your website. The URL will be loaded using a HTTP GET request containing transaction response data allowing you to tailor the journey depending on the outcome of the transaction. This usage is not recommended as it makes it harder to sign the message.
 
-The `redirectURL` must be a fully qualified URL, containing at least the scheme and host components.
+The `redirectURL` is optional for the Direct Integration. it must be a fully qualified URL, containing at least the scheme and host components.
 
-**It is strongly recommended that the response data sent to the `redirectURL` be used to display a payment confirmation page only and not used to update your backend systems. The Customer may close their browser before the redirection happens resulting in you never receiving this data. Please use the `callbackURL` if you need to update your backend systems.**
-
+**It is strongly recommended that the response data sent to the `redirectURL` be used to display a payment confirmation page only and not used to update your backend systems. The Customer may close their browser before the redirection happens resulting in you never receiving this data. Please use the callbackURL if you need to update your backend systems.**
 
 ## Callback URL {#callbackUrl}
 

@@ -15,6 +15,14 @@ const config = {
   organizationName: 'handpoint', // Usually your GitHub org/user name.
   projectName: 'ecommdoc', // Usually your repo name.
 
+  themes:[ 
+    ['@easyops-cn/docusaurus-search-local',
+     {indexBlog:false, 
+      indexPages:false,
+      indexDocs:true,
+      docsDir:['docs','directintegration','paybutton','shoppingcarts','hostedpaymentfields','batchintegration','mobilesdks'],
+      docsRouteBasePath:['docs','directintegration','paybutton','shoppingcarts','hostedpaymentfields','batchintegration','mobilesdks']}]],
+
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -47,7 +55,7 @@ const config = {
       {
         id: 'directintegration',
         path: 'directintegration',
-        routeBasePath:'directintegration',
+        routeBasePath: 'directintegration',
         sidebarPath: require.resolve('./sidebars5.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -58,7 +66,7 @@ const config = {
       {
         id: 'paybutton',
         path: 'paybutton',
-        routeBasePath:'paybutton',
+        routeBasePath: 'paybutton',
         sidebarPath: require.resolve('./sidebars1.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -69,8 +77,30 @@ const config = {
       {
         id: 'shoppingcarts',
         path: 'shoppingcarts',
-        routeBasePath:'shoppingcarts',
+        routeBasePath: 'shoppingcarts',
         sidebarPath: require.resolve('./sidebars2.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'hostedpaymentfields',
+        path: 'hostedpaymentfields',
+        routeBasePath: 'hostedpaymentfields',
+        sidebarPath: require.resolve('./sidebars6.js'),
+        includeCurrentVersion: true,
+        // ... other options
+      },
+    ],
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'batchintegration',
+        path: 'batchintegration',
+        routeBasePath: 'batchintegration',
+        sidebarPath: require.resolve('./sidebars7.js'),
         includeCurrentVersion: true,
         // ... other options
       },
@@ -80,7 +110,7 @@ const config = {
       {
         id: 'mobilesdks',
         path: 'mobilesdks',
-        routeBasePath:'mobilesdks',
+        routeBasePath: 'mobilesdks',
         sidebarPath: require.resolve('./sidebars3.js'),
         includeCurrentVersion: true,
         // ... other options
@@ -88,15 +118,16 @@ const config = {
     ],
   ],
 
-  themeConfig: 
+  themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       colorMode: {
         defaultMode: 'light',
-        disableSwitch: true,
+        disableSwitch: false,
         respectPrefersColorScheme: false,
       },
       navbar: {
+        style: 'dark',
         title: '',
         logo: {
           alt: 'My Site Logo',
@@ -106,41 +137,61 @@ const config = {
         },
         items: [
           {
-            to: 'cnpdocs',
-            label: 'Online Payments Docs',
+            className: 'navbar-statuspage-icon',
+            href: 'https://status.handpoint.com',
+            position: 'right',
+            'aria-label': 'Status Page',
           },
-          // {
-          //   type: 'doc',
-          //   docId: 'overview',
-          //   position: 'left',
-          //   label: 'Hosted Integration',
-          // },
-          // {
-          //   to:'/directintegration/directintegration',
-          //   position: 'left',
-          //   label: 'Direct Integration',
-            
-          //  },
-          //  {
-          //   to:'/paybutton/paybutton',
-          //   position: 'left',
-          //   label: 'Pay By link',
-            
-          //  },
-          //  {
-          //   to:'/shoppingcarts/shoppingcarts',
-          //   position: 'left',
-          //   label: 'Shopping Carts',
-            
-          //  },
-          //  {
-          //   to:'/mobilesdks/mobilesdks',
-          //   position: 'left',
-          //   label: 'Mobile SDKs',
-            
-          //  },
-        
-          
+          {
+            to: 'cnpdocs',
+            label: 'Getting Started',
+          },
+          {
+            type: 'doc',
+            docId: 'overview',
+            position: 'left',
+            label: 'Hosted Payment Page',
+          },
+          {
+            type: 'doc',
+            docId: 'overview',
+            docsPluginId: 'hostedpaymentfields',
+            position: 'left',
+            label: 'Hosted Payment Fields',
+          },
+          {
+            type: 'doc',
+            docId: 'overview',
+            docsPluginId: 'directintegration',
+            position: 'left',
+            label: 'Direct Integration',
+          },
+          {
+            type: 'doc',
+            docId: 'overview',
+            docsPluginId: 'batchintegration',
+            position: 'left',
+            label: 'Batch Integration',
+          },
+          {
+            type: 'doc',
+            docId: 'basicpaybutton',
+            docsPluginId: 'paybutton',
+            position: 'left',
+            label: 'Pay By Link',
+          },
+          {
+            to: '/shoppingcarts/shoppingcarts',
+            position: 'left',
+            label: 'Shopping Carts',
+
+          },
+          {
+            to: '/mobilesdks/mobilesdks',
+            position: 'left',
+            label: 'Mobile SDKs',
+
+          },
           // {
           //   to: '/blog', label: 'Blog', position: 'left'},
           {
@@ -190,12 +241,12 @@ const config = {
                 label: 'Get it on Google Play',
                 href: 'https://play.google.com/store/apps/details?id=com.handpoint.hipos&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1',
               },
-  
+
               {
                 label: 'Download on the App Store',
                 href: 'https://apps.apple.com/us/app/handpoint/id1450546788?itsct=apps_box_link&itscg=30200',
               },
-  
+
             ],
           },
           {
@@ -232,10 +283,12 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Handpoint`,
       },
       prism: {
-        theme: lightCodeTheme,
+        additionalLanguages: ['php','groovy'],
+        theme: darkCodeTheme,
         darkTheme: darkCodeTheme,
       },
     }),
+  
 };
 
 module.exports = config;

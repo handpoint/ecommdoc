@@ -5,18 +5,24 @@ id: shoppingcarts
 
 # Shopping Carts
 
+A shopping cart is a fundamental part of a merchant online store. Shopping cart providers plug into ecommerce platforms and allow website visitors to purchase a product or service. 
 
 ## eCommerce Modules
 
 
-Handpoint integrates directly with all major shopping carts. Unlock your market with our modules below:
+Handpoint integrates directly with all major shopping carts. Shopping carts offer a seamless online retail experience for customers, allowing them to easily order and pay for products directly from your merchants website. Using a shopping cart software can simplify complex processes in a user-friendly interface that enables people with no technical background to oversee an entire ecommerce operation.
 
+Use Handpoint's versatility to unlock your market with our modules below:
+
+<div  style={{
+        textAlign: "center"
+      }}>
 <div class="container">
 
    <div class="row">
       <div class="col col--3">
-         <div class="card-demo">
-            <div class="card">
+         <div class="card-demo ">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>WooCommerce</h3>
                </div>
@@ -29,14 +35,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-WooCommerce">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>WooCommerce Subscriptions</h3>
                </div>
@@ -49,14 +55,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-WooCommerce">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>ZenCart</h3>
                </div>
@@ -70,27 +76,27 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="ttps://github.com/handpoint/online-payments-ZenCart">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>CubeCart</h3>
                </div>
                <div class="card__body">
                <a href="https://www.cubecart.com/">
                   <img style={{height: '50px'}}
-                  src="https://www.cubecart.com/img/logo.cc.jpg"
+                  src="https://s3.ap-southeast-1.amazonaws.com/easyparcel-static/Public/source/general/img/integrations/2018-06/cubecart.png"
                   alt="Image alt text"
                   title="CubeCart" />
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-CubeCart">Github Page</a>
                </div>
             </div>
          </div>
@@ -101,7 +107,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
-            <div class="card">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>opencart</h3>
                </div>
@@ -114,14 +120,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-OpenCart">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Magento</h3>
                </div>
@@ -134,14 +140,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-Magento">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>PrestaShop</h3>
                </div>
@@ -154,27 +160,27 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-PrestaShop">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>CS Cart</h3>
                </div>
                <div class="card__body">
                <a href="https://www.cs-cart.com">
                   <img style={{ height: '50px' }}
-                  src="https://www.cs-cart.com/blog/wp-content/uploads/for_blog_logo.png"
+                  src="https://paylike.es/img/cscart.png"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="CS Cart" />
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-CS-Cart">Github Page</a>
                </div>
             </div>
          </div>
@@ -185,7 +191,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
-            <div class="card">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>XCart</h3>
                </div>
@@ -198,14 +204,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-X-Cart">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Oscommerce</h3>
                </div>           
@@ -225,7 +231,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Übercart</h3>
                </div>
@@ -238,14 +244,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-Ubercart">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Drupal</h3>
                </div>
@@ -269,7 +275,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
-            <div class="card">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>HikaShop</h3>
                </div>
@@ -289,7 +295,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>carthrob</h3>
                </div>
@@ -302,14 +308,14 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-CartThrob">Github Page</a>
                </div>
             </div>
          </div>
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>shopware</h3>
                </div>
@@ -322,7 +328,7 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
                   </a>
                </div>
                <div class="card__footer">
-                  <a href="https://github.com/handpoint">Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-Shopware">Github Page</a>
                </div>
             </div>
          </div>
@@ -332,21 +338,23 @@ Handpoint integrates directly with all major shopping carts. Unlock your market 
    </div>
 
 </div>
-
-
+</div>
 
 
 ## 3rd Party Modules
 
 These modules are not developed by Handpoint.
 
-For support, please contact the module developers directly.
+For support, please contact the module developers directly. 
 
+<div  style={{
+        textAlign: 'center'
+      }}>
 <div class="container">
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
-            <div class="card">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>ekm</h3>
                </div>
@@ -354,7 +362,7 @@ For support, please contact the module developers directly.
                   <img style={{ height: '50px'}}
                   src="https://www.ekm.com/images/images-new/logo/ekm-logo-blue.svg"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="ekm" />
                </div>
                <div class="card__footer">
                   <a href="https://www.ekm.com">Website</a>
@@ -364,7 +372,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Clickartpro</h3>
                </div>
@@ -372,7 +380,7 @@ For support, please contact the module developers directly.
                   <img style={{ height: '50px' }}
                   src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="Clickartpro" />
                </div>
                <div class="card__footer">
                   <a href="http://www.clickcartpro.co.uk">Website</a>
@@ -382,7 +390,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>nopCommerce</h3>
                </div>
@@ -390,7 +398,7 @@ For support, please contact the module developers directly.
                   <img style={{height: '50px'}}
                   src="https://www.nopcommerce.com/Themes/OfficialSite/Content/images/logo.svg"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="nopCommerce" />
                </div>
                <div class="card__footer">
                   <a href="https://www.nopcommerce.com/en">Website</a>
@@ -400,7 +408,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>admitOne</h3>
                </div>
@@ -408,7 +416,7 @@ For support, please contact the module developers directly.
                   <img style={{height: '50px'}}
                   src="https://www.admit-one.eu/images/admit-one_logo_red_rgb.svg"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="admitOne" />
                </div>
                <div class="card__footer">
                   <a href="https://www.admit-one.eu">Website</a>
@@ -421,7 +429,7 @@ For support, please contact the module developers directly.
    <div class="row">
       <div class="col col--3">
          <div class="card-demo">
-            <div class="card">
+            <div class="card shadow--md">
                <div class="card__header">
                   <h3>Spreedly</h3>
                </div>
@@ -429,7 +437,7 @@ For support, please contact the module developers directly.
                   <img style={{ height: '50px'}}
                   src="https://support.pingidentity.com/servlet/servlet.FileDownload?file=00P1W00001Jyz4rUAB"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="Spreedly" />
                </div>
                <div class="card__footer">
                   <a href="https://www.spreedly.com/">Website</a>
@@ -439,7 +447,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>Foxy.io</h3>
                </div>
@@ -447,7 +455,7 @@ For support, please contact the module developers directly.
                   <img style={{ height: '50px' }}
                   src="https://www.foxy.io/user/themes/default/assets/foxy_logo_preview.png"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="Foxy.io" />
                </div>
                <div class="card__footer">
                   <a href="https://foxy.io/">Website</a>
@@ -457,7 +465,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>eautomate</h3>
                </div>
@@ -465,7 +473,7 @@ For support, please contact the module developers directly.
                   <img style={{height: '50px'}}
                   src="https://www.eautomate.com/Media/Images/Platforms%20and%20Services/automate-head.png"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="eautomate" />
                </div>
                <div class="card__footer">
                   <a href="https://www.eautomate.com/platform">Website</a>
@@ -475,7 +483,7 @@ For support, please contact the module developers directly.
       </div>
       <div class="col col--3">
          <div class="card-demo" >
-            <div class="card" >
+            <div class="card shadow--md" >
                <div class="card__header">
                   <h3>TAPN.TO</h3>
                </div>
@@ -483,7 +491,7 @@ For support, please contact the module developers directly.
                   <img style={{height: '50px'}}
                   src="https://www.tapnto.co.uk/bl-themes/tapnto/img/TNTlogo_Purple_Black.svg"
                   alt="Image alt text"
-                  title="Logo Title Text 1" />
+                  title="TAPN.TO" />
                </div>
                <div class="card__footer">
                   <a href="https://www.tapnto.co.uk">Website</a>
@@ -493,3 +501,9 @@ For support, please contact the module developers directly.
       </div>
    </div>
 </div>
+</div>
+<br></br>
+
+Please Note. The modules listed above are for reference only.
+
+Use of these modules is under GPU General Public Licence. Handpoint provides no warranty and accepts no liability for the use of these modules. Handpoint expects and advises full end to end testing to take place before any module is utilised in a live environment. If a GPL licence is not right for your project, then please contact us with your preferred licence. Our integration team will provide the module under a different licence, provided it covers the aspects of the GPL we require.
