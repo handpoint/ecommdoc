@@ -60,7 +60,7 @@ $req = array(
                       //Minor currency units contains no decimal points such as ‘1099
     'action' => 'SALE', //action could be SALE, VERIFY or PREAUTH 
     'type' => 1, //1 –> E-commerce (ECOM), 2 –> Mail Order/Telephone Order (MOTO)
-    'redirectURL' => 'https://www.handpoint.com', //The payment form will redirect the Customer’s browser to this URL after the transaction has been completed.
+    'redirectURL' => 'https://checkout.handpoint.io/', //The payment form will redirect the Customer’s browser to this URL after the transaction has been completed.
     'countryCode' => 826, //ISO 3-letter country code. 826 -> United Kingdom
     'currencyCode' => 826 //ISO 3-letter currency code. 826 -> GBP
 );
