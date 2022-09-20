@@ -12,8 +12,8 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
-  organizationName: 'handpoint', // Usually your GitHub org/user name.
-  projectName: 'ecommdoc', // Usually your repo name.
+  organizationName: 'handpointecomm', // Usually your GitHub org/user name.
+  projectName: 'handpointecomm.github.io', // Usually your repo name.
 
   themes:[ 
     ['@easyops-cn/docusaurus-search-local',
