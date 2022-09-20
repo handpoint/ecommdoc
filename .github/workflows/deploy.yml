@@ -33,11 +33,11 @@ jobs:
           cache: yarn
       - uses: webfactory/ssh-agent@v0.5.0
         with:
-          ssh-private-key: ${{ secrets.CARD_PRESENT_DEV_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.CARD_NOT_PRESENT_DEV_PRIVATE_KEY }}
         if: github.ref == 'refs/heads/main'
       - uses: webfactory/ssh-agent@v0.5.0
         with:
-          ssh-private-key: ${{ secrets.CARD_PRESENT_DEV_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.CARD_NOT_PRESENT_DEV_PRIVATE_KEY }}
         if: github.ref == 'refs/heads/dev'
       - name: Deploy to GitHub Pages
         env:
