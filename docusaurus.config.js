@@ -14,7 +14,7 @@ const config = {
   favicon: 'img/favicon.png',
   organizationName: 'handpointecomm', // Usually your GitHub org/user name.
   projectName: 'handpointecomm.github.io', // Usually your repo name.
-
+  deploymentBranch: 'main',
   themes:[ 
     ['@easyops-cn/docusaurus-search-local',
      {indexBlog:false, 
