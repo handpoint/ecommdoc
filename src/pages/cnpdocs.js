@@ -60,7 +60,7 @@ export default function Home() {
           padding: '80px',
           width: '100%'
         }}>
-        <a href="/"><img src="https://handpoint.com/wp-content/uploads/2022/05/Logo.svg" alt="Logo" width="260px"/></a>
+        <a href="/"><img src="/img/logo-header.svg" alt="Logo" width="260px"/></a>
         <br></br>
         <h2 style={{
           color: '#25365d'
