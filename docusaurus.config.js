@@ -58,7 +58,7 @@ const config = {
         path: 'directintegration',
         routeBasePath: 'directintegration',
         sidebarPath: require.resolve('./sidebars5.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -69,7 +69,7 @@ const config = {
         path: 'paybutton',
         routeBasePath: 'paybutton',
         sidebarPath: require.resolve('./sidebars1.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -80,7 +80,7 @@ const config = {
         path: 'shoppingcarts',
         routeBasePath: 'shoppingcarts',
         sidebarPath: require.resolve('./sidebars2.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -91,7 +91,7 @@ const config = {
         path: 'hostedpaymentfields',
         routeBasePath: 'hostedpaymentfields',
         sidebarPath: require.resolve('./sidebars6.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -102,7 +102,7 @@ const config = {
         path: 'batchintegration',
         routeBasePath: 'batchintegration',
         sidebarPath: require.resolve('./sidebars7.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -113,7 +113,7 @@ const config = {
         path: 'mobilesdks',
         routeBasePath: 'mobilesdks',
         sidebarPath: require.resolve('./sidebars3.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
