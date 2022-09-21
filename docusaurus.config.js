@@ -10,7 +10,7 @@ const config = {
   url: 'https://developer-ecomm.handpoint.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.png',
   organizationName: 'handpointecomm', // Usually your GitHub org/user name.
   projectName: 'handpointecomm.github.io', // Usually your repo name.
@@ -29,6 +29,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
+          includeCurrentVersion: true,
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           //editUrl: 'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
@@ -57,7 +58,7 @@ const config = {
         path: 'directintegration',
         routeBasePath: 'directintegration',
         sidebarPath: require.resolve('./sidebars5.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -68,7 +69,7 @@ const config = {
         path: 'paybutton',
         routeBasePath: 'paybutton',
         sidebarPath: require.resolve('./sidebars1.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -79,7 +80,7 @@ const config = {
         path: 'shoppingcarts',
         routeBasePath: 'shoppingcarts',
         sidebarPath: require.resolve('./sidebars2.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -90,7 +91,7 @@ const config = {
         path: 'hostedpaymentfields',
         routeBasePath: 'hostedpaymentfields',
         sidebarPath: require.resolve('./sidebars6.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -101,7 +102,7 @@ const config = {
         path: 'batchintegration',
         routeBasePath: 'batchintegration',
         sidebarPath: require.resolve('./sidebars7.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
@@ -112,7 +113,7 @@ const config = {
         path: 'mobilesdks',
         routeBasePath: 'mobilesdks',
         sidebarPath: require.resolve('./sidebars3.js'),
-        includeCurrentVersion: false,
+        includeCurrentVersion: true,
         // ... other options
       },
     ],
