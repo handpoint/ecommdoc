@@ -16,7 +16,8 @@ The following example code shows how to embed the hosted payment page in a light
 
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/44/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/50/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Embed the hosted payment page in an iFrame
 
@@ -28,8 +29,9 @@ The following example code shows how to embed the hosted payment page as an iFra
 
 Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
 
-<iframe width="100%" height="700" src="//jsfiddle.net/Handpoint/xg0dptsw/41/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
+
+<iframe width="100%" height="700" src="//jsfiddle.net/Handpoint/xg0dptsw/44/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Redirect the user to a fully separate hosted payment page
 
@@ -41,7 +43,7 @@ The following example code shows how to redirect the user to a secure hosted pay
 
 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/46/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameborder="0"></iframe>
+<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/52/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameborder="0"></iframe>
 
 
 ## Hosted Payment Page - Transaction Types
@@ -67,11 +69,11 @@ This `form` will start a new SALE transaction (10.01 GBP) and attempt to seek au
           <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
           <input type="hidden" name="amount" value="1001" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
           <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="redirectURL" value="https://checkout.handpoint.io/" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
           <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
           <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
           <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
-          <input type="hidden" name="signature" value="b836dcbc14e00cfbd16b6281d1de18040a64c5d23b8fb886f0221c370e85d809632f79daa991aacfe581ed5a5c8d9dae60e7e1a10810eca9a62b484587de5344" />
+          <input type="hidden" name="signature" value="1c91239e521d247bf10e61bbe30c96e7e3382623bc14650c93a9e96d6a30096d4e866f8b8df83d538bdae651ae6a41eb303be6e6a5281226dfc605995c3bedc0" />
           <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
           <input type="submit" value="Pay Now">
 </form>
@@ -100,11 +102,11 @@ This `form` will start a new VERIFY transaction (0.00GBP) and attempt to verify 
           <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
           <input type="hidden" name="amount" value="0" /> <!-- Either major currency units includes a single decimal point such as ’10.99’; or minor currency units contains no decimal points such as ‘1099’.  -->
           <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="redirectURL" value="https://checkout.handpoint.io/" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
           <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
           <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
           <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
-          <input type="hidden" name="signature" value="1ad5a0e4f928f6118315a16b1162b974549b6996c37d70be2f156ab2554cee75b0e3c1c110e5bffd7d1c2253a2f23174991150ca82fa96c5ff7009560c3631d4" />
+          <input type="hidden" name="signature" value="3b1f82760eaeffce1c28eeac788b69b70a53ba98966aee3d008b6dbf3a59741b7f2439f4b583695ac882417c3f6dbd1c117543d2a839f9e5a104840fe8c496b8" />
           <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
           <input type="submit" value="Verify Card">
 </form>
@@ -133,11 +135,11 @@ This `form` will create a new PREAUTH transaction (1.01GBP) and attempt to seek 
           <input type="hidden" name="countryCode" value="826" /> <!-- ISO 3-letter country code. 826-> United Kingdom -->
           <input type="hidden" name="amount" value="101" /> <!-- Either major currency units includes a single decimal point such as ’1.01’; or minor currency units contains no decimal points such as ‘1099’.  -->
           <input type="hidden" name="orderRef" value="Test purchase" /> <!--Free format text field to store order details, reference numbers, etc. for the Merchant’s records.-->
-          <input type="hidden" name="redirectURL" value="https://www.handpoint.com" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
+          <input type="hidden" name="redirectURL" value="https://checkout.handpoint.io/" /> <!--Hosted form will redirect the Customer’s browser after the transaction has been completed.-->
           <input type="hidden" name="customerAddress" value="Merevale Avenue Leicester" /> <!-- Cardholder address -->
           <input type="hidden" name="customerPostCode" value="LE10 2BU" /> <!-- Registered postcode for the card. -->
           <input type="hidden" name="duplicateDelay" value="0" /> <!-- Do not copy this line. For demonstration purposes only -->
-          <input type="hidden" name="signature" value="6b8373a440b28e3b7c9aacf7ed578ec64f29882a92f36bb0280ee36345942af9f57ffa8c166c5bbd86920f2a9fd752b30ec002db5690147861fdabac0fe2287a" />
+          <input type="hidden" name="signature" value="a7cfa871539ae0807bc6b070e84263555492f8004abcedf768a377610899bc09a02e238850da742e0aaad1ce9f828a0cf1076add73065d541af72b0a67005aaf" />
           <!-- Hash generated from the combination of the serialised request and this signing secret phrase -->
           <input type="submit" value="Pre Authorization (£1,01)">
 </form>
@@ -162,7 +164,7 @@ A `walletID` will be generated in the response from the gateway. If this wallet 
 
 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/31/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - Offering the cardholder to pay with cards saved in the Gateway wallet
 
@@ -170,9 +172,7 @@ Using the **Saved Cards** option at checkout will allow the cardholder to use a 
 
 The CVV of the stored card is **159**. 
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/26/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
-
-
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/31yq5L2h/28/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ## Hosted Payment Page - Credentials on File
 
@@ -186,7 +186,8 @@ The CVV of the stored card is **159**.
 
  4 - Cardholder provides their card details to sign up to a subscription on the Merchant's website.
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/1j0u7wLh/11/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/1j0u7wLh/23/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - CIT - 2
 
@@ -196,7 +197,8 @@ The CVV of the stored card is **159**.
 
 7 - Cardholder provides their card details when agreeing to purchase by instalments via mail or telephone to the Merchant.
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/6/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/ek5ygrmp/13/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ### Sample Code - MIT - 1
 
@@ -210,7 +212,8 @@ The CVV of the stored card is **159**.
 
 12 - Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy.
 
-<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/pvqfL6rb/9/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+<iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/pvqfL6rb/17/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
 ## Hosted Payment Page Library 
 
