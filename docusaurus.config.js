@@ -10,7 +10,7 @@ const config = {
   url: 'https://developer-ecomm.handpoint.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  onBrokenMarkdownLinks: 'throw',
   favicon: 'img/favicon.png',
   organizationName: 'handpointecomm', // Usually your GitHub org/user name.
   projectName: 'handpointecomm.github.io', // Usually your repo name.
