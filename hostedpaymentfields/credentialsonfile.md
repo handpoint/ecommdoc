@@ -283,7 +283,7 @@ An `RtAgreements` resource consists of the following fields;
 
 ### RTUS (Recurring Transaction Update Service) Enquiries Resources
 
-The `RtusEnquiries` resource contains information about payment cards that should be submitted on behalf of a Merchant in the next Recurring Transaction Update Service enquiry. This service will query the card scheme for changes in the card number and expiry date and if any recurring transactions should be stopped on the card.
+The `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource contains information about payment cards that should be submitted on behalf of a Merchant in the next Recurring Transaction Update Service enquiry. This service will query the card scheme for changes in the card number and expiry date and if any recurring transactions should be stopped on the card.
 
 Wallet stored Cards can automatically be included in the next RTUS enquiry by setting their `rtusEnabled` property, they will not be shown in the RtusEnquiries resource.
 Likewise Wallet Cards stored used as payment for subscriptions will automatically be included.
@@ -313,7 +313,7 @@ A `RtusEnquiries` resource consists of the following fields:
 
 #### RtusEnquiries.CardsCsv Property
 
-The payment cards can be included in the RtusEnquiries resource using the cards property or the cardsCsv property. The cardsCsv property expects a single string of data containing the contents of the CSV file used to upload/download the card details in the Merchant Management System (MMS).
+The payment cards can be included in the `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource using the cards property or the `cardsCsv` property. The `cardsCsv` property expects a single string of data containing the contents of the CSV file used to upload/download the card details in the Merchant Management System (MMS).
 The string should contain one or more CSV records separated by a new line character. The records should contain the following cells:
 
 | Cell Number      |  Description |
