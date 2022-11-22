@@ -127,7 +127,7 @@ The `initiator` field will be returned in the response with either the value pas
 | Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
 | Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |
 
-## Recurring Transaction Agreements {#recurringtransactionagreements}
+## Recurring Transaction Agreements (RTA){#recurringtransactionagreements}
 
 A Recurring Transaction Agreement (RTA) is used to request that the Gateway should perform repeat payments on your behalf, using pre-agreed amounts and schedules.
 
@@ -199,7 +199,7 @@ The schedule records should be passed in a sequential array of records, either a
 | rtResponseMessage | Always| Description of above response code.|
 
 
-## Quering RTA
+## Querying RTA (Recurring Transaction Agreements)
 
 You might have to check the status of the last transaction or when the next payment will be. We have at your disposal an API to be able to consult all the information related to the RTA (Recurring Transactions Agreements).
 
@@ -233,13 +233,13 @@ Recurring Transactions Agreement request example:
 curl --location --request GET 'https://YourUser:P4$$w00rd@commerce-api.handpoint.com/rest/rtagreements/'
 ```
 
-### RTAgreements Resources
+### RTAgreements (Recurring Transaction Agreements) Resources
 
-The RtAgreements resource contains information about all past, present and future RT agreements.
+The `RtAgreements` (Recurring Transaction Agreements) resource contains information about all past, present and future RT agreements.
 
-RtAgreements resources are child resources to the Customers resource they belong to.
+`RtAgreements` resources are child resources to the Customers resource they belong to.
 
-An RtAgreements resource consists of the following fields;
+An `RtAgreements` resource consists of the following fields;
 
 
 |Field Name      |  Description |Field Name      |  Description |
@@ -280,15 +280,15 @@ An RtAgreements resource consists of the following fields;
 |**transactionCnt** |Number of transactions made as part of this Subscription|**status** |Resource status ‘active’ or ‘inactive’|
 |**transactionsUri** |Uri to Transactions resource collection contain transactions made as part of this Subscription |**perms**| Resource permissions (to this resource) for the authenticated user
 
-### RTUS Enquiries Resources
+### RTUS (Recurring Transaction Update Service) Enquiries Resources
 
-The RtusEnquiries resource contains information about payment cards that should be submitted on behalf of a Merchant in the next Recurring Transaction Update Service enquiry. This service will query the card scheme for changes in the card number and expiry date and if any recurring transactions should be stopped on the card.
+The `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource contains information about payment cards that should be submitted on behalf of a Merchant in the next Recurring Transaction Update Service enquiry. This service will query the card scheme for changes in the card number and expiry date and if any recurring transactions should be stopped on the card.
 
-Wallet stored Cards can automatically be included in the next RTUS enquiry by setting their ‘rtusEnabled’ property, they will not be shown in the RtusEnquiries resource.
+Wallet stored Cards can automatically be included in the next RTUS enquiry by setting their `rtusEnabled` property, they will not be shown in the `RtusEnquiries` resource.
 Likewise Wallet Cards stored used as payment for subscriptions will automatically be included.
-RtusEnquiries resources are child resources to the Merchants resource they belong to.
+`RtusEnquiries` resources are child resources to the Merchants resource they belong to.
 
-A RtusEnquiries resource consists of the following fields:
+A `RtusEnquiries` resource consists of the following fields:
 
 |Field Name      |  Description |Field Name      |  Description |
 | ----------- | ----------- | ----------- | ----------- | 
@@ -312,7 +312,7 @@ A RtusEnquiries resource consists of the following fields:
 
 #### RtusEnquiries.CardsCsv Property
 
-The payment cards can be included in the RtusEnquiries resource using the cards property or the cardsCsv property. The cardsCsv property expects a single string of data containing the contents of the CSV file used to upload/download the card details in the Merchant Management System (MMS).
+The payment cards can be included in the `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource using the cards property or the `cardsCsv` property. The `cardsCsv` property expects a single string of data containing the contents of the CSV file used to upload/download the card details in the Merchant Management System (MMS).
 The string should contain one or more CSV records separated by a new line character. The records should contain the following cells:
 
 | Cell Number      |  Description |
@@ -337,7 +337,8 @@ The string should contain one or more CSV records separated by a new line charac
 
 #### RtusEnquiries.Cards Property
 
-The payment cards can be included in the RtusEnquiries resource using the cards property or the cardsCsv property. The cards property expects an array of card records. This is the more natural format for the interface as it allows a simple nested array type format..
+The payment cards can be included in the `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource using the cards property or the `cardsCsv` property. The cards property expects an array of card records. This is the more natural format for the interface as it allows a simple nested array type format.
+
 The cards array should contain records with the follow fields:
 
 | Field Name     |  Description |
@@ -359,12 +360,12 @@ The cards array should contain records with the follow fields:
 |responseMessage| Gateway response message (if updated)|
 
 
-### RTUS Files Resources
+### RTUS (Recurring Transaction Update Service) Files Resources
 
-The RtusFiles resource contains information about communications with an Acquirer’s Recurring Transaction Update Service.
+The `RtusFiles` (Recurring Transaction Update Service Files) resource contains information about communications with an Acquirer’s Recurring Transaction Update Service.
 This is a read only resource, the REST interface cannot be used to modify these resources.
 
-RtusFiles resources are root resources and have no parent or child resources. A RtusFiles resource consists of the following fields:
+`RtusFiles` resources are root resources and have no parent or child resources. A `RtusFiles` resource consists of the following fields:
 
 | Field Name     |  Description |
 | ----------- | ----------- | 
