@@ -127,7 +127,7 @@ The `initiator` field will be returned in the response with either the value pas
 | Merchant makes a payment to process a supplemental account charge after original services have been rendered and respective payment has been processed. | MIT | MOTO |  | N/A | Exempt | merchant | 2 | Reference to original payment to which the delayed charges relate |
 | Merchant makes a payment to charge the Cardholder a penalty according to the merchant’s reservation cancellation policy. | MIT | MOTO | N/A | Exempt | merchant | 2 | noshow | Reference to an initial CIT payment or account verification payment made by Cardholder at time of booking |
 
-## Recurring Transaction Agreements {#recurringtransactionagreements}
+## Recurring Transaction Agreements (RTA) {#recurringtransactionagreements}
 
 A Recurring Transaction Agreement (RTA) is used to request that the Gateway should perform repeat payments on your behalf, using pre-agreed amounts and schedules.
 
@@ -197,6 +197,210 @@ The schedule records should be passed in a sequential array of records, either a
 | rtID | Always| Recurring Transaction Agreement ID.|
 | rtResponseCode | Always| Result of setting up RT Agreement.Refer to [Response Codes](annexes#responseCodes) for details. |
 | rtResponseMessage | Always| Description of above response code.|
+
+
+## Querying RTA (Recurring Transactions Agreements)
+
+You might have to check the status of the last transaction or when the next payment will be. We have at your disposal an API to be able to consult all the information related to the RTA (Recurring Transactions Agreements).
+
+### HTTP Authentication
+
+You will need the following information to integrate with Gateway’s REST interface.
+
+| Name      |  Description |
+| ----------- | ----------- | 
+| User Account | Access to the REST interface requires a valid user account. You should have received these details when your account was set up.|
+| Integration URL |  https://commerce-api.handpoint.com/rest/ |
+
+
+Each request must contain authentication data. The normal method of authentication is to send your username and password in a ‘Authorization’ request header using the HTTP Basic Auth authorization scheme. This can sometimes be easily achieved by using the ‘username:password’ addition to the base integration URL (eg. `https://username:password@commerce-api.handpoint.com/rest/...`).
+
+Each successfully authenticated request will also return a `x-p3-token` response header which contains an authentication token. This token may be used to authenticate further requests by sending it in an `Authorization` header using the scheme name `x-p3-token` or in an `x-p3-token` header (as received). Each time you send in a token a new one is returned. Each returned token is valid for 1 hour.
+
+To aid where custom authorization header schemes or custom headers cannot easily be sent or when manually typing the URL into a browser for testing etc. the token can also be sent using the HTTP Basic Auth authorization scheme by specifying a username of `__token__` and then sending the tokens value as the password (the keyword is “token” surrounded by a double underscore “__”).
+The following HTTP headers passing the token are therefore identical;
+
+```
+x-p3-token: <token>
+authorization: x-p3-token <token>
+authorization: basic <base64token>
+```
+
+Where `<base64token>` is the string `__token__:<token>` base64 encoded, and `<token>` is the actual authentication token.
+
+
+Recurring Transactions Agreement request example:
+```curl
+curl --location --request GET 'https://YourUser:P4$$w00rd@commerce-api.handpoint.com/rest/rtagreements/'
+```
+
+### RTAgreements (Recurring Transaction Agreements) Resources
+
+The `RtAgreements` (Recurring Transactions Agreements) resource contains information about all past, present and future RT agreements.
+
+`RtAgreements` resources are child resources to the Customers resource they belong to.
+
+An `RtAgreements`  resource consists of the following fields;
+
+
+|Field Name      |  Description |Field Name      |  Description |
+| ----------- | ----------- | ----------- | ----------- | 
+|**id** |Primary unique resource key| **policyRef**| Recurring Transaction Policy Reference|
+|**pid** |Id of parent Customer resource| **startDate**| Agreement start date (YYYY-MM-DD)
+|**type** |Type of resource (always ‘addons’)|**transactionUnique** |Unique reference per transaction
+|**ptype** |Type of parent resource (always ‘customers’)|**method** |Method (ECOM, MOTO or CA)
+|**Uri** |URI of resource| **initialDate**|Initial payment date (YYYY-MM-DD)
+|**puri**| URI of parent Customer resource|**initialAmount**| Initial payment amount (YYYY-MM-DD)
+|**path** |Hierarchical path to resource| **finalDate**| Final payment date (YYYY-MM-DD)
+|**text**| Short textual description of the resource|**finalAmount**| Final payment amount (YYYY-MM-DD)
+|**rtAgreementID**| Primary unique resource key (same as ‘id’)|**cycleAmount**| Cost per billing cycle
+|**rtAgreementUri**| URI of resource (same as ‘uri’)|**cycleDuration** | Plan cycle duration
+|**rtAgreementName**| Name of agreement|**cycleDurationUnit**| Plan cycle duration unit. One of ‘day’, ‘week’, ‘month’, ‘year’
+|**customerID**|Id of parent/ancestor Customer resource|**cycleCount** | Number of cycles plan last for
+|**customerUri** |URI of parent/ancestor Customer resource|**cycleRemainingCount**|Number of cycles remaining in the current agreement
+|**customerName** |Name of parent/ancestor Customer resource| **currencyCode** |Currency the ‘amount’ are in (ISO 3 letter code, ie ‘GBP’)
+|**resellerID** |Id of ancestor Reseller resource| **currencyName**| Descriptive name of the currency
+|**resellerUri** |URI of ancestor Reseller resource| **currencySymbol**|Symbol for the currency
+|**resellerName**| Name of ancestor Reseller resource| **currencyExponent**| Exponent for the currency
+|**merchantID** |Id of Merchants Resource used to take payments|**currentCycleStartDate**| Start date of the current cycle
+|**merchantName**| Name Merchants Resource used to take payments|**currentCycleEndDate** |End date of the current cycle
+|**merchantUri**| Uri of Merchants Resource used to take payments| **lastTrasactionID** |ID of last recurring transaction
+|**cardID** |Id of Cards resource used to take payments| **lastTransactionUri**| URI of last recurring transaction was sent
+|**cardName**| Name of Cards resource used to take payments|**lastTransactionXref**| Cross reference of last recurring transaction (and used as xref of next transaction)
+|**cardUri** |Uri of Cards resource used to take payments| **lastTransactionDate**| Date the last recurring transaction was sent
+|**walletID**| Id of Cards resource’s parent Wallets resource| **paymentFailCount**| Number of times recurring transaction has been retried
+|**walletName** |Name of Cards resource’s parent Wallets resource| **paymentFailMaxRetries**|  Number of times recurring transaction will be retried before giving up.
+|**walletUri**| Uri of Cards resource’s parent Wallets resource| **rtusEnabled** | Recurring Transaction Update Service enabled. If enabled the card details will be checked for updates in card number and expiry date.
+|**description**| Description of the agreement|**rtusMerchantID** |Id of Merchants Resource used to make RTUS enquiries
+|**baseTrasactionID**|Transaction id of base Transaction resource|**rtusMerchantUri**| Uri of Merchants Resource used to make RTUS enquiries
+|**baseTransactionUri**| URI of base Transaction resource|**rtusMerchantName**|Name Merchants Resource used to make RTUS enquiries
+|**baseTransactionXref** |Cross reference of base Transaction resource|**merchantData** |Free format data (for merchants use)
+|**baseTransactionDate**|Date the base Transaction was sent|**state**| State of the agreement. One of ‘pending’, ‘running’, ‘pastdue’, ‘expired’, ‘stopped’ or ‘aborted’
+|**responseCode** |Response code of last recurring transaction|**createTime**| Time the resource was created (UTC)| 
+|**responseMsg** |Response message of last recurring transaction|**modifyTime** |Time the resource was modified (UTC)| 
+|**transactionCnt** |Number of transactions made as part of this Subscription|**status** |Resource status ‘active’ or ‘inactive’|
+|**transactionsUri** |Uri to Transactions resource collection contain transactions made as part of this Subscription |**perms**| Resource permissions (to this resource) for the authenticated user
+
+### RTUS (Recurring Transaction Update Service) Enquiries Resources
+
+The `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource contains information about payment cards that should be submitted on behalf of a Merchant in the next Recurring Transaction Update Service enquiry. This service will query the card scheme for changes in the card number and expiry date and if any recurring transactions should be stopped on the card.
+
+Wallet stored Cards can automatically be included in the next RTUS enquiry by setting their `rtusEnabled` property, they will not be shown in the `RtusEnquiries` resource.
+Likewise Wallet Cards stored used as payment for subscriptions will automatically be included.
+`RtusEnquiries` resources are child resources to the Merchants resource they belong to.
+
+A `RtusEnquiries` resource consists of the following fields:
+
+|Field Name      |  Description |Field Name      |  Description |
+| ----------- | ----------- | ----------- | ----------- | 
+|**id** |Primary unique resource key| **resellerID**| Id of ancestor Reseller resource
+|**pid** |Id of parent Customer resource| **resellerUri** | URI of ancestor Reseller resource
+|**type** |Type of resource (always 'rtusenquiries')|**resellerName**|  Name of ancestor Reseller resource
+|**ptype** |Type of parent resource (always ‘customers’)|**cardsCsv**| Card records in CSV format (see below)
+|**Uri** |URI of resource| **cards**|  Card records in native format (see below)
+|**puri**| URI of parent Customer resource|**totalCount**| Total number of cards included in this enquiry
+|**path** |Hierarchical path to resource| **completedCount**| Number of cards whose status has been checked
+|**text**| Short textual description of the resource|**ompletedPercent**| Percentage of cards whose status has been checked
+|**rtusEnquiryID**| Primary unique resource key (same as ‘id’)|**updatedCount**| Number of cards whose details have been updated
+|**rtusEnquiryUri**| URI of resource (same as ‘uri’)|**updatedPercent**| Percentage of cards whose details have been updated
+|**merchantID** |Id of parent Merchant resource| **createTimeTime**| the resource was created (UTC)
+|**merchantUrl** |URI of parent Merchant resource|**modifyTime**| Time the resource was modified (UTC)
+|**merchantName**| Name of parent Merchant resource|**perms** |Resource permissions (to this resource) for the authenticated user
+|**customerID**| Id of ancestor Customer resource|**customerUri**| URI of ancestor Customer resource|
+|**customerName**| Name of ancestor Customer resource|
+
+
+
+#### RtusEnquiries.CardsCsv Property
+
+The payment cards can be included in the `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource using the cards property or the `cardsCsv` property. The `cardsCsv` property expects a single string of data containing the contents of the CSV file used to upload/download the card details in the Merchant Management System (MMS).
+The string should contain one or more CSV records separated by a new line character. The records should contain the following cells:
+
+| Cell Number      |  Description |
+| ----------- | ----------- | 
+| 1 | Version identifier (always ‘C1.1’)|
+| 2 | Card number (full PAN – 13-19 digits)|
+| 3 | Card expiry date [MMYY]|
+| 4 | Recurring Transaction (RT) Policy Ref [up to 20 characters] (optional)|
+| 5 | Recurring Transaction (RT) Frequency [0-8] (optional)|
+| 6 | Currency Code [180-4217 3 letter currency code] (optional)|
+| 7 | Next transaction amount [11 digits implied 2 decimals] (optional)|
+| 8 | Next transaction date [YYYY-MM-DD] (optional)|
+| 9 | Originators data (free format)|
+| 11 | New Card Number (if updated)|
+| 12 | New Expiry Number [MMYY] (if updated)|
+| 13 | Gateway response code (if updated)|
+| 14 | Gateway response message (if updated)|
+
+
+
+
+
+#### RtusEnquiries.Cards Property
+
+The payment cards can be included in the `RtusEnquiries` (Recurring Transaction Update Service Enquiries) resource using the cards property or the `cardsCsv` property. The cards property expects an array of card records. This is the more natural format for the interface as it allows a simple nested array type format..
+The cards array should contain records with the follow fields:
+
+| Field Name     |  Description |
+| ----------- | ----------- | 
+| number | Version identifier (always ‘C1.1’)|
+| expiryDate | Card number (full PAN – 13-19 digits)|
+|policyRef |Recurring Transaction (RT) Policy Ref [up to 20 characters] (optional)|
+|transasctionFrequency |Recurring Transaction (RT) Frequency [0-8] (optional)|
+|currencyCode | ISO-4217 3 character currency code|
+|currencyName |ISO-4217 currency name|
+|currencySymbol| ISO-4217 currency symbol|
+|currencyCode| Currency Code [180-4217 3 letter currency code] (optional)|
+|nextTranasctionAmount| Next transaction amount [11 digits implied 2 decimals] (optional)|
+|nextTransactionDate| Next transaction date [YYYY-MM-DD] (optional)|
+|data |Originators data (free format)|
+|newNumber |New Card Number (if updated)|
+|newExpiryDate| New Expiry Number [MMYY]2 (if updated)|
+|responseCode| Gateway response code (if updated)|
+|responseMessage| Gateway response message (if updated)|
+
+
+### RTUS (Recurring Transaction Update Service) Files Resources
+
+The `RtusFiles` (Recurring Transaction Update Service Files) resource contains information about communications with an Acquirer’s Recurring Transaction Update Service.
+This is a read only resource, the REST interface cannot be used to modify these resources.
+
+`RtusFiles` resources are root resources and have no parent or child resources. A `RtusFiles` resource consists of the following fields:
+
+| Field Name     |  Description |
+| ----------- | ----------- | 
+|id |Primary unique resource key|
+|pid|Id of parent resource (always blank)|
+|type |Type of resource (always ‘rtusfiles’)|
+|ptype| Type of parent resource (always blank)|
+|Uri| URI of resource|
+|puri| URI of parent Wallet resource|
+|path| Hierarchical path to resource|
+|text| Short textual description of the resource|
+|rtusFileID| Primary unique resource key (same as ‘id’)|
+|rtusFileUri| URI of resource (same as ‘uri’)|
+|rtusFileName| Name of resource|
+|processorID| Id of associated Processor resource|
+|processorUrl| URI of associated Processor resource|
+|processorName| Name of associated Processor resource|
+|date| Date the communications started|
+|totalValue| Value of all amounts included|
+|totalCount| Number of card enquiries included|
+|updatedCount| Number of cards updated|
+|outSentTime| Time the output file was successfully sent to the Acquirer|
+|ackRecvTime| Time the acknowledgement file was received|
+|rspRecvTime| Time the response file was received|
+|dependentOnFileID |Id of RtusFile resource this one is dependent on|
+|dependentOnFileUri| URI of RtusFile resource this one is dependent on|
+|dependentOnFileName| Name of RtusFile resource this one is dependent on|
+|dependentOnFileState |State of RtusFile resource this one is dependent on|
+|state| Processing state (one of ‘out’, ‘ack’, ‘rep’, ‘fin’ or ‘err’)|
+|responseCode |Response code of last processing stage|
+|responseMessage| Response message for above responseCode|
+|createTime |Time the resource was created (UTC)|
+|modifyTime| Time the resource was modified (UTC)|
+|perms| Resource permissions (to this resource) for the authenticated user|
+
 
 
 ## Gateway Wallet {#gatewayWallet}
