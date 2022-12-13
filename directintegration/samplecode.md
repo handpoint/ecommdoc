@@ -1844,15 +1844,14 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
  'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'cardonfile',
+
+ //XREF from previously transaction (transaction that initially stored the card)
  'xref' => '22080513FY16RN16LM97FXX',
 
 
@@ -2008,6 +2007,10 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'recurring',
  
+ //Recurring Transaction Agreement (recurring) configuration
+ 'rtCycleDuration' => '3',
+ 'rtCycleDurationUnit' => 'week',
+ 'rtCycleCount' => '1', 
 
 
  // The following fields are mandatory for 3DS v2
@@ -2161,7 +2164,11 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
- 
+
+  //Recurring Transaction Agreement (instalment) configuration
+ 'rtCycleDuration' => '3',
+ 'rtCycleDurationUnit' => 'week',
+ 'rtCycleCount' => '1', 
 
 
  // The following fields are mandatory for 3DS v2
@@ -2315,6 +2322,10 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'recurring',
  
+ //Recurring Transaction Agreement (recurring) configuration
+ 'rtCycleDuration' => '3',
+ 'rtCycleDurationUnit' => 'week',
+ 'rtCycleCount' => '1', 
 
 
  // The following fields are mandatory for 3DS v2
@@ -2620,6 +2631,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'recurring',
+
+ //XREF from previously transaction (recurring) 
  'xref' => '22080513FY16RN16LM97FXX',
  
 
@@ -2774,6 +2787,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
+
+ //XREF from previously transaction (instalment)
  'xref' => '22080513FY16RN16LM97FXX',
  
 
@@ -2928,6 +2943,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'unscheduled',
+
+ //XREF from previously transaction
  'xref' => '22080513FY16RN16LM97FXX',
  
 
@@ -3082,6 +3099,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'resubmission',
+
+ //XREF from previously transaction (Declined Transaction)
  'xref' => '22080513NJ17MZ11RJ34QFT',
  
 
@@ -3236,6 +3255,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'reauthorisation',
+
+ //XREF from previously transaction 
  'xref' => '22080513FY16RN16LM97FXX',
  
 
@@ -3390,6 +3411,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'delayedcharges',
+
+  //XREF from previously transaction 
  'xref' => '22080513FY16RN16LM97FXX',
  
 
@@ -3545,6 +3568,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'noshow',
+
+ //XREF from previously transaction (initial CIT payment)
  'xref' => '22080513FY16RN16LM97FXX',
  
 
