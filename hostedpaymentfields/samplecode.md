@@ -1726,7 +1726,7 @@ EOS;
 ?>
 ```
 
-## Credentials on File
+## Credentials on File (COF)
 
 ### (CIT) - Cardholder opts to store their card details on Merchant's website.
 

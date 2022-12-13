@@ -1486,7 +1486,7 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 ?>
 
 ```
-## Credentials on File
+## Credentials on File (COF)
 
 ### (CIT) - Cardholder opts to store their card details on Merchant's website.
 
