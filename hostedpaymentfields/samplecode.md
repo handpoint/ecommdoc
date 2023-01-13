@@ -1910,12 +1910,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
 
- // Setup PHP session as use it to store data between 3DS steps
- if (isset($_GET['sid'])) {
- session_id($_GET['sid']);
- }
-
- 
 
  session_start(); 
  // Compose current page URL (removing any sid and acs parameters)
@@ -1923,24 +1917,9 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
  $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
- 
- // If ACS response into the IFRAME then redirect back to parent window
- if (!empty($_GET['acs'])) {
- echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
- exit();
- }
+
 
  if (!isset($_POST['threeDSResponse'])) {
- // Initial request
-
- // Gather browser info - can be done at any time prior to the checkout
- if (!isset($_POST['browserInfo'])) {
- echo Gateway::collectBrowserInfo();
- exit();
- }
-
-
- //echo $pageUrl . '&acs=1',
  // Direct Request
  
  $req = array(
@@ -1959,35 +1938,14 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'orderRef' => 'Test purchase',
  'duplicateDelay' =>'0',
  'rtAgreementType' => 'cardonfile', 
-
-
- // The following fields are mandatory for 3DS v2 (Note: 3DS is avoided using MOTO)
- 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
- 'threeDSRedirectURL' => $pageUrl . '&acs=1',
-
-
-
- // The following field allows options to be passed for 3DS v2
- // and the values here are for demonstration purposes only
- 'threeDSOptions' => array(
-      'paymentAccountAge' => '20220601',
-      'paymentAccountAgeIndicator' => '05',
-   ),
  );
 
- // Add the browser info as it is mandatory for 3DS v2
- $req += $_POST['browserInfo'];
-
  } else {
-
    $req = array (
       // The following field are only required for tbe benefit of the SDK 
       'merchantID' => '155928',
       'action' => 'SALE',
-      'threeDSRef' => $_SESSION['threeDSRef'],
-      'threeDSResponse' => $_POST['threeDSResponse'],
     );
-        
  } 
 
  try {
@@ -2001,55 +1959,11 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
-
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
-
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
-
- 
-
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
-
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
-
- echo "<p>Thank you for your payment.</p>";
-
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+	echo "<p>Thank you for your payment.</p>";
+} else {
+    echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
   }
-
-// Render HTML to silently POST data to URL in target brower window 
-function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
-
-
- if ($post) {
- foreach ($post as $name => $value) {
- $fields .= Gateway::fieldToHtml($name, $value);
- }
- }
-
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
-
- return $ret;
-}
 
 ?>
 ```
@@ -2394,14 +2308,11 @@ require('gateway.php');
 use \P3\SDK\Gateway;
 
 
-//echo var_dump($_GET['paymentToken']);
-
-
 // Merchant signature key
 Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
- // Handpoint Gateway URL
- Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+// Handpoint Gateway URL
+Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
 
  // Setup PHP session as use it to store data between 3DS steps
  if (isset($_GET['sid'])) {
@@ -2433,7 +2344,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  }
 
  // Direct Request
- 
  $req = array(
  'merchantID' => 155928,
  'action' => 'SALE',
@@ -2456,14 +2366,9 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'rtCycleDurationUnit' => 'day',
  'rtCycleCount' => '3',
 
- 
-
-
  // The following fields are mandatory for 3DS v2
  'remoteAddress' =>  $_SERVER['REMOTE_ADDR'],
  'threeDSRedirectURL' => $pageUrl . '&acs=1',
-
-
 
  // The following field allows options to be passed for 3DS v2
  // and the values here are for demonstration purposes only
@@ -2563,9 +2468,6 @@ require('gateway.php');
 use \P3\SDK\Gateway;
 
 
-//echo var_dump($_GET['paymentToken']);
-
-
 // Merchant signature key
 Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
@@ -2593,14 +2495,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  }
 
  if (!isset($_POST['threeDSResponse'])) {
- // Initial request
-
- // Gather browser info - can be done at any time prior to the checkout
- if (!isset($_POST['browserInfo'])) {
- echo Gateway::collectBrowserInfo();
- exit();
- }
-
  // Direct Request
  
  $req = array(
@@ -2624,23 +2518,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'rtCycleDuration' => '1',
  'rtCycleDurationUnit' => 'day',
  'rtCycleCount' => '3',
-
- // The following fields are mandatory for 3DS v2
- 'remoteAddress' =>  $_SERVER['REMOTE_ADDR'],
- 'threeDSRedirectURL' => $pageUrl . '&acs=1',
-
-
-
- // The following field allows options to be passed for 3DS v2
- // and the values here are for demonstration purposes only
- 'threeDSOptions' => array(
-      'paymentAccountAge' => '20220601',
-      'paymentAccountAgeIndicator' => '05',
-   ),
  );
-
- // Add the browser info as it is mandatory for 3DS v2
- $req += $_POST['browserInfo'];
 
  } else {
 
@@ -2648,8 +2526,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
       // The following field are only required for tbe benefit of the SDK 
       'merchantID' => '155928',
       'action' => 'SALE',
-      'threeDSRef' => $_SESSION['threeDSRef'],
-      'threeDSResponse' => $_POST['threeDSResponse'],
     );
         
  } 
@@ -2665,55 +2541,11 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
-
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
-
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
-
- 
-
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
-
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
-
- echo "<p>Thank you for your payment.</p>";
-
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+	echo "<p>Thank you for your payment.</p>";
+} else {
+    echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
   }
-
-// Render HTML to silently POST data to URL in target brower window 
-function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
-
-
- if ($post) {
- foreach ($post as $name => $value) {
- $fields .= Gateway::fieldToHtml($name, $value);
- }
- }
-
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
-
- return $ret;
-}
 
 ?>
 ```
@@ -2728,22 +2560,11 @@ require('gateway.php');
 
 use \P3\SDK\Gateway;
 
-
-//echo var_dump($_GET['paymentToken']);
-
-
 // Merchant signature key
 Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
- // Handpoint Gateway URL
- Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
-
- // Setup PHP session as use it to store data between 3DS steps
- if (isset($_GET['sid'])) {
- session_id($_GET['sid']);
- }
-
- 
+// Handpoint Gateway URL
+Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
 
  session_start(); 
  // Compose current page URL (removing any sid and acs parameters)
@@ -2751,23 +2572,8 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
  $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
- 
- // If ACS response into the IFRAME then redirect back to parent window
- if (!empty($_GET['acs'])) {
- echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
- exit();
- }
 
  if (!isset($_POST['threeDSResponse'])) {
- // Initial request
-
- // Gather browser info - can be done at any time prior to the checkout
- if (!isset($_POST['browserInfo'])) {
- echo Gateway::collectBrowserInfo();
- exit();
- }
-
-
  // Direct Request
  
  $req = array(
@@ -2791,24 +2597,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'rtCycleDuration' => '1',
  'rtCycleDurationUnit' => 'day',
  'rtCycleCount' => '3', 
-
-
- // The following fields are mandatory for 3DS v2
- 'remoteAddress' => $_SERVER['REMOTE_ADDR'],
- 'threeDSRedirectURL' => $pageUrl . '&acs=1',
-
-
-
- // The following field allows options to be passed for 3DS v2
- // and the values here are for demonstration purposes only
- 'threeDSOptions' => array(
-      'paymentAccountAge' => '20220601',
-      'paymentAccountAgeIndicator' => '05',
-   ),
  );
-
- // Add the browser info as it is mandatory for 3DS v2
- $req += $_POST['browserInfo'];
 
  } else {
 
@@ -2816,10 +2605,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
       // The following field are only required for tbe benefit of the SDK 
       'merchantID' => '155928',
       'action' => 'SALE',
-      'threeDSRef' => $_SESSION['threeDSRef'],
-      'threeDSResponse' => $_POST['threeDSResponse'],
     );
-        
  } 
 
  try {
@@ -2833,55 +2619,11 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
-
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
-
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
-
- 
-
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
-
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
-
- echo "<p>Thank you for your payment.</p>";
-
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
+if ($res['responseCode'] === Gateway::RC_SUCCESS) {
+	echo "<p>Thank you for your payment.</p>";
+} else {
+    echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
   }
-
-// Render HTML to silently POST data to URL in target brower window 
-function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
-
-
- if ($post) {
- foreach ($post as $name => $value) {
- $fields .= Gateway::fieldToHtml($name, $value);
- }
- }
-
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
-
- return $ret;
-}
 
 ?>
 ```
