@@ -13,7 +13,11 @@ The following example code shows how to embed the Hosted Payment Fields over you
 | ----------- | ----------- | ----------- | ----------- |
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
+:::info
 
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/3h98fekp/10/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 

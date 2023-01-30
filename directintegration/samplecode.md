@@ -12,6 +12,12 @@ sidebar_position: 2
 The following example PHP code shows how to send a **SALE** transaction (amount £21,01) with support for 3-D
 Secure using the [Gateway library](samplecode.md#gateway-library-php):
 
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
+
 ```php
 
 <?PHP
@@ -63,6 +69,7 @@ use \P3\SDK\Gateway;
  'countryCode' => 826,
  'amount' => 2101,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 25,
  'cardCVV' => '159',
@@ -175,6 +182,11 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 The following example PHP code shows how to send a **VERIFY** (amount £0,00) transaction with support for 3-D
 Secure using the [Gateway library](samplecode.md#gateway-library-php):
 
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 ```php
 <?PHP
@@ -226,6 +238,7 @@ use \P3\SDK\Gateway;
  'countryCode' => 826,
  'amount' => 0,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 25,
  'cardCVV' => '159',
@@ -327,6 +340,11 @@ function silentPost($url = '?', array $post = null, $target = '_self') {
 ### PREAUTH
 
 The following example PHP code shows how to do a **PREAUTH** (amount £1,00) transaction with support for 3-D Secure using the [Gateway library](samplecode.md#gateway-library-php):
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 ```php
 <?PHP
@@ -378,6 +396,7 @@ use \P3\SDK\Gateway;
  'countryCode' => 826,
  'amount' => 100,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder.
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 24,
  'cardCVV' => '159',
@@ -1211,6 +1230,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'amount' => 1999,
  //Provide card details IF no walletID is provided, if walletID is provided, then no card details can be present. 
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder.
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 24,
  //CVV needs to be provided even for wallet.
@@ -1528,6 +1548,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'countryCode' => 826,
  'amount' => 1999,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder.
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 24,
  'cardCVV' => '159',
@@ -1893,6 +1914,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'countryCode' => 826,
  'amount' => 1999,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder.
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 24,
  'cardCVV' => '159',
@@ -2043,6 +2065,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'countryCode' => 826,
  'amount' => 1999,
  'cardNumber' => '5573471234567898',
+ //An expiry month of 12 (December) will simulate the non frictionless flow and a challenge will appear to the cardholder.
  'cardExpiryMonth' => 12,
  'cardExpiryYear' => 24,
  'cardCVV' => '159',
