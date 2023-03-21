@@ -553,3 +553,423 @@ response fields for that stage. |
 As this stop is requested then a `responseCode` is returned as 0 (Success) however it will be recorded in the Merchant Management System (MMS) as 65792 (3DS IN PROGRESS) indicating that the transaction has been prematurely halted expecting it to be continued to the next 3-D Secure stage when required. In order to continue the process, the `threeDSRef` field is returned together with any relevant 3-D Secure response fields suitable for that stage in the processing.
 
 If this flag is used when 3-D Secure is not enabled on the account or after the 3-D Secure process has been completed for the request (ie when the authentication step has completed), then passing the flag will cause the transaction to abort with a `responseCode` of 65795 (3DS PROCESSING NOT REQUIRED). This ensures that the transaction doesn’t go on to completion by accident while trying do 3-D Secure enrolment or authentication only.
+
+## 3DS Example (PHP Code)
+
+The following example shows the complete 3D Secure process.  When executing this code, the different phases of the 3DS process are displayed on the screen.
+
+It allows you to choose between 3 different cards (Visa, Mastercard and AMEX) and allows you to select the expiration month of the selected card.
+
+
+Each month represents a different authentication status returned by the Directory Server (for frictionless flow simulation). [Here](samplecode.md#3d-secure-testing) you can check the meaning of each month.
+
+```php
+<?php
+
+const MERCHANT_SECRET_KEY = '3obzOxdqw6e1u';
+const MERCHANT_ID = '155928';
+const GATEWAY_URL = 'https://commerce-api.handpoint.com/direct/';
+
+// Route
+if (isset($_GET['menu'])) {
+	menu();
+} elseif (isset($_GET['run'])) {
+	run();
+} elseif (isset($_GET['3dscallback'])) {
+	threeDSCallback();
+} else {
+	menu();
+}
+
+
+// Select test card menu.
+function menu()
+{
+
+	$testCards = [
+		[
+			'card_name' => 'Visa Credit',
+			'address' => 'Flat 6 Primrose Rise 347 Lavender Road Northampton',
+			'post_code' => 'NN17 8YG',
+			'card_number' => '4929421234600821',
+			'card_cvv' => '356',
+		],
+		[
+			'card_name' => 'Mastercard Credit',
+			'address' => '25 The Larches Narborough Leicester',
+			'post_code' => 'LE10 2RT',
+			'card_number' => '5301250070000191',
+			'card_cvv' => '419',
+		],        [
+			'card_name' => 'American Express (Amex)',
+			'address' => 'The Hunts Way Southampton',
+			'post_code' => 'SO18 1GW',
+			'card_number' => '374245455400001',
+			'card_cvv' => '4887',
+		],
+	];
+
+	$html = '<p>Select test card:</p><table class="table"><thead>';
+
+	foreach ($testCards as $testCard) {
+
+		$html .= <<<HTML
+            <tr>
+                <td>{$testCard['card_name']}</td>
+                <td>{$testCard['card_number']}</td>
+                <td>{$testCard['address']}</td>
+                <td>{$testCard['post_code']}</td>
+                <td> <form action="?run" method="post">
+                    Expiry month
+                <select class="form-select" aria-label="Default select example" name="cardExpiryMonth">
+                <option selected="selected" value="12">12</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    </select>
+                    <input type="hidden" name="cardNumber" value="{$testCard['card_number']}">
+                    <input type="hidden" name="cardCVV" value="{$testCard['card_cvv']}">
+                    <input type="hidden" name="cardAddress" value="{$testCard['address']}">
+                    <input type="hidden" name="cardPostCode" value="{$testCard['post_code']}">
+                
+                <td><button type="submit" class="btn btn-primary btn-small">Submit</button></td>
+                </form></td>
+            </tr>
+HTML;
+	}
+
+	$html .= <<<HTML
+            </tbody>
+        </table>
+HTML;
+
+	echo renderPage('3DSv2 Demo', $html, 'Handpoint');
+}
+
+function run()
+{
+
+	$threeDSRedirectURL = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+
+	$request = array(
+		'action' => 'SALE',
+		'amount' => '150',
+		'cardCVV' => (isset($_POST['cardCVV']) ? $_POST['cardCVV'] : '083'),
+		'cardExpiryYear' => (isset($_POST['cardExpiryYear']) ? $_POST['cardExpiryYear'] : '23'),
+		'cardExpiryMonth' => (isset($_POST['cardExpiryMonth']) ? $_POST['cardExpiryMonth'] : '12'),
+		'cardNumber' => (isset($_POST['cardNumber']) ? $_POST['cardNumber'] : '4929421234600821'),
+		'countryCode' => '826',
+		'currencyCode' => '826',
+		'customerAddress' => (isset($_POST['cardAddress']) ? $_POST['cardAddress'] : '16'),
+		'customerEmail' => 'email@exampledomainnamehere.com',
+		'customerName' => 'MrMrs Tester',
+		'customerPostCode' => (isset($_POST['cardPostCode']) ? $_POST['cardPostCode'] : '55'),
+		'merchantID' => MERCHANT_ID,
+		'type' => '1',
+		'orderRef' => 'Test',
+		'duplicateDelay' => 0,
+		'remoteAddress'             =>  $_SERVER['REMOTE_ADDR'],
+		'threeDSRedirectURL'        => "{$threeDSRedirectURL}?3dscallback",
+		'deviceChannel'                => 'browser',
+		'deviceIdentity'            => (isset($_SERVER['HTTP_USER_AGENT']) ? htmlentities($_SERVER['HTTP_USER_AGENT']) : null),
+		'deviceTimeZone'            => '0',
+		'deviceScreenResolution'    => '1x1x1',
+		'deviceAcceptContent'        => (isset($_SERVER['HTTP_ACCEPT']) ? htmlentities($_SERVER['HTTP_ACCEPT']) : '*/*'),
+		'deviceAcceptEncoding'        => (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? htmlentities($_SERVER['HTTP_ACCEPT_ENCODING']) : '*'),
+		'deviceAcceptLanguage'        => (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? htmlentities($_SERVER['HTTP_ACCEPT_LANGUAGE']) : 'en-gb;q=0.001'),
+		'deviceAcceptCharset'        => (isset($_SERVER['HTTP_ACCEPT_CHARSET']) ? htmlentities($_SERVER['HTTP_ACCEPT_CHARSET']) : null),
+
+	);
+
+	$request['signature'] = createSignature($request, MERCHANT_SECRET_KEY);
+
+	$response = sendRequest($request, GATEWAY_URL);
+
+	$html = <<<HTML
+      <div class="card">
+        <div class="card-header">
+           <h5> Request to gateway</h5>
+        </div>
+        <div class="card-body">
+    HTML;
+
+
+	$html .= '<pre>' .  print_r($request, true) . '</pre>';
+
+	$ret = http_build_query($request, '', '&');
+	// Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)  
+	$ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+	$html .= '<h5>URL Encoded</h5>';
+	$html .= '</p>' . $ret . '</p>';
+	$html .= '</div></div>';
+	$html .= <<<HTML
+<div class="card-header" style="margin-top: 20px;">
+<h5>Response from gateway</h5>
+</div>
+<div class="card-body">
+HTML;
+
+
+	$html .= '<pre>' .  print_r($response, true) . '</pre>';
+
+	if ($response['responseCode'] == 65802) {
+
+		$html .= "<p>Your transaction requires 3D Secure Authentication</p>";
+
+		// Store the threeDSRef in a cookie for reuse.  (this is just one way of storeing it)
+		setcookie('threeDSRef', $response['threeDSRef'], time() + 1500);
+
+		$ref = $response['threeDSRef'];
+
+		$html .= "<p>The threeDSRef now needs to stored be on the merchant side. In this example it's being stored to a cookie so it can be retreived after 3DS has called back</p>";
+
+		$html .= "<p>ThreeDS Ref being stored : {$ref}</p>";
+
+		$threeDSUrl = $response['threeDSURL'];
+
+		$html .= "<p>Next a POST request needs to be sent to the 3DS URL provided in the threeDSURL field in the response which is {$threeDSUrl} this post request
+    needs to contain the fields provided in the gateways response threeDSRequest field. These fields are ";
+
+		// For each of the fields in threeDSRequest output a hidden input field with it's key/value
+		foreach ($response['threeDSRequest'] as $key => $value) {
+			$html .= "<p>Name : {$key}  with a value of {$value} </p>";
+		}
+
+		$html .= "<p>Along with these fields the threeDSRef from the response is also sent. </p></p>";
+
+		// Start of HTML form with URL
+		$html .= "<form action=\"" . htmlentities($response['threeDSURL']) . "\"method=\"post\">";
+
+		// Add threeDSRef from the gateway response
+		$html .= '<input type="hidden" name="threeDSRef" value="' . $response['threeDSRef'] . '">';
+
+		// For each of the fields in threeDSRequest output a hidden input field with it's key/value
+		foreach ($response['threeDSRequest'] as $key => $value) {
+			$html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+		}
+
+		$html .= '<pre><code>&lt;form action="https://acs.3ds-pit.com/?method" method="post"&gt;
+        &lt;input type="hidden" name="threeDSRef" value="UDNLRVk6dHJhbnNhY3Rpb25JRD0xNTAyNzk0MjgmbWVyY2hhbnRJRD0xMDA4NTYmX19saWZlX189MTY0MzI5Nzk5Mg=="&gt;
+        &lt;input type="hidden" name="threeDSMethodData" value="eyJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoiaHR0cDovLzEyNy4wLjAuMTo4MDgwLzNkc3YyLWV4YW1wbGUucGhwPzNkc2NhbGxiYWNrPSZ0aHJlZURTQWNzUmVzcG9uc2U9bWV0aG9kIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiIxNGE2YTYyZS0yZjRjLTQxNjYtYWYwYi1jNTJmN2M0ZGFjMjUifQ"&gt;&lt;pre&gt;&lt;code&gt;&lt;input type="hidden" name="threeDSRef" value="UDNLRVk6dHJhbnNhY3Rpb25JRD0xNTAyNzkzNzkmbWVyY2hhbnRJRD0xMDA4NTYmX19saWZlX189MTY0MzI5Nzk2MA=="&gt;&lt;input type="hidden" name="threeDSMethodData" value="eyJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoiaHR0cDovLzEyNy4wLjAuMTo4MDgwLzNkc3YyLWV4YW1wbGUucGhwPzNkc2NhbGxiYWNrPSZ0aHJlZURTQWNzUmVzcG9uc2U9bWV0aG9kIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiJhMzczOTkxMy1kMzdlLTQyZjMtYmFhNC04NjNmOTgwMzMyYzEifQ"&gt;&lt;pre&gt;&lt;code&gt;%3Cform+action%3D%22https%3A%2F%2Facs.3ds-pit.com%2F%3Fmethod%22+method%3D%22post%22%3E%0D%0A%3Cinput+type%3D%22hidden%22+name%3D%22threeDSRef%22+value%3D%22UDNLRVk6dHJhbnNhY3Rpb25JRD0xNTAyNzkwOTEmbWVyY2hhbnRJRD0xMDA4NTYmX19saWZlX189MTY0MzI5Nzc5MQ%3D%3D%22%3E%3Cinput+type%3D%22hidden%22+name%3D%22threeDSMethodData%22+value%3D%22eyJ0aHJlZURTTWV0aG9kTm90aWZpY2F0aW9uVVJMIjoiaHR0cDovLzEyNy4wLjAuMTo4MDgwLzNkc3YyLWV4YW1wbGUucGhwPzNkc2NhbGxiYWNrPSZ0aHJlZURTQWNzUmVzcG9uc2U9bWV0aG9kIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiI2MWUzNDJmNC1hZDg2LTQ2YzYtYmMxYy1iYzFiZjIwYWU1NzQifQ%22%3E%0D%0A%3Cinput+type%3D%22submit%22+value%3D%22Continue%22%3E%0D%0A%3C%2Fform%3E&lt;/code&gt;&lt;/pre&gt;&lt;input type="submit" value="Continue"&gt;
+        &lt;/form&gt;</pre></code>';
+		// End of html form with submit button.
+
+		$html .= "<input type=\"submit\" value=\"Continue\">
+            </form>";
+	}
+
+
+	$html .= '</div></div>';
+
+	echo renderPage('3DSv2 Test', $html, 'Initial request to gateway');
+}
+
+function threeDSCallback()
+{
+
+	//ACS Response
+	$html = <<< HTML
+      <div class="card">
+        <div class="card-header">
+           <h5>Response from ACS</h5>
+        </div>
+        <div class="card-body">
+    HTML;
+
+	$html .= '<pre>' .  print_r($_POST, true) . '</pre>';
+
+	$threeDSRequest = array(
+		'threeDSRef' => $_COOKIE['threeDSRef'], // This is the threeDSref store in the cookie from the previous gateway response.
+		'threeDSResponse' => $_POST, // <-- Note here no fields are hard coded. Whatever is POSTED from 3DS is returned.
+	);
+
+	// Send the 3DS response back to the gateway and get the response.
+	$gatewayResponse = sendRequest($threeDSRequest, GATEWAY_URL);
+
+	// Store the new threeDSRef in the cookie again because it may change.
+	setcookie('threeDSRef', $gatewayResponse['threeDSRef'], time() + 1500);
+
+	$html .= '</div></div>';
+
+
+	$html .= <<< HTML
+      <div class="card" style="margin-top: 10px">
+        <div class="card-header">
+           <h5>Request to gateway</h5>
+        </div>
+        <div class="card-body">
+    HTML;
+
+
+	$html .= '<pre>' .  print_r($threeDSRequest, true) . '</pre>';
+
+	$html .= '<h5>Url encoded</h5>';
+	$ret = http_build_query($threeDSRequest, '', '&');
+	// Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)  
+	$ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+	$html .= $ret;
+
+	$html .= '</div></div>';
+
+
+	$html .= <<< HTML
+    <div class="card" style="margin-top: 10px; margin-bottom: 100px">
+      <div class="card-header">
+         <h5>Response from gateway</h5>
+      </div>
+      <div class="card-body">
+  HTML;
+
+	$html .= '<pre>' .  print_r($gatewayResponse, true) . '</pre>';
+
+
+	if ($gatewayResponse['responseCode'] == 65802) {
+
+		$html .= "<p>Your transaction requires 3D Secure Authentication</p>";
+
+		// Store the threeDSRef in a cookie for reuse.  (this is just one way of storeing it)
+		setcookie('threeDSRef', $gatewayResponse['threeDSRef'], time() + 500);
+
+		$ref = $gatewayResponse['threeDSRef'];
+
+		$html .= "<p>The threeDSRef now needs to be stored again on the merchant side.</p>";
+
+		$html .= "<label>Three DS Ref being stored : {$ref}</label>";
+
+		$threeDSUrl = $gatewayResponse['threeDSURL'];
+
+		$html .= "<p>Next a POST request needs to be sent to the 3DS URL provided in the threeDSURL field in the response which is {$threeDSUrl} this post request
+    needs to contain the fields provided in the gateways response threeDSRequest field. These fields are ";
+
+		// For each of the fields in threeDSRequest output a hidden input field with it's key/value
+		foreach ($gatewayResponse['threeDSRequest'] as $key => $value) {
+			$html .= "<p>Name : {$key}  with a value of {$value}</p>";
+		}
+
+		// Start of HTML form with URL
+		$html .= "<form action=\"" . htmlentities($gatewayResponse['threeDSURL']) . "\"method=\"post\">";
+
+		// Add threeDSRef from the gateway response
+		$html .= '<input type="hidden" name="threeDSRef" value="' . $gatewayResponse['threeDSRef'] . '">';
+
+		// For each of the fields in threeDSRequest output a hidden input field with it's key/value
+		foreach ($gatewayResponse['threeDSRequest'] as $key => $value) {
+			$html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+		}
+
+		// End of html form with submit button.
+		$html .= "<input type=\"submit\" value=\"Continue\">
+                </form>";
+	} else {
+
+		$html .= 'Transaction Complete';
+		$html .= '<a href="?menu" class="btn btn-primary" role="button">Return to menu</a>';
+	}
+
+	$html .= '</div></div>';
+
+	echo renderPage('3DS Callback', $html, '3DS Callback');
+}
+
+
+
+function renderPage($title, $body, $jumotronText = null)
+{
+	$html = <<< HTML
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    
+        <title>{$title}</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+      </head>
+    
+      <body>
+      <div class="jumbotron text-center">
+        <h1>{$jumotronText}</h1>
+    </div>
+
+      <main role="main" class="container">
+{$body}
+    </main>
+      </body>
+    </html>
+HTML;
+
+	return $html;
+}
+
+
+
+/**
+ * Send request
+ * 
+ * @param Array $request
+ * @param String $gatewayURL
+ * 
+ * @return Array $responseponse
+ */
+function sendRequest($request, $gatewayURL)
+{
+	// Send request to the gateway
+
+	// Initiate and set curl options to post to the gateway  
+	$ch = curl_init($gatewayURL);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($request));
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+	// Send the request and parse the response  
+	parse_str(curl_exec($ch), $response);
+
+	// Close the connection to the gateway  
+	curl_close($ch);
+
+	return $response;
+}
+
+
+
+/**
+ * Sign request
+ * 
+ * @param Array $data
+ * @param String $key
+ * 
+ * @return String Hash
+ */
+function createSignature(array $data, $key)
+{
+	// Sort by field name  
+	ksort($data);
+
+	// Create the URL encoded signature string  
+	$ret = http_build_query($data, '', '&');
+
+	// Normalise all line endings (CRNL|NLCR|NL|CR) to just NL (%0A)  
+	$ret = str_replace(array('%0D%0A', '%0A%0D', '%0D'), '%0A', $ret);
+
+	// Hash the signature string and the key together  
+	return hash('SHA512', $ret . $key);
+}
+```

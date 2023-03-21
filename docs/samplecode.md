@@ -14,7 +14,11 @@ The following example code shows how to embed the hosted payment page in a light
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
+:::info
 
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 
 <iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/vg9on6j0/50/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
@@ -29,6 +33,11 @@ The following example code shows how to embed the hosted payment page as an iFra
 
 Note : The address has been pre-filled from the code sample to demonstrate that some of the fields of the payment form can be pre-populated. 
 
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 
 <iframe width="100%" height="700" src="//jsfiddle.net/Handpoint/xg0dptsw/44/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
@@ -41,9 +50,13 @@ The following example code shows how to redirect the user to a secure hosted pay
 | ----------- | ----------- | ----------- | ----------- |
 |Any cardholder name (ex: John Doe) | 5573 4712 3456 7898 | Any date in the future (12/2031) | 159 |
 
+:::info
 
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
 
-<iframe width="100%" height="650" src="//jsfiddle.net/Handpoint/32tmc70h/52/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameborder="0"></iframe>
+:::
+
+<iframe width="100%" height="900" src="//jsfiddle.net/Handpoint/32tmc70h/52/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest sandbox='allow-forms allow-popups allow-scripts allow-same-origin allow-modals allow-top-navigation-by-user-activation' frameborder="0"></iframe>
 
 
 ## Hosted Payment Page - Transaction Types
@@ -57,6 +70,12 @@ This `form` will start a new SALE transaction (10.01 GBP) and attempt to seek au
 | Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 ```html
 <!--form example of SALE (Amount:10,01GBP)-->
@@ -91,6 +110,12 @@ This `form` will start a new VERIFY transaction (0.00GBP) and attempt to verify 
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
+
 ```html
 <!--form example of VERIFY-->
 
@@ -123,6 +148,12 @@ This `form` will create a new PREAUTH transaction (1.01GBP) and attempt to seek 
 | Cardholder Name | Card Number | Expiry Date | CVV/CVC2 | 
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
+
+:::info
+
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 ```html
 <!--form example of PREAUTH (1,01GBP)-->
@@ -162,7 +193,11 @@ A `walletID` will be generated in the response from the gateway. If this wallet 
 | ----------- | ----------- | ----------- | ----------- |
 | Any cardholder name (ex: John Doe)  | 5573 4712 3456 7898 | Any date in the future (12/31) | 159 |
 
+:::info
 
+An expiry month of **12** (December) will simulate the non frictionless flow and a challenge will appear to the cardholder. 
+
+:::
 
 <iframe width="100%" height="600" src="//jsfiddle.net/Handpoint/j0ck72bu/32/embedded/html,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
 
