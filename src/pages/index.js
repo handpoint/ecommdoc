@@ -127,7 +127,7 @@ function MobileSdks() {
                     title="Android" />
                 </div>
                 <div class="card__footer">
-                  <a href="https://github.com/handpoint/online-payments-SDK-Android" target='_blank'>Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-Android-SDK" target='_blank'>Github Page</a>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@ function MobileSdks() {
                     title="iOS" />
                 </div>
                 <div class="card__footer">
-                  <a href="https://github.com/handpoint/online-payments-SDK-iOS" target='_blank'>Github Page</a>
+                  <a href="https://github.com/handpoint/online-payments-iOS-SDK" target='_blank'>Github Page</a>
               </div>
             </div>
           </div>
@@ -735,7 +735,7 @@ function MobileSdks() {
                         title="Java" />
                     </div>
                     <div class="card__footer">
-                        <a href="https://github.com/handpoint/online-payments-SDK-Android" target='_blank'>Sample Code</a>
+                        <a href="https://github.com/handpoint/online-payments-Java-SDK" target='_blank'>Sample Code</a>
                     </div>
                   </div>
               </div>

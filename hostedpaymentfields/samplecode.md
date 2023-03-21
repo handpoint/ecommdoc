@@ -185,7 +185,7 @@ The following example shows the complete 3D Secure process. When executing this 
 
 It allows you to choose between 3 different cards (Visa, Mastercard and AMEX) and allows you to select the expiration month of the selected card.
 
-Each month represents a different authentication status returned by the Directory Server (for frictionless flow simulation). Here you can check the meaning of each month.
+Each month represents a different authentication status returned by the Directory Server (for frictionless flow simulation). [Here](samplecode.md#3d-secure-testing) you can check the meaning of each month.
 
 
 ```php
