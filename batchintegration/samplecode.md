@@ -546,7 +546,7 @@ The following example PHP code shows how to launch a batch of **REFUND** transac
  curl_setopt($ch, CURLOPT_HEADER, true);
  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+ curl_setopt($ch, CURLOPT_HTTPHEADER, array(
  'Content-type: multipart/mixed; charset="UTF-8"; boundary=' . $boundary,
  'Content-length: ' . strlen($post),
 ));
