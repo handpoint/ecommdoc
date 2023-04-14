@@ -26,7 +26,6 @@ An expiry month of **12** (December) will simulate the non frictionless flow and
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
  // Merchant signature key
@@ -194,7 +193,6 @@ An expiry month of **12** (December) will simulate the non frictionless flow and
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
  // Merchant signature key
@@ -231,7 +229,6 @@ use \P3\SDK\Gateway;
  }
 
  // Direct Request
- 
  $req = array(
  'merchantID' => 155928,
  'action' => 'VERIFY',
@@ -352,7 +349,6 @@ An expiry month of **12** (December) will simulate the non frictionless flow and
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
  // Merchant signature key
@@ -389,7 +385,6 @@ use \P3\SDK\Gateway;
  }
 
  // Direct Request
- 
  $req = array(
  'merchantID' => 155928,
  'action' => 'PREAUTH',
@@ -644,127 +639,48 @@ This will capture an existing transaction, identified using the `xref` request f
 **NOTE**: The original transaction must have been submitted with a `captureDelay` value that prevented immediate capture and settlement leaving the transaction in an authorised but un-captured state.
 
 ```php
-
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
-// Merchant signature key 
+// Merchant signature key
 Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
- // Handpoint Gateway URL
- Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
+// Handpoint Gateway URL
+Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
 
- // Setup PHP session as use it to store data between 3DS steps
- if (isset($_GET['sid'])) {
- session_id($_GET['sid']);
- }
+session_start();
+// Compose current page URL (removing any sid and acs parameters)
+$pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : '') . preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
 
- session_start(); 
- // Compose current page URL (removing any sid and acs parameters)
- $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
+// Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+$pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
 
- // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
- $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
- 
- // If ACS response into the IFRAME then redirect back to parent window
- if (!empty($_GET['acs'])) {
- echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
- exit();
- }
+// Direct Request
+$req = array(
+  'merchantID' => 155928,
+  'action' => 'CAPTURE',
+  'xref' => '11223344556677889911223',
+);
 
- if (!isset($_POST['threeDSResponse'])) {
- // Initial request
+try {
+  //echo var_dump ($req);
+  $res = Gateway::directRequest($req);
+} catch (\Exception $e) {
 
- // Gather browser info - can be done at any time prior to the checkout
- if (!isset($_POST['browserInfo'])) {
- echo Gateway::collectBrowserInfo();
- exit();
- }
+  // You should exit gracefully
+  die('Sorry, the request could not be sent: ' . $e);
+}
 
- // Direct Request
- 
- $req = array(
- 'merchantID' => 155928,
- 'action' => 'CAPTURE',
- 'xref' => '11223344556677889911223', //That field is mandatory for CAPTURE transaction.
-
- // The following fields are mandatory for 3DS v2
- 'remoteAddress' => '$_SERVER['REMOTE_ADDR']',
- );
-
-
- } else {
-
-   $req = array (
-      // The following field are only required for tbe benefit of the SDK 
-      'merchantID' => '155928',
-      'action' => 'CAPTURE',
-      'threeDSRef' => $_SESSION['threeDSRef'],
-      'threeDSResponse' => $_POST['threeDSResponse'],
-    );
-        
- } 
-
- try {
-    $res = Gateway::directRequest($req);
- } catch (\Exception $e) {
- 
-// You should exit gracefully
- die('Sorry, the request could not be sent: ' . $e);
- }
-
- print $res['responseCode'];
+print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
+if ($res['responseCode'] === Gateway::RC_SUCCESS) {
 
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+  echo "<p>Capture done successfully.</p>";
 
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
-
- 
-
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
-
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
-
- echo "<p>Thank you for your payment.</p>";
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
-  }
-
-// Render HTML to silently POST data to URL in target brower window 
-function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
-
-
- if ($post) {
- foreach ($post as $name => $value) {
- $fields .= Gateway::fieldToHtml($name, $value);
- }
- }
-
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
-
- return $ret;
+} else {
+  echo "<p>Failed to Capture: " . htmlentities($res['responseMessage']) . "</p>";
 }
 
 ?>
@@ -781,118 +697,46 @@ This will cancel an existing transaction, identified using the `xref` request fi
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
-// Merchant signature key 
+// Merchant signature key
 Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
- // Handpoint Gateway URL
- Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
-
- // Setup PHP session as use it to store data between 3DS steps
- if (isset($_GET['sid'])) {
- session_id($_GET['sid']);
- }
-
- session_start(); 
- // Compose current page URL (removing any sid and acs parameters)
- $pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://'). $_SERVER['SERVER_NAME']. ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : ''). preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
-
- // Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
- $pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
- 
- // If ACS response into the IFRAME then redirect back to parent window
- if (!empty($_GET['acs'])) {
- echo silentPost($pageUrl, array('threeDSResponse' => $_POST), '_parent');
- exit();
- }
-
- if (!isset($_POST['threeDSResponse'])) {
- // Initial request
-
- // Gather browser info - can be done at any time prior to the checkout
- if (!isset($_POST['browserInfo'])) {
- echo Gateway::collectBrowserInfo();
- exit();
- }
-
- // Direct Request
- 
- $req = array(
- 'merchantID' => 155928,
- 'action' => 'CANCEL',
- 'xref' => '11223344556677889911223', //That field is mandatory for CANCEL transaction.
- );
+// Handpoint Gateway URL
+Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
 
 
- } else {
+session_start();
+// Compose current page URL (removing any sid and acs parameters)
+$pageUrl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . ($_SERVER['SERVER_PORT'] != '80' ? ':' . $_SERVER['SERVER_PORT'] : '') . preg_replace('/(sid=[^&]+&?)|(acs=1&?)/', '', $_SERVER['REQUEST_URI']);
 
-   $req = array (
-      // The following field are only required for tbe benefit of the SDK 
-      'merchantID' => '155928',
-      'action' => 'CANCEL',
-    );
-        
- } 
+// Add back the correct sid parameter (used as session cookie may not be passed when the page is redirected from an IFRAME)
+$pageUrl .= (strpos($pageUrl, '?') === false ? '?' : '&') . 'sid=' . urlencode(session_id());
 
- try {
-    $res = Gateway::directRequest($req);
- } catch (\Exception $e) {
- 
-// You should exit gracefully
- die('Sorry, the request could not be sent: ' . $e);
- }
+// Direct Request
+$req = array(
+  'merchantID' => 155928,
+  'action' => 'CANCEL',
+  'xref' => '11223344556677889911223',
+);
 
- print $res['responseCode'];
+try {
+  //echo var_dump ($req);
+  $res = Gateway::directRequest($req);
+} catch (\Exception $e) {
+
+  // You should exit gracefully
+  die('Sorry, the request could not be sent: ' . $e);
+}
+
+print $res['responseCode'];
 // Check the response code
-if ($res['responseCode'] === Gateway::RC_3DS_AUTHENTICATION_REQUIRED) { 
-// Send request to the ACS server displaying response in an IFRAME
+if ($res['responseCode'] === Gateway::RC_SUCCESS) {
 
- // Render an IFRAME to show the ACS challenge (hidden for fingerprint method)
- $style = (isset($res['threeDSRequest']['threeDSMethodData']) ? 'display: none;' : '');
- echo "<iframe name=\"threeds_acs\" style=\"height:420px; width:420px; {$style}\"></iframe>\n";
+  echo "<p>Cancel done successfully.</p>";
 
- // Silently POST the 3DS request to the ACS in the IFRAME
- echo silentPost($res['threeDSURL'], $res['threeDSRequest'], 'threeds_acs');
-
- 
-
- // Remember the threeDSRef as need it when the ACS responds
- $_SESSION['threeDSRef'] = $res['threeDSRef'];
-
-} else if ($res['responseCode'] === Gateway::RC_SUCCESS) {
-
- echo "<p>Thank you for your payment.</p>";
-   } 
-   else {
-        echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
-  }
-
-// Render HTML to silently POST data to URL in target brower window 
-function silentPost($url = '?', array $post = null, $target = '_self') { 
- $url = htmlentities($url);
- $target = htmlentities($target);
- $fields = '';
-
-
- if ($post) {
-  foreach ($post as $name => $value) {
-    $fields .= Gateway::fieldToHtml($name, $value);
-  }
- }
-
- $ret = "
- <form id=\"silentPost\" action=\"{$url}\" method=\"post\" target=\"{$target}\">
- {$fields}
- <noscript><input type=\"submit\" value=\"Continue\"></noscript
- </form>
- <script>
- window.setTimeout('document.forms.silentPost.submit()', 0);
- </script>
- ";
-
- return $ret;
+} else {
+  echo "<p>Failed to Cancel: " . htmlentities($res['responseMessage']) . "</p>";
 }
 
 ?>
@@ -909,7 +753,6 @@ This will query an existing transaction, identified using the `xref` request fie
 <?PHP
 
 require('gateway.php');
-
 use \P3\SDK\Gateway;
 
 // Merchant signature key
@@ -917,11 +760,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 
  // Handpoint Gateway URL
  Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
-
- // Setup PHP session as use it to store data between 3DS steps
- if (isset($_GET['sid'])) {
- session_id($_GET['sid']);
- }
 
  session_start(); 
  // Compose current page URL (removing any sid and acs parameters)
@@ -932,14 +770,12 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  
  
  // Direct Request
-  
    $req = array (
       // The following field are only required for tbe benefit of the SDK 
       'merchantID' => '155928',
       'action' => 'QUERY',
       'xref' => '11223344556677889911223', //That field is mandatory for CANCEL transaction.
     );
-    
 
  try {
     $res = Gateway::directRequest($req);
@@ -948,7 +784,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
 // You should exit gracefully
  die('Sorry, the request could not be sent: ' . $e);
  }
-
 
 // Check the response code
 if ($res['responseCode'] === Gateway::RC_SUCCESS) {
@@ -983,8 +818,7 @@ if ($res['responseCode'] === Gateway::RC_SUCCESS) {
  echo "<br>";
  echo "CardIssuer:"." ".$res['cardIssuer'];
 
-   } 
-   else {
+   } else {
         echo "<p>Failed to take payment: " . htmlentities($res['responseMessage']) . "</p>";
   }
 
