@@ -533,7 +533,6 @@ $req = array(
   'countryCode' => 826,
   'customerName' => 'Test Customer',
   'orderRef' => 'Test Refund',
-  'duplicateDelay' => '0',
 
   //XREF from previously transaction (Sale)
   'xref' => '11223344556677889911223',
@@ -604,7 +603,6 @@ $req = array(
   'orderRef' => 'Test Refund',
   'customerAddress' => 'Merevale Avenue Leicester',
   'customerPostCode' => 'LE10 2BU',
-  'duplicateDelay' => '0',
 );
 
 try {
@@ -774,7 +772,7 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
       // The following field are only required for tbe benefit of the SDK 
       'merchantID' => '155928',
       'action' => 'QUERY',
-      'xref' => '11223344556677889911223', //That field is mandatory for CANCEL transaction.
+      'xref' => '11223344556677889911223', //That field is mandatory for QUERY transaction.
     );
 
  try {
@@ -948,7 +946,6 @@ function run()
 		'merchantID' => MERCHANT_ID,
 		'type' => '1',
 		'orderRef' => 'Test',
-		'duplicateDelay' => 0,
 		'remoteAddress'             =>  $_SERVER['REMOTE_ADDR'],
 		'threeDSRedirectURL'        => "{$threeDSRedirectURL}?3dscallback",
 		'deviceChannel'                => 'browser',
