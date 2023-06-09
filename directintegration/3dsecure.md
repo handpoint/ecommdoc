@@ -2,6 +2,9 @@
 sidebar_position: 4
 ---
 
+import ReactPlayer from 'react-player'
+
+
 # 3D Secure & Strong Customer Authentication (SCA)
 
 ## PSD2 SCA Compliance 
@@ -973,3 +976,9 @@ function createSignature(array $data, $key)
 	return hash('SHA512', $ret . $key);
 }
 ```
+
+Video showing the above code sample highlighting some of the most important things:
+
+**Note**: In the case of the video a `paymentToken` is used. For a Direct integration, card details (Card Number, CVV, Expiry Date) are needed.
+
+<ReactPlayer playing controls url='/img/3DSexample.mov' width='100%' height='100%' />
