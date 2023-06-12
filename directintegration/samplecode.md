@@ -2,6 +2,8 @@
 sidebar_position: 2
 
 ---
+import ReactPlayer from 'react-player'
+
 
 # Sample Code & Examples
 
@@ -1242,7 +1244,11 @@ function createSignature(array $data, $key)
 	return hash('SHA512', $ret . $key);
 }
 ```
+Video showing the above code sample highlighting some of the most important things:
 
+**Note**: In the case of the video a `paymentToken` is used. For a Direct integration, card details (Card Number, CVV, Expiry Date) are needed.
+
+<ReactPlayer playing controls url='/img/3DSexample.mov' width='100%' height='100%' />
 
 ## Gateway Wallet
 
@@ -3961,4 +3967,6 @@ $tran = array (
 
  ```
 
- 
+ ## Card Brand Icons {#cardBrandIcons} 
+
+Here you can find official images provided by card brands like [Mastercard](https://www.mastercard.com/brandcenter/en/download-artwork), [Maestro](https://www.mastercard.com/brandcenter/en/brand-requirements/maestro), [Visa](https://www.merchantsignage.visa.com/brand_guidelines), [Discover](https://discoversignage.com/free-signage-logos), [American Express](https://www.americanexpress.com/content/dam/amex/us/merchant/pdf/gms-stripe-pop-coverage.pdf), [JCB](https://www.jcb.co.jp/bdmanual/en/basicDesignElements/jcbEmblem/index01download01.html), [China UnionPay](https://www.unionpayintl.com/en/mediaCenter/brandCenter/artworkDownloadCenter/identification.shtml).

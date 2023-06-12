@@ -154,7 +154,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="http://www.prestashop.com/">
                   <img style={{ height: '50px' }}
-                  src="https://www.prestashop.com/sites/all/themes/prestashop/images/logos/logo-fo-prestashop-colors.svg"
+                  src="	https://www.sdi.es/wp-content/uploads/2023/05/PREST_LOGO_RVB_noir.svg"
                   alt="Image alt text"
                   title="PrestaShop" />
                   </a>
@@ -414,7 +414,7 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{height: '50px'}}
-                  src="https://www.admit-one.eu/images/admit-one_logo_red_rgb.svg"
+                  src="https://admit-one.eu/wp-content/uploads/2022/08/admit-one_logo_red_rgb.webp"
                   alt="Image alt text"
                   title="admitOne" />
                </div>
