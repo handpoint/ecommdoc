@@ -2361,6 +2361,11 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
+
+ //Recurring Transaction Agreement (instalment) configuration
+ 'rtCycleDuration' => '3',
+ 'rtCycleDurationUnit' => 'week',
+ 'rtCycleCount' => '1', 
  );
 
  } else {
@@ -2422,17 +2427,13 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'recurring',
 
- //XREF from previously transaction (recurring) 
+ //XREF from previously transaction 
  'xref' => '22080513FY16RN16LM97FXX',
  );
 
@@ -2497,17 +2498,13 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
 
- //XREF from previously transaction (instalment)
+ //XREF from previously transaction
  'xref' => '22080513FY16RN16LM97FXX',
  );
 
@@ -2572,10 +2569,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2647,10 +2640,6 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2728,10 +2717,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2804,10 +2789,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2881,10 +2862,6 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
