@@ -2,6 +2,8 @@
 sidebar_position: 2
 
 ---
+import ReactPlayer from 'react-player'
+
 
 # Sample Code & Examples
 
@@ -1242,7 +1244,11 @@ function createSignature(array $data, $key)
 	return hash('SHA512', $ret . $key);
 }
 ```
+Video showing the above code sample highlighting some of the most important things:
 
+**Note**: In the case of the video a `paymentToken` is used. For a Direct integration, card details (Card Number, CVV, Expiry Date) are needed.
+
+<ReactPlayer playing controls url='/img/3DSexample.mov' width='100%' height='100%' />
 
 ## Gateway Wallet
 
@@ -2355,6 +2361,11 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
+
+ //Recurring Transaction Agreement (instalment) configuration
+ 'rtCycleDuration' => '3',
+ 'rtCycleDurationUnit' => 'week',
+ 'rtCycleCount' => '1', 
  );
 
  } else {
@@ -2416,17 +2427,13 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'recurring',
 
- //XREF from previously transaction (recurring) 
+ //XREF from previously transaction 
  'xref' => '22080513FY16RN16LM97FXX',
  );
 
@@ -2491,17 +2498,13 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
  'orderRef' => 'Test purchase',
  'rtAgreementType' => 'instalment',
 
- //XREF from previously transaction (instalment)
+ //XREF from previously transaction
  'xref' => '22080513FY16RN16LM97FXX',
  );
 
@@ -2566,10 +2569,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2641,10 +2640,6 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2722,10 +2717,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2798,10 +2789,6 @@ Gateway::$merchantSecret = '3obzOxdqw6e1u';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -2875,10 +2862,6 @@ Gateway::$directUrl = 'https://commerce-api.handpoint.com/direct/';
  'currencyCode' => 826,
  'countryCode' => 826,
  'amount' => 1999,
- 'cardNumber' => '5573471234567898',
- 'cardExpiryMonth' => 12,
- 'cardExpiryYear' => 24,
- 'cardCVV' => '159',
  'customerName' => 'Handpoint Test Customer',
  'customerAddress' => 'Merevale Avenue Leicester',
  'customerPostCode' => 'LE10 2BU',
@@ -3961,4 +3944,6 @@ $tran = array (
 
  ```
 
- 
+ ## Card Brand Icons {#cardBrandIcons} 
+
+Here you can find official images provided by card brands like [Mastercard](https://www.mastercard.com/brandcenter/en/download-artwork), [Maestro](https://www.mastercard.com/brandcenter/en/brand-requirements/maestro), [Visa](https://www.merchantsignage.visa.com/brand_guidelines), [Discover](https://discoversignage.com/free-signage-logos), [American Express](https://www.americanexpress.com/content/dam/amex/us/merchant/pdf/gms-stripe-pop-coverage.pdf), [JCB](https://www.jcb.co.jp/bdmanual/en/basicDesignElements/jcbEmblem/index01download01.html), [China UnionPay](https://www.unionpayintl.com/en/mediaCenter/brandCenter/artworkDownloadCenter/identification.shtml).
