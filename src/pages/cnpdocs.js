@@ -122,8 +122,8 @@ function MobileSdks() {
                 </div>
                 <div class="card__body">
                   <img style={{ height: '50px' }}
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/1022px-Android_robot.svg.png?20180121030125"
-                    alt="Image alt text"
+                    src="/img/android.png"
+                    alt="Android SDK"
                     title="Android" />
                 </div>
                 <div class="card__footer">
@@ -140,7 +140,7 @@ function MobileSdks() {
                 </div>
                 <div class="card__body">
                   <img style={{ height: '50px' }}
-                    src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png"
+                    src="/img/appleLogoBlack.svg"
                     alt="Image alt text"
                     title="iOS" />
                 </div>
@@ -193,7 +193,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://woocommerce.com" target='_blank'>
                       <img style={{ height: '50px'}}
-                      src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
+                      src="/img/wooCommerce.jpg"
                       alt="Image alt text"
                       title="WooCommerce" />
                       </a>
@@ -213,7 +213,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://woocommerce.com/products/woocommerce-subscriptions/" target='_blank'>
                       <img style={{ height: '25px' }}
-                      src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
+                      src="/img/wooCommerce.jpg"
                       alt="Image alt text"
                       title="WooCommerce" />
                       </a>
@@ -318,7 +318,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="http://www.prestashop.com/" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://www.prestashop.com/sites/all/themes/prestashop/images/logos/logo-fo-prestashop-colors.svg"
+                      src="/img/prestashop.jpg"
                       alt="Image alt text"
                       title="PrestaShop" />
                       </a>
@@ -338,7 +338,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://www.cs-cart.com" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://paylike.es/img/cscart.png"
+                      src="/img/cscart.jpg"
                       alt="Image alt text"
                       title="CS Cart" />
                       </a>
@@ -569,7 +569,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://www.admit-one.eu/images/admit-one_logo_red_rgb.svg"
+                        src="/img/admitOne.jpg"
                         alt="Image alt text"
                         title="admitOne" />
                     </div>
@@ -591,7 +591,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px'}}
                         src="https://support.pingidentity.com/servlet/servlet.FileDownload?file=00P1W00001Jyz4rUAB"
-                        alt="Image alt text"
+                        alt="Spreedly"
                         title="Spreedly" />
                     </div>
                     <div class="card__footer">
@@ -608,8 +608,8 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px' }}
-                        src="https://www.foxy.io/user/themes/default/assets/foxy_logo_preview.png"
-                        alt="Image alt text"
+                        src="../img/foxyio.png"
+                        alt="Foxy.io"
                         title="Foxy.io" />
                     </div>
                     <div class="card__footer">
@@ -632,24 +632,6 @@ function MobileSdks() {
                     </div>
                     <div class="card__footer">
                         <a href="https://www.eautomate.com/platform" target='_blank'>Website</a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-            <div class="col col--3 integrationOptions">
-              <div class="card-demo" >
-              <div class="card" style={{ height: '180px' }}>
-                    <div class="card__header">
-                        <h3>TAPN.TO</h3>
-                    </div>
-                    <div class="card__body">
-                        <img style={{height: '50px'}}
-                        src="https://www.tapnto.co.uk/bl-themes/tapnto/img/TNTlogo_Purple_Black.svg"
-                        alt="Image alt text"
-                        title="TAPN.TO" />
-                    </div>
-                    <div class="card__footer">
-                        <a href="https://www.tapnto.co.uk" target='_blank'>Website</a>
                     </div>
                   </div>
               </div>
@@ -748,7 +730,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://svgarchive.com/wp-content/uploads/perl-programming-language.svg"
+                        src="/img/perl.png"
                         alt="Image alt text"
                         title="Perl" />
                     </div>
@@ -787,7 +769,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px'}}
-                        src="https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg"
+                        src="/img/nodejs.svg"
                         alt="Image alt text"
                         title="NodeJS" />
                     </div>
@@ -823,7 +805,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Swift_logo.svg/191px-Swift_logo.svg.png?20210606004230"
+                        src="/img/appleLogoBlack.svg"
                         alt="Image alt text"
                         title="Swift" />
                     </div>

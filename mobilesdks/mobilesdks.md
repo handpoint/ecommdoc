@@ -49,7 +49,7 @@ CryptoSwift must be included as a Framework dependency. We have provided CryptoS
      </div>
      <div class="card__body">
       <img style={{ height: '50px'}}
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Android_robot.svg/1022px-Android_robot.svg.png?20180121030125"
+        src="/img/android.png"
         alt="Image alt text"
         title="Android SDK" />
      </div>
@@ -67,7 +67,7 @@ CryptoSwift must be included as a Framework dependency. We have provided CryptoS
      </div>
      <div class="card__body">
       <img style={{ height: '50px'}}
-        src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png"
+        src="/img/appleLogoBlack.svg"
         alt="Image alt text"
         title="iOS SDK" />
      </div>
