@@ -29,7 +29,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="https://woocommerce.com">
                   <img style={{ height: '50px'}}
-                  src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
+                  src="/img/wooCommerce.jpg"
                   alt="Image alt text"
                   title="WooCommerce" />
                   </a>
@@ -48,8 +48,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                </div>
                <div class="card__body">
                <a href="https://woocommerce.com/products/woocommerce-subscriptions/">
-                  <img style={{ height: '25px' }}
-                  src="https://woocommerce.com/wp-content/themes/woo/images/logo-woocommerce.svg"
+                  <img style={{ height: '50px' }}
+                  src="/img/wooCommerce.jpg"
                   alt="Image alt text"
                   title="WooCommerce" />
                   </a>
@@ -174,7 +174,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="https://www.cs-cart.com">
                   <img style={{ height: '50px' }}
-                  src="https://paylike.es/img/cscart.png"
+                  src="/img/cscart.jpg"
                   alt="Image alt text"
                   title="CS Cart" />
                   </a>
@@ -453,7 +453,7 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{ height: '50px' }}
-                  src="https://www.foxy.io/user/themes/default/assets/foxy_logo_preview.png"
+                  src="/img/foxyio.png"
                   alt="Image alt text"
                   title="Foxy.io" />
                </div>
@@ -477,24 +477,6 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__footer">
                   <a href="https://www.eautomate.com/platform">Website</a>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col col--3">
-         <div class="card-demo" >
-            <div class="card shadow--md" >
-               <div class="card__header">
-                  <h3>TAPN.TO</h3>
-               </div>
-               <div class="card__body">
-                  <img style={{height: '50px'}}
-                  src="https://www.tapnto.co.uk/bl-themes/tapnto/img/TNTlogo_Purple_Black.svg"
-                  alt="Image alt text"
-                  title="TAPN.TO" />
-               </div>
-               <div class="card__footer">
-                  <a href="https://www.tapnto.co.uk">Website</a>
                </div>
             </div>
          </div>
