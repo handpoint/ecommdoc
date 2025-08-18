@@ -51,9 +51,6 @@ const config = {
     ],
   ],
   scripts: [
-    // String format.
-    'https:////js-eu1.hs-scripts.com/25846579.js',
-    
   ],
   plugins: [
     [
