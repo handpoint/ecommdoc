@@ -43,17 +43,10 @@ const config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-        gtag: {
-          trackingID: 'G-RNDFP191TE',
-          anonymizeIP: true,
-        },
       },
     ],
   ],
   scripts: [
-    // String format.
-    'https:////js-eu1.hs-scripts.com/25846579.js',
-    
   ],
   plugins: [
     [
