@@ -245,3 +245,60 @@ html[data-theme='dark'] {
 .handpointGradient{
   background: linear-gradient(248.33deg, #FFF5EB4d -6.24%, #EDE2DE4d 44.52%, #7A9BE84d 116.8%);
 }
+
+
+/* ── Version Toggle (Legacy / New) ──────────── */
+
+:root {
+  --handpoint-orange: #F5821F;
+  --handpoint-orange-dark: #C46010;
+}
+
+.navbar-version-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  padding: 2px;
+  gap: 0;
+  margin-left: 0.25rem;
+}
+
+.navbar-version-toggle__option {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 11px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 18px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none !important;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  line-height: 1.6;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.navbar-version-toggle__option:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  text-decoration: none !important;
+}
+
+.navbar-version-toggle__option--active {
+  background: var(--handpoint-orange);
+  color: #fff !important;
+  cursor: default;
+}
+
+.navbar-version-toggle__option--active:hover {
+  background: var(--handpoint-orange);
+}
+
+@media (max-width: 996px) {
+  .navbar-version-toggle {
+    display: none;
+  }
+}

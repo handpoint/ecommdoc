@@ -198,6 +198,10 @@ const config = {
             label: 'GitHub',
             position: 'right',
           },
+          {
+            type: 'custom-VersionToggle',
+            position: 'right',
+          },
         ],
       },
       footer: {
