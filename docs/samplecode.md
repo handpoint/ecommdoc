@@ -1377,6 +1377,186 @@ $tran = array (
 
  ```
 
+---
+
+## Server-side HPP quick-start
+
+The HTML form examples above use hardcoded signatures for illustration only. In production the signature must always be generated server-side from live request data. Below are self-contained PHP and Node.js examples that sign the request dynamically and verify the gateway callback.
+
+### PHP — sign and render the form
+
+```php
+<?php
+// Keep credentials in environment variables, never in source code
+define('MERCHANT_ID',     getenv('HP_MERCHANT_ID'));
+define('MERCHANT_SECRET', getenv('HP_MERCHANT_SECRET'));
+define('HOSTED_URL',      'https://commerce-api.handpoint.com/hosted/');
+
+function sign(array $fields): string {
+    ksort($fields);  // ASCII byte order — must match gateway sort
+    $str = http_build_query($fields, '', '&');
+    $str = preg_replace('/%0D%0A|%0A%0D|%0D/i', '%0A', $str);
+    return hash('SHA512', $str . MERCHANT_SECRET);
+}
+
+$request = [
+    'merchantID'   => MERCHANT_ID,
+    'action'       => 'SALE',
+    'type'         => 1,            // 1 = ECOM
+    'currencyCode' => 978,          // EUR  (826 = GBP)
+    'countryCode'  => 276,          // DE   (826 = UK)
+    'amount'       => 1099,         // €10.99 in cents
+    'orderRef'     => 'order-' . bin2hex(random_bytes(8)),
+    'redirectURL'  => 'https://yoursite.com/payment/return',
+    'callbackURL'  => 'https://yoursite.com/payment/callback',
+];
+$request['signature'] = sign($request);
+?>
+<form method="post" action="<?= HOSTED_URL ?>" data-hostedforms-modal>
+  <?php foreach ($request as $k => $v): ?>
+    <input type="hidden" name="<?= htmlspecialchars($k) ?>" value="<?= htmlspecialchars($v) ?>">
+  <?php endforeach; ?>
+  <button type="submit">Pay Now</button>
+</form>
+<script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedforms.min.js"></script>
+```
+
+### PHP — verify the callback
+
+The gateway POSTs to `callbackURL` server-to-server after every transaction. Always verify the signature before updating your database.
+
+```php
+<?php
+// callback.php
+define('MERCHANT_SECRET', getenv('HP_MERCHANT_SECRET'));
+
+$response = $_POST;
+$received = $response['signature'] ?? '';
+unset($response['signature']);
+
+// Partial signatures contain a | separator — handle them
+if (strpos($received, '|') !== false) {
+    [$received, $fieldList] = explode('|', $received, 2);
+    $response = array_intersect_key($response, array_flip(explode(',', $fieldList)));
+}
+
+ksort($response);
+$str = http_build_query($response, '', '&');
+$str = preg_replace('/%0D%0A|%0A%0D|%0D/i', '%0A', $str);
+$expected = hash('SHA512', $str . MERCHANT_SECRET);
+
+if (!hash_equals($expected, $received)) {
+    http_response_code(400);
+    exit;
+}
+
+$code = (int)($_POST['responseCode'] ?? -1);
+if ($code === 0) {
+    $xref          = $_POST['xref'];           // store — required for refunds
+    $transactionID = $_POST['transactionID'];  // store — for reconciliation
+    // update your order in the database here
+}
+
+// Always return 200. The gateway retries on any non-2xx response.
+http_response_code(200);
+```
+
+### Node.js — sign and render the form
+
+```javascript
+// checkout.js — Express route
+const crypto = require('crypto');
+
+const MERCHANT_ID     = process.env.HP_MERCHANT_ID;
+const MERCHANT_SECRET = process.env.HP_MERCHANT_SECRET;
+const HOSTED_URL      = 'https://commerce-api.handpoint.com/hosted/';
+
+function sign(fields) {
+    // Sort by key in ASCII byte order — matches PHP ksort()
+    const sorted = Object.fromEntries(
+        Object.entries(fields).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    );
+    // URLSearchParams encodes spaces as + (application/x-www-form-urlencoded)
+    // which matches PHP http_build_query behaviour
+    let str = new URLSearchParams(sorted).toString();
+    str = str.replace(/%0D%0A|%0A%0D|%0D/gi, '%0A');
+    return crypto.createHash('sha512').update(str + MERCHANT_SECRET).digest('hex');
+}
+
+app.get('/checkout', (req, res) => {
+    const request = {
+        merchantID:   MERCHANT_ID,
+        action:       'SALE',
+        type:         1,
+        currencyCode: 978,
+        countryCode:  276,
+        amount:       1099,
+        orderRef:     'order-' + crypto.randomBytes(8).toString('hex'),
+        redirectURL:  'https://yoursite.com/payment/return',
+        callbackURL:  'https://yoursite.com/payment/callback',
+    };
+    request.signature = sign(request);
+
+    const inputs = Object.entries(request)
+        .map(([k, v]) => `<input type="hidden" name="${k}" value="${String(v).replace(/"/g, '&quot;')}">`)
+        .join('\n    ');
+
+    res.send(`<!doctype html><html><body>
+  <form method="post" action="${HOSTED_URL}" data-hostedforms-modal>
+    ${inputs}
+    <button type="submit">Pay Now</button>
+  </form>
+  <script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedforms.min.js"></script>
+</body></html>`);
+});
+```
+
+### Node.js — verify the callback
+
+```javascript
+// POST /payment/callback — server-to-server notification from gateway
+app.post('/payment/callback', express.urlencoded({ extended: false }), (req, res) => {
+    const params = { ...req.body };
+    let received = params.signature;
+    delete params.signature;
+
+    if (!received) return res.sendStatus(400);
+
+    let fields = params;
+    // Handle partial signatures (HPP callback responses are often partially signed)
+    if (received.includes('|')) {
+        const [sig, fieldList] = received.split('|');
+        fields = Object.fromEntries(fieldList.split(',').map(k => [k, params[k]]));
+        received = sig;
+    }
+
+    const sorted = Object.fromEntries(
+        Object.entries(fields).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    );
+    let str = new URLSearchParams(sorted).toString();
+    str = str.replace(/%0D%0A|%0A%0D|%0D/gi, '%0A');
+    const expected = crypto.createHash('sha512').update(str + MERCHANT_SECRET).digest('hex');
+
+    try {
+        if (!crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(received))) {
+            return res.sendStatus(400);
+        }
+    } catch {
+        return res.sendStatus(400);
+    }
+
+    const code = parseInt(req.body.responseCode, 10);
+    if (code === 0) {
+        const { xref, transactionID, orderRef } = req.body;
+        // store xref for future refunds; store transactionID for reconciliation
+    }
+
+    res.sendStatus(200); // gateway retries on non-2xx
+});
+```
+
+---
+
  ## Card Brand Icons {#cardBrandIcons} 
 
 Here you can find official images provided by card brands like [Mastercard](https://www.mastercard.com/brandcenter/en/download-artwork), [Maestro](https://www.mastercard.com/brandcenter/en/brand-requirements/maestro), [Visa](https://www.merchantsignage.visa.com/brand_guidelines), [Discover](https://discoversignage.com/free-signage-logos), [American Express](https://www.americanexpress.com/content/dam/amex/us/merchant/pdf/gms-stripe-pop-coverage.pdf), [JCB](https://www.jcb.co.jp/bdmanual/en/basicDesignElements/jcbEmblem/index01download01.html), [China UnionPay](https://www.unionpayintl.com/en/mediaCenter/brandCenter/artworkDownloadCenter/identification.shtml).

@@ -4592,6 +4592,224 @@ $tran = array (
 
  ```
 
+---
+
+## JavaScript + Node.js — Hosted Payment Fields end-to-end
+
+A self-contained example of the full HPF flow: the library renders iFrame card fields in the browser, tokenises the card, and posts the `paymentToken` to your server which calls the gateway directly. This keeps raw card data out of your server entirely.
+
+### Frontend — checkout page
+
+```html
+<!doctype html>
+<html>
+<head>
+  <script src="https://commerce-api.handpoint.com/sdk/web/v1/js/hostedfields.min.js"></script>
+  <style>
+    .field-container { border: 1px solid #ccc; padding: 8px; border-radius: 4px; height: 40px; }
+  </style>
+</head>
+<body>
+  <form id="payment-form">
+    <label>Card number
+      <div id="card-number" class="field-container"></div>
+    </label>
+    <label>Expiry
+      <div id="card-expiry" class="field-container"></div>
+    </label>
+    <label>CVV
+      <div id="card-cvv" class="field-container"></div>
+    </label>
+    <label>Name on card
+      <input id="cardholder-name" type="text" placeholder="Jane Doe">
+    </label>
+    <button type="submit" id="pay-btn">Pay €10.99</button>
+    <p id="error-msg" style="color:red;display:none"></p>
+  </form>
+
+  <script>
+    // Initialise the hosted fields — iFrames are injected into the containers above
+    const hf = window.hostedFields.create({
+      merchantID: 'YOUR_MERCHANT_ID',
+      fields: {
+        cardNumber:     { container: '#card-number',  type: 'tel', placeholder: '•••• •••• •••• ••••' },
+        cardExpiryDate: { container: '#card-expiry',  type: 'tel', placeholder: 'MM / YY' },
+        cardCVV:        { container: '#card-cvv',     type: 'tel', placeholder: '•••' },
+      },
+    });
+
+    document.getElementById('payment-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('pay-btn');
+      btn.disabled = true;
+
+      // Tokenise — sends card data directly from the iFrame to the gateway
+      const { paymentToken, error } = await hf.getToken();
+      if (error) {
+        document.getElementById('error-msg').textContent = error.message;
+        document.getElementById('error-msg').style.display = '';
+        btn.disabled = false;
+        return;
+      }
+
+      // POST token to your server — card data never touches your origin
+      const resp = await fetch('/checkout/hpf', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          paymentToken,
+          customerName: document.getElementById('cardholder-name').value,
+        }),
+      });
+
+      const result = await resp.json();
+
+      if (result.threeDSURL) {
+        // 3DS challenge — redirect browser to ACS
+        window.location.href = result.threeDSURL;
+        return;
+      }
+      if (result.success) {
+        window.location.href = '/checkout/success?txn=' + result.transactionID;
+        return;
+      }
+      document.getElementById('error-msg').textContent = result.message || 'Payment declined.';
+      document.getElementById('error-msg').style.display = '';
+      btn.disabled = false;
+    });
+  </script>
+</body>
+</html>
+```
+
+### Backend — Node.js Express server
+
+```javascript
+// server.js
+const express       = require('express');
+const crypto        = require('crypto');
+const https         = require('https');
+const session       = require('express-session');
+
+const app = express();
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const MERCHANT_ID     = process.env.HP_MERCHANT_ID;
+const MERCHANT_SECRET = process.env.HP_MERCHANT_SECRET;
+const DIRECT_URL      = 'https://commerce-api.handpoint.com/direct/';
+const BASE_URL        = 'https://yoursite.com';
+
+function sign(fields) {
+    const sorted = Object.fromEntries(
+        Object.entries(fields).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    );
+    let str = new URLSearchParams(sorted).toString();
+    str = str.replace(/%0D%0A|%0A%0D|%0D/gi, '%0A');
+    return crypto.createHash('sha512').update(str + MERCHANT_SECRET).digest('hex');
+}
+
+async function directRequest(fields) {
+    const request = { merchantID: MERCHANT_ID, ...fields };
+    request.signature = sign(request);
+    const body = new URLSearchParams(request).toString();
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(DIRECT_URL, {
+            method:  'POST',
+            headers: {
+                'Content-Type':   'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(body),
+            },
+        }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                const r = Object.fromEntries(new URLSearchParams(data));
+                r.responseCode = parseInt(r.responseCode, 10);
+                resolve(r);
+            });
+        });
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+    });
+}
+
+// Step 1 — receive paymentToken from browser, send to gateway
+app.post('/checkout/hpf', async (req, res) => {
+    const { paymentToken, customerName } = req.body;
+
+    let response;
+    try {
+        response = await directRequest({
+            action:             'SALE',
+            type:               1,
+            currencyCode:       978,   // EUR
+            countryCode:        276,   // DE
+            amount:             1099,  // €10.99
+            paymentToken,              // replaces cardNumber + cardExpiry + cardCVV
+            customerName,
+            customerEmail:      req.body.email || '',
+            orderRef:           'order-' + crypto.randomBytes(6).toString('hex'),
+            remoteAddress:      req.ip,
+            threeDSRedirectURL: BASE_URL + '/checkout/3ds?sid=' + req.sessionID,
+        });
+    } catch (err) {
+        return res.json({ success: false, message: 'Gateway unreachable' });
+    }
+
+    req.session.pendingHpfResponse = response;
+
+    if (response.responseCode === 65802) {
+        // 3DS challenge — tell the browser to redirect to the ACS URL
+        return res.json({ threeDSURL: response.threeDSURL });
+    }
+
+    if (response.responseCode === 0) {
+        delete req.session.pendingHpfResponse;
+        return res.json({ success: true, transactionID: response.transactionID });
+    }
+
+    res.json({ success: false, message: response.responseMessage });
+});
+
+// Step 2 — browser returns from ACS; complete 3DS and get final result
+app.post('/checkout/3ds', async (req, res) => {
+    if (req.query.sid) req.session.id = req.query.sid;
+
+    const pending = req.session.pendingHpfResponse;
+    if (!pending) return res.redirect('/checkout');
+
+    let response;
+    try {
+        response = await directRequest({
+            ...pending,
+            threeDSResponse: JSON.stringify(req.body),
+        });
+    } catch {
+        return res.redirect('/checkout/error');
+    }
+
+    delete req.session.pendingHpfResponse;
+
+    if (response.responseCode === 0) {
+        return res.redirect('/checkout/success?txn=' + response.transactionID);
+    }
+    res.redirect('/checkout/declined');
+});
+
+// Success and error pages
+app.get('/checkout/success', (req, res) => {
+    res.send('Payment successful! Transaction ID: ' + req.query.txn);
+});
+
+app.listen(3000);
+```
+
+---
+
 ## Card Brand Icons {#cardBrandIcons} 
 
 Here you can find official images provided by card brands like [Mastercard](https://www.mastercard.com/brandcenter/en/download-artwork), [Maestro](https://www.mastercard.com/brandcenter/en/brand-requirements/maestro), [Visa](https://www.merchantsignage.visa.com/brand_guidelines), [Discover](https://discoversignage.com/free-signage-logos), [American Express](https://www.americanexpress.com/content/dam/amex/us/merchant/pdf/gms-stripe-pop-coverage.pdf), [JCB](https://www.jcb.co.jp/bdmanual/en/basicDesignElements/jcbEmblem/index01download01.html), [China UnionPay](https://www.unionpayintl.com/en/mediaCenter/brandCenter/artworkDownloadCenter/identification.shtml).
