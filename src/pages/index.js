@@ -527,24 +527,6 @@ function MobileSdks() {
             </div>
             <div class="col col--3 integrationOptions">
               <div class="card-demo" >
-              <div class="card" style={{ height: '180px' }}>
-                    <div class="card__header">
-                        <h3>Clickartpro</h3>
-                    </div>
-                    <div class="card__body">
-                        <img style={{ height: '50px' }}
-                        src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
-                        alt="ClickCartPro logo"
-                        title="Clickartpro" />
-                    </div>
-                    <div class="card__footer">
-                        <a href="http://www.clickcartpro.co.uk" target='_blank'>Website</a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-            <div class="col col--3 integrationOptions">
-              <div class="card-demo" >
               <div class="card" style={{ height: '180px'}}>
                     <div class="card__header">
                         <h3>nopCommerce</h3>
@@ -590,8 +572,8 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px'}}
-                        src="https://support.pingidentity.com/servlet/servlet.FileDownload?file=00P1W00001Jyz4rUAB"
-                        alt="Spreedly"
+                        src="/img/Spreedly LOGO.png"
+                        alt="Spreedly logo"
                         title="Spreedly" />
                     </div>
                     <div class="card__footer">
@@ -626,7 +608,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://www.eautomate.com/Media/Images/Platforms%20and%20Services/automate-head.png"
+                        src="/img/Eautomate logo.png"
                         alt="eautomate logo"
                         title="eautomate" />
                     </div>

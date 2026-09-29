@@ -374,24 +374,6 @@ For support, please contact the module developers directly.
          <div class="card-demo" >
             <div class="card shadow--md" >
                <div class="card__header">
-                  <h3>Clickartpro</h3>
-               </div>
-               <div class="card__body">
-                  <img style={{ height: '50px' }}
-                  src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
-                  alt="Clickartpro Logo"
-                  title="Clickartpro" />
-               </div>
-               <div class="card__footer">
-                  <a href="http://www.clickcartpro.co.uk">Website</a>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="col col--3">
-         <div class="card-demo" >
-            <div class="card shadow--md" >
-               <div class="card__header">
                   <h3>nopCommerce</h3>
                </div>
                <div class="card__body">
