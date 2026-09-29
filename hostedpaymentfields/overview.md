@@ -19,7 +19,7 @@ The Hosted payment fields integration method supports digital wallets like **Goo
 Below is an example of what an hosted payment fields integration can look like, the UI is fully in your control, we only take care of swapping the content of the card number and CVV with a token so you are never touching sensitive card data:
 
 <div align="center">
-<img src="/img/hosted-payment-fields.png"></img>
+<img src="/img/hosted-payment-fields.png" alt="Hosted Payment Fields diagram"></img>
 </div>
 
 

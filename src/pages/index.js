@@ -141,7 +141,7 @@ function MobileSdks() {
                 <div class="card__body">
                   <img style={{ height: '50px' }}
                     src="/img/appleLogoBlack.svg"
-                    alt="Image alt text"
+                    alt="iOS SDK logo"
                     title="iOS" />
                 </div>
                 <div class="card__footer">
@@ -194,7 +194,7 @@ function MobileSdks() {
                     <a href="https://woocommerce.com" target='_blank'>
                       <img style={{ height: '50px'}}
                       src="/img/wooCommerce.jpg"
-                      alt="Image alt text"
+                      alt="WooCommerce logo"
                       title="WooCommerce" />
                       </a>
                     </div>
@@ -214,7 +214,7 @@ function MobileSdks() {
                     <a href="https://woocommerce.com/products/woocommerce-subscriptions/" target='_blank'>
                       <img style={{ height: '25px' }}
                       src="/img/wooCommerce.jpg"
-                      alt="Image alt text"
+                      alt="WooCommerce logo"
                       title="WooCommerce" />
                       </a>
                     </div>
@@ -234,8 +234,8 @@ function MobileSdks() {
                       <a href="https://www.zen-cart.com/" target='_blank'>
                       <img style={{height: '50px'}}
                       src="https://www.zen-cart.com/images/styles/zencart/style/zen-cart-logo.png"
-                      alt="Image alt text"
-                      title="ZenCart" 
+                      alt="Zen Cart logo"
+                      title="ZenCart"
                       />
                       </a>
                     </div>
@@ -255,7 +255,7 @@ function MobileSdks() {
                     <a href="https://www.cubecart.com/" target='_blank'>
                       <img style={{height: '50px'}}
                       src="https://s3.ap-southeast-1.amazonaws.com/easyparcel-static/Public/source/general/img/integrations/2018-06/cubecart.png"
-                      alt="Image alt text"
+                      alt="CubeCart logo"
                       title="CubeCart" />
                       </a>
                     </div>
@@ -279,7 +279,7 @@ function MobileSdks() {
                         <a href="http://www.opencart.com/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://www.opencart.com/application/view/image/icon/opencart-logo.png"
-                      alt="Image alt text"
+                      alt="OpenCart logo"
                       title="opencart" />
                       </a>
                     </div>
@@ -299,7 +299,7 @@ function MobileSdks() {
                     <a href="https://business.adobe.com/products/magento/magento-commerce.html" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magento_Logo.svg/640px-Magento_Logo.svg.png"
-                      alt="Image alt text"
+                      alt="Magento logo"
                       title="Magento" />
                       </a>
                     </div>
@@ -319,7 +319,7 @@ function MobileSdks() {
                     <a href="http://www.prestashop.com/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="/img/prestashop.jpg"
-                      alt="Image alt text"
+                      alt="PrestaShop logo"
                       title="PrestaShop" />
                       </a>
                     </div>
@@ -339,7 +339,7 @@ function MobileSdks() {
                     <a href="https://www.cs-cart.com" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="/img/cscart.jpg"
-                      alt="Image alt text"
+                      alt="CS-Cart logo"
                       title="CS Cart" />
                       </a>
                     </div>
@@ -363,7 +363,7 @@ function MobileSdks() {
                     <a href="https://www.x-cart.com" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Xc-color.svg/1200px-Xc-color.svg.png"
-                      alt="Image alt text"
+                      alt="X-Cart logo"
                       title="XCart" />
                       </a>
                     </div>
@@ -383,7 +383,7 @@ function MobileSdks() {
                     <a href="https://www.oscommerce.com" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://www.oscommerce.com/images/oscommerce_black.png"
-                      alt="Image alt text"
+                      alt="osCommerce logo"
                       title="Oscommerce" />
                       </a>
                     </div>
@@ -403,7 +403,7 @@ function MobileSdks() {
                     <a href="https://www.drupal.org/project/ubercart" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://www.drupal.org/files/styles/grid-3-2x/public/project-images/logo_6.png?itok=ZMFI2Wc3"
-                      alt="Image alt text"
+                      alt="Drupal logo"
                       title="Übercart" />
                       </a>
                     </div>
@@ -423,7 +423,7 @@ function MobileSdks() {
                     <a href="https://drupalcommerce.org/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://drupalcommerce.org/sites/default/files/dclogo_stacked_2c_on_white.png"
-                      alt="Image alt text"
+                      alt="Drupal Commerce logo"
                       title="Drupal" />
                       </a>
                     </div>
@@ -447,7 +447,7 @@ function MobileSdks() {
                     <a href="https://www.hikashop.com/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://www.hikashop.com/images/branding/hikashop_logo1.png"
-                      alt="Image alt text"
+                      alt="HikaShop logo"
                       title="HikaShop" />
                       </a>
                     </div>
@@ -467,7 +467,7 @@ function MobileSdks() {
                     <a href="https://www.cartthrob.com/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://image4.owler.com/logo/cartthrob_owler_20160302_231245_original.png"
-                      alt="Image alt text"
+                      alt="CartThrob logo"
                       title="carthrob" />
                       </a>
                     </div>
@@ -487,7 +487,7 @@ function MobileSdks() {
                     <a href="https://www.shopware.com/en/" target='_blank'>
                       <img style={{ height: '50px' }}
                       src="https://assets.shopware.com/media/logos/shopware_logo_blue.svg"
-                      alt="Image alt text"
+                      alt="Shopware logo"
                       title="shopware" />
                       </a>
                     </div>
@@ -516,7 +516,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px'}}
                         src="https://www.ekm.com/images/images-new/logo/ekm-logo-blue.svg"
-                        alt="Image alt text"
+                        alt="EKM logo"
                         title="ekm" />
                     </div>
                     <div class="card__footer">
@@ -534,7 +534,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px' }}
                         src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
-                        alt="Image alt text"
+                        alt="ClickCartPro logo"
                         title="Clickartpro" />
                     </div>
                     <div class="card__footer">
@@ -552,7 +552,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="https://www.nopcommerce.com/Themes/OfficialSite/Content/images/logo.svg"
-                        alt="Image alt text"
+                        alt="nopCommerce logo"
                         title="nopCommerce" />
                     </div>
                     <div class="card__footer">
@@ -570,7 +570,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="/img/admitOne.jpg"
-                        alt="Image alt text"
+                        alt="admitOne logo"
                         title="admitOne" />
                     </div>
                     <div class="card__footer">
@@ -627,7 +627,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="https://www.eautomate.com/Media/Images/Platforms%20and%20Services/automate-head.png"
-                        alt="Image alt text"
+                        alt="eautomate logo"
                         title="eautomate" />
                     </div>
                     <div class="card__footer">
@@ -677,7 +677,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px'}}
                         src="https://www.php.net/images/logos/new-php-logo.svg"
-                        alt="Image alt text"
+                        alt="PHP logo"
                         title="PHP" />
                     </div>
                     <div class="card__footer">
@@ -695,7 +695,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px' }}
                         src="https://docs.microsoft.com/cs-cz/windows/images/csharp-logo.png"
-                        alt="Image alt text"
+                        alt="C# logo"
                         title="C#" />
                     </div>
                     <div class="card__footer">
@@ -713,7 +713,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="https://seeklogo.com/images/J/java-logo-41D4155FC3-seeklogo.com.png"
-                        alt="Image alt text"
+                        alt="Java logo"
                         title="Java" />
                     </div>
                     <div class="card__footer">
@@ -731,7 +731,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="/img/perl.png"
-                        alt="Image alt text"
+                        alt="Perl logo"
                         title="Perl" />
                     </div>
                     <div class="card__footer">
@@ -752,7 +752,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px'}}
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png"
-                        alt="Image alt text"
+                        alt="Python logo"
                         title="Python" />
                     </div>
                     <div class="card__footer">
@@ -770,7 +770,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{ height: '50px'}}
                         src="/img/nodejs.svg"
-                        alt="Image alt text"
+                        alt="NodeJS logo"
                         title="NodeJS" />
                     </div>
                     <div class="card__footer">
@@ -788,7 +788,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ruby_logo.svg/198px-Ruby_logo.svg.png?20101129171534"
-                        alt="Image alt text"
+                        alt="Ruby logo"
                         title="Ruby" />
                     </div>
                     <div class="card__footer">
@@ -806,7 +806,7 @@ function MobileSdks() {
                     <div class="card__body">
                         <img style={{height: '50px'}}
                         src="/img/appleLogoBlack.svg"
-                        alt="Image alt text"
+                        alt="Swift logo"
                         title="Swift" />
                     </div>
                     <div class="card__footer">

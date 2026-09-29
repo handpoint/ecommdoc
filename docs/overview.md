@@ -18,10 +18,10 @@ By using the hosted payment page integration, **you are kept out of the EMV 3D-S
  Two very important limitations of the Hosted Payment Page integration are that **Google & Apple Pay as well as subscription payments are NOT supported**. A separate Direct integration or Hosted Payment Fields integration will be required to support digital wallets and/or recurring payments. 
 
 <div align="center">
-<img src="/img/hosted_payment_page.png"></img>
+<img src="/img/hosted_payment_page.png" alt="Hosted Payment Page"></img>
 </div>
 <div align="center">
- <img src="/img/hosted_payment_page_modal.png"></img>
+ <img src="/img/hosted_payment_page_modal.png" alt="Hosted Payment Page modal"></img>
 </div>
 
 
