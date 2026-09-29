@@ -233,7 +233,7 @@ function MobileSdks() {
                     <div class="card__body">
                       <a href="https://www.zen-cart.com/" target='_blank'>
                       <img style={{height: '50px'}}
-                      src="https://www.zen-cart.com/images/styles/zencart/style/zen-cart-logo.png"
+                      src="/img/zencart.png"
                       alt="Zen Cart logo"
                       title="ZenCart"
                       />
@@ -298,7 +298,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://business.adobe.com/products/magento/magento-commerce.html" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magento_Logo.svg/640px-Magento_Logo.svg.png"
+                      src="/img/Magento_Logo.png"
                       alt="Magento logo"
                       title="Magento" />
                       </a>
@@ -362,7 +362,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://www.x-cart.com" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Xc-color.svg/1200px-Xc-color.svg.png"
+                      src="/img/xcart.svg"
                       alt="X-Cart logo"
                       title="XCart" />
                       </a>
@@ -486,7 +486,7 @@ function MobileSdks() {
                     <div class="card__body">
                     <a href="https://www.shopware.com/en/" target='_blank'>
                       <img style={{ height: '50px' }}
-                      src="https://assets.shopware.com/media/logos/shopware_logo_blue.svg"
+                      src="/img/Shopware_Logo.png"
                       alt="Shopware logo"
                       title="shopware" />
                       </a>
@@ -515,7 +515,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px'}}
-                        src="https://www.ekm.com/images/images-new/logo/ekm-logo-blue.svg"
+                        src="/img/ekm-logo-blue.svg"
                         alt="EKM logo"
                         title="ekm" />
                     </div>
@@ -551,7 +551,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://www.nopcommerce.com/Themes/OfficialSite/Content/images/logo.svg"
+                        src="/img/nopcommerce.jpg"
                         alt="nopCommerce logo"
                         title="nopCommerce" />
                     </div>
@@ -608,7 +608,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px' }}
-                        src="../img/foxyio.png"
+                        src="/img/foxyio.png"
                         alt="Foxy.io"
                         title="Foxy.io" />
                     </div>
@@ -751,7 +751,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{ height: '50px'}}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png"
+                        src="/img/python.png"
                         alt="Python logo"
                         title="Python" />
                     </div>
@@ -787,7 +787,7 @@ function MobileSdks() {
                     </div>
                     <div class="card__body">
                         <img style={{height: '50px'}}
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ruby_logo.svg/198px-Ruby_logo.svg.png?20101129171534"
+                        src="/img/ruby.svg"
                         alt="Ruby logo"
                         title="Ruby" />
                     </div>

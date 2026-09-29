@@ -30,7 +30,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://woocommerce.com">
                   <img style={{ height: '50px'}}
                   src="/img/wooCommerce.jpg"
-                  alt="Image alt text"
+                  alt="wooCommerce Logo"
                   title="WooCommerce" />
                   </a>
                </div>
@@ -50,7 +50,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://woocommerce.com/products/woocommerce-subscriptions/">
                   <img style={{ height: '50px' }}
                   src="/img/wooCommerce.jpg"
-                  alt="Image alt text"
+                  alt="wooCommerce Logo"
                   title="WooCommerce" />
                   </a>
                </div>
@@ -69,8 +69,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                   <a href="https://www.zen-cart.com/">
                   <img style={{height: '50px'}}
-                  src="https://www.zen-cart.com/images/styles/zencart/style/zen-cart-logo.png"
-                  alt="Image alt text"
+                  src="/img/zencart.png"
+                  alt="ZenCart Logo"
                   title="ZenCart" 
                   />
                   </a>
@@ -91,7 +91,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://www.cubecart.com/">
                   <img style={{height: '50px'}}
                   src="https://s3.ap-southeast-1.amazonaws.com/easyparcel-static/Public/source/general/img/integrations/2018-06/cubecart.png"
-                  alt="Image alt text"
+                  alt="CubeCart Logo"
                   title="CubeCart" />
                   </a>
                </div>
@@ -115,7 +115,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                     <a href="http://www.opencart.com/">
                   <img style={{ height: '50px' }}
                   src="https://www.opencart.com/application/view/image/icon/opencart-logo.png"
-                  alt="Image alt text"
+                  alt="opencart Logo"
                   title="opencart" />
                   </a>
                </div>
@@ -134,8 +134,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="https://business.adobe.com/products/magento/magento-commerce.html">
                   <img style={{ height: '50px' }}
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magento_Logo.svg/640px-Magento_Logo.svg.png"
-                  alt="Image alt text"
+                  src="/img/Magento_Logo.png"
+                  alt="Magento Logo"
                   title="Magento" />
                   </a>
                </div>
@@ -154,8 +154,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="http://www.prestashop.com/">
                   <img style={{ height: '50px' }}
-                  src="	https://www.sdi.es/wp-content/uploads/2023/05/PREST_LOGO_RVB_noir.svg"
-                  alt="Image alt text"
+                  src="/img/prestashop.jpg"
+                  alt="PrestaShop Logo"
                   title="PrestaShop" />
                   </a>
                </div>
@@ -175,7 +175,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://www.cs-cart.com">
                   <img style={{ height: '50px' }}
                   src="/img/cscart.jpg"
-                  alt="Image alt text"
+                  alt="CS Cart Logo"
                   title="CS Cart" />
                   </a>
                </div>
@@ -198,8 +198,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="https://www.x-cart.com">
                   <img style={{ height: '50px' }}
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Xc-color.svg/1200px-Xc-color.svg.png"
-                  alt="Image alt text"
+                  src="/img/xcart.svg"
+                  alt="XCart Logo"
                   title="XCart" />
                   </a>
                </div>
@@ -219,7 +219,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                 <a href="https://www.oscommerce.com">
                   <img style={{ height: '50px' }}
                   src="https://www.oscommerce.com/images/oscommerce_black.png"
-                  alt="Image alt text"
+                  alt="Oscommerce Logo"
                   title="Oscommerce" />
                   </a>
                </div>
@@ -239,7 +239,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://www.drupal.org/project/ubercart">
                   <img style={{ height: '50px' }}
                   src="https://www.drupal.org/files/styles/grid-3-2x/public/project-images/logo_6.png?itok=ZMFI2Wc3"
-                  alt="Image alt text"
+                  alt="Übercart Logo"
                   title="Übercart" />
                   </a>
                </div>
@@ -259,7 +259,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://drupalcommerce.org/">
                   <img style={{ height: '50px' }}
                   src="https://drupalcommerce.org/sites/default/files/dclogo_stacked_2c_on_white.png"
-                  alt="Image alt text"
+                  alt="Drupal Logo"
                   title="Drupal" />
                   </a>
                </div>
@@ -283,7 +283,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://www.hikashop.com/">
                   <img style={{ height: '50px' }}
                   src="https://www.hikashop.com/images/branding/hikashop_logo1.png"
-                  alt="Image alt text"
+                  alt="HikaShop Logo"
                   title="HikaShop" />
                   </a>
                </div>
@@ -303,7 +303,7 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <a href="https://www.cartthrob.com/">
                   <img style={{ height: '50px' }}
                   src="https://image4.owler.com/logo/cartthrob_owler_20160302_231245_original.png"
-                  alt="Image alt text"
+                  alt="carthrob Logo"
                   title="carthrob" />
                   </a>
                </div>
@@ -322,8 +322,8 @@ Use Handpoint's versatility to unlock your market with our modules below:
                <div class="card__body">
                <a href="https://www.shopware.com/en/">
                   <img style={{ height: '50px' }}
-                  src="https://assets.shopware.com/media/logos/shopware_logo_blue.svg"
-                  alt="Image alt text"
+                  src="/img/Shopware_Logo.png"
+                  alt="shopware Logo"
                   title="shopware" />
                   </a>
                </div>
@@ -360,8 +360,8 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{ height: '50px'}}
-                  src="https://www.ekm.com/images/images-new/logo/ekm-logo-blue.svg"
-                  alt="Image alt text"
+                  src="/img/ekm-logo-blue.svg"
+                  alt="ekm Logo"
                   title="ekm" />
                </div>
                <div class="card__footer">
@@ -379,7 +379,7 @@ For support, please contact the module developers directly.
                <div class="card__body">
                   <img style={{ height: '50px' }}
                   src="https://www.clickcartpro.co.uk/skins/gbw_custom/media/logo.gif"
-                  alt="Image alt text"
+                  alt="Clickartpro Logo"
                   title="Clickartpro" />
                </div>
                <div class="card__footer">
@@ -396,8 +396,8 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{height: '50px'}}
-                  src="https://www.nopcommerce.com/Themes/OfficialSite/Content/images/logo.svg"
-                  alt="Image alt text"
+                  src="/img/nopcommerce.jpg"
+                  alt="nopCommerce Logo"
                   title="nopCommerce" />
                </div>
                <div class="card__footer">
@@ -415,7 +415,7 @@ For support, please contact the module developers directly.
                <div class="card__body">
                   <img style={{height: '50px'}}
                   src="https://admit-one.eu/wp-content/uploads/2022/08/admit-one_logo_red_rgb.webp"
-                  alt="Image alt text"
+                  alt="admitOne Logo"
                   title="admitOne" />
                </div>
                <div class="card__footer">
@@ -435,8 +435,8 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{ height: '50px'}}
-                  src="https://support.pingidentity.com/servlet/servlet.FileDownload?file=00P1W00001Jyz4rUAB"
-                  alt="Image alt text"
+                  src="/img/Spreedly LOGO.png"
+                  alt="Spreedly Logo"
                   title="Spreedly" />
                </div>
                <div class="card__footer">
@@ -454,7 +454,7 @@ For support, please contact the module developers directly.
                <div class="card__body">
                   <img style={{ height: '50px' }}
                   src="/img/foxyio.png"
-                  alt="Image alt text"
+                  alt="Foxy.io Logo"
                   title="Foxy.io" />
                </div>
                <div class="card__footer">
@@ -471,8 +471,8 @@ For support, please contact the module developers directly.
                </div>
                <div class="card__body">
                   <img style={{height: '50px'}}
-                  src="https://www.eautomate.com/Media/Images/Platforms%20and%20Services/automate-head.png"
-                  alt="Image alt text"
+                  src="/img/Eautomate logo.png"
+                  alt="eautomate Logo"
                   title="eautomate" />
                </div>
                <div class="card__footer">
