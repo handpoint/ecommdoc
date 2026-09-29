@@ -3944,6 +3944,218 @@ $tran = array (
 
  ```
 
- ## Card Brand Icons {#cardBrandIcons} 
+---
+
+## Node.js — Direct SALE with 3DS
+
+A self-contained Node.js + Express equivalent of the PHP Direct integration above, showing the complete 3DS v2 redirect loop.
+
+### Shared utilities
+
+```javascript
+// gateway.js
+const crypto = require('crypto');
+const https  = require('https');
+
+const MERCHANT_ID     = process.env.HP_MERCHANT_ID;
+const MERCHANT_SECRET = process.env.HP_MERCHANT_SECRET;
+const DIRECT_URL      = 'https://commerce-api.handpoint.com/direct/';
+
+function sign(fields) {
+    const sorted = Object.fromEntries(
+        Object.entries(fields).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    );
+    let str = new URLSearchParams(sorted).toString();
+    // Normalise line endings to match PHP http_build_query output
+    str = str.replace(/%0D%0A|%0A%0D|%0D/gi, '%0A');
+    return crypto.createHash('sha512').update(str + MERCHANT_SECRET).digest('hex');
+}
+
+async function directRequest(fields) {
+    const request = { merchantID: MERCHANT_ID, ...fields };
+    request.signature = sign(request);
+    const body = new URLSearchParams(request).toString();
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(DIRECT_URL, {
+            method:  'POST',
+            headers: {
+                'Content-Type':   'application/x-www-form-urlencoded',
+                'Content-Length': Buffer.byteLength(body),
+            },
+        }, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                const r = Object.fromEntries(new URLSearchParams(data));
+                r.responseCode = parseInt(r.responseCode, 10);
+                resolve(r);
+            });
+        });
+        req.on('error', reject);
+        req.write(body);
+        req.end();
+    });
+}
+
+module.exports = { directRequest };
+```
+
+### SALE with 3DS redirect loop
+
+```javascript
+// checkout.js — Express routes
+const express       = require('express');
+const crypto        = require('crypto');
+const session       = require('express-session');
+const { directRequest } = require('./gateway');
+
+const router = express.Router();
+const BASE_URL = 'https://yoursite.com';
+
+// Step 0 — collect browser device info required for 3DS v2
+// Render this page before the checkout form so the browser info is available
+router.get('/checkout/browser-info', (req, res) => {
+    const target = BASE_URL + '/checkout/pay?sid=' + req.sessionID;
+    res.send(`<!doctype html><html><body>
+  <form id="bi" method="post" action="${target}">
+    <input type="hidden" name="browserInfo[deviceChannel]" value="browser">
+    <input type="hidden" name="browserInfo[deviceIdentity]" value="">
+    <input type="hidden" name="browserInfo[deviceTimeZone]" value="">
+    <input type="hidden" name="browserInfo[deviceCapabilities]" value="">
+    <input type="hidden" name="browserInfo[deviceScreenResolution]" value="">
+    <input type="hidden" name="browserInfo[deviceAcceptContent]"
+           value="${req.headers.accept || ''}">
+    <input type="hidden" name="browserInfo[deviceAcceptEncoding]"
+           value="${req.headers['accept-encoding'] || ''}">
+    <input type="hidden" name="browserInfo[deviceAcceptLanguage]"
+           value="${req.headers['accept-language'] || ''}">
+  </form>
+  <script>
+    const f = document.forms.bi;
+    f['browserInfo[deviceIdentity]'].value = navigator.userAgent;
+    f['browserInfo[deviceTimeZone]'].value = new Date().getTimezoneOffset();
+    f['browserInfo[deviceCapabilities]'].value = 'javascript';
+    f['browserInfo[deviceScreenResolution]'].value =
+      screen.width + 'x' + screen.height + 'x' + screen.colorDepth;
+    f.submit();
+  </script>
+</body></html>`);
+});
+
+// Step 1 — initial payment request
+router.post('/checkout/pay', express.urlencoded({ extended: true }), async (req, res) => {
+    if (req.query.sid) req.session.id = req.query.sid;
+
+    const acsReturnURL = BASE_URL + '/checkout/3ds?sid=' + req.sessionID + '&acs=1';
+
+    let response;
+    try {
+        response = await directRequest({
+            action:             'SALE',
+            type:               1,      // 1 = ECOM
+            currencyCode:       978,    // EUR
+            countryCode:        276,    // DE
+            amount:             2101,   // €21.01
+            cardNumber:         req.body.cardNumber,
+            cardExpiryMonth:    req.body.expiryMonth,
+            cardExpiryYear:     req.body.expiryYear,
+            cardCVV:            req.body.cvv,
+            customerName:       req.body.name,
+            customerEmail:      req.body.email,
+            customerAddress:    req.body.address,
+            customerPostCode:   req.body.postcode,
+            orderRef:           'order-' + crypto.randomBytes(6).toString('hex'),
+            remoteAddress:      req.ip,
+            threeDSRedirectURL: acsReturnURL,
+            ...req.body.browserInfo && { browserInfo: req.body.browserInfo },
+        });
+    } catch (err) {
+        return res.redirect('/checkout/error');
+    }
+
+    req.session.pendingResponse = response;
+
+    if (response.responseCode === 65802) {
+        // 3DS challenge required — POST browser to ACS via auto-submitting form
+        const acsInputs = Object.entries(response.threeDSRequest || {})
+            .map(([k, v]) => `<input type="hidden" name="${k}" value="${v}">`)
+            .join('\n');
+        return res.send(`<!doctype html><html><body>
+  <form id="acs" method="post" action="${response.threeDSURL}">
+    ${acsInputs}
+  </form>
+  <script>document.forms.acs.submit();</script>
+</body></html>`);
+    }
+
+    if (response.responseCode === 0) {
+        return res.redirect('/checkout/success?txn=' + response.transactionID);
+    }
+
+    res.redirect('/checkout/declined?msg=' + encodeURIComponent(response.responseMessage));
+});
+
+// Step 2 — browser returns from ACS; complete the 3DS authentication
+router.post('/checkout/3ds', express.urlencoded({ extended: true }), async (req, res) => {
+    if (req.query.sid) req.session.id = req.query.sid;
+
+    // If this arrived inside an iframe, bubble to parent window first
+    if (req.query.acs) {
+        const target = BASE_URL + '/checkout/3ds?sid=' + req.sessionID;
+        return res.send(`<!doctype html><html><body>
+  <form id="bubble" method="post" action="${target}" target="_parent">
+    <input type="hidden" name="threeDSResponse" value='${JSON.stringify(req.body)}'>
+  </form>
+  <script>document.forms.bubble.submit();</script>
+</body></html>`);
+    }
+
+    const pending = req.session.pendingResponse;
+    if (!pending) return res.redirect('/checkout');
+
+    let response;
+    try {
+        response = await directRequest({
+            ...pending,
+            threeDSResponse: req.body.threeDSResponse,
+        });
+    } catch (err) {
+        return res.redirect('/checkout/error');
+    }
+
+    delete req.session.pendingResponse;
+
+    if (response.responseCode === 0) {
+        return res.redirect('/checkout/success?txn=' + response.transactionID);
+    }
+    res.redirect('/checkout/declined');
+});
+
+module.exports = router;
+```
+
+### Refund using stored xref
+
+```javascript
+// Refund a previous sale using the xref returned in the original response.
+// Store xref at the time of payment — it expires after 13 months.
+async function refund(xref, amount) {
+    const response = await directRequest({
+        action: 'REFUND_SALE',
+        xref,
+        amount,  // partial refund supported — must be ≤ original amount
+    });
+
+    if (response.responseCode !== 0) {
+        throw new Error('Refund failed: ' + response.responseMessage);
+    }
+    return response.transactionID;
+}
+```
+
+---
+
+## Card Brand Icons {#cardBrandIcons} 
 
 Here you can find official images provided by card brands like [Mastercard](https://www.mastercard.com/brandcenter/en/download-artwork), [Maestro](https://www.mastercard.com/brandcenter/en/brand-requirements/maestro), [Visa](https://www.merchantsignage.visa.com/brand_guidelines), [Discover](https://discoversignage.com/free-signage-logos), [American Express](https://www.americanexpress.com/content/dam/amex/us/merchant/pdf/gms-stripe-pop-coverage.pdf), [JCB](https://www.jcb.co.jp/bdmanual/en/basicDesignElements/jcbEmblem/index01download01.html), [China UnionPay](https://www.unionpayintl.com/en/mediaCenter/brandCenter/artworkDownloadCenter/identification.shtml).
